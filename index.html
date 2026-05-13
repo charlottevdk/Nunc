@@ -1223,133 +1223,6 @@
         </section>
       );
     }
-
-    /* ─────────── Shop by Era ─────────── */
-    function ShopByEra() {
-      return (
-        <section className="section container-wide">
-          <div className="section-head">
-            <h2 className="section-title">shop by <span className="underscored">era</span>.</h2>
-            <p className="section-sub">
-              Seven decades of one-of-ones. Tap a year — see what we've sourced.
-            </p>
-          </div>
-          <div className="eras">
-            {ERAS.map(e => (
-              <button key={e.id} className="era">
-                <div className="era-disc" style={{ background: `linear-gradient(155deg, ${e.from}, ${e.to})` }}>
-                  <span className="year">'{e.year === 'Y2K' ? 'y2k' : e.year === '<50' ? '49' : e.year}</span>
-                </div>
-                <span className="era-label">{e.label}</span>
-                <span className="era-count">{e.count} pieces</span>
-              </button>
-            ))}
-          </div>
-        </section>
-      );
-    }
-
-    /* ─────────── Shop by Condition ─────────── */
-    function ShopByCondition() {
-      return (
-        <section className="section container-wide">
-          <div className="section-head">
-            <h2 className="section-title">honest <span className="underscored">condition</span>.</h2>
-            <p className="section-sub">
-              Every piece graded by a human — and priced honestly. Mended is a feature, not a flaw.
-            </p>
-          </div>
-          <div className="conditions">
-            {CONDITIONS.map(c => (
-              <button key={c.grade} className={`cond ${c.muted ? 'muted' : ''}`}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-                  <span className="cond-icon"><Icon name={c.icon} size={22} stroke={1.6}/></span>
-                  <span className="cond-count">{c.count} pieces</span>
-                </div>
-                <div className="cond-body">
-                  <div className="cond-name">{c.name}</div>
-                  <div className="cond-desc">{c.desc}</div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </section>
-      );
-    }
-
-    /* ─────────── Just Verified ─────────── */
-    function JustVerified() {
-      const [liked, setLiked] = useState({});
-      const toggle = (id) => setLiked(L => ({ ...L, [id]: !L[id] }));
-
-      return (
-        <section className="section container-wide">
-          <div className="section-head">
-            <div className="section-head-top">
-              <h2 className="section-title">just <span className="underscored">verified</span>.</h2>
-              <a href="#" className="stamp tomato see-all">
-                See all <Icon name="arrow" size={12} stroke={2}/>
-              </a>
-            </div>
-            <p className="section-sub">Fresh from the studio. Every piece authenticated by hand before it ever goes live.</p>
-          </div>
-          <div className="products">
-            {PRODUCTS.map(p => (
-              <button key={p.id} className="product">
-                <div className="product-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
-                  <span
-                    onClick={(e) => { e.stopPropagation(); toggle(p.id); }}
-                    className="product-heart"
-                    role="button"
-                    aria-label="Save"
-                  >
-                    <span style={{ color: liked[p.id] ? 'var(--tomato)' : 'var(--pine)', display: 'flex' }}>
-                      <Icon name="heart" size={15} stroke={1.8} fill={liked[p.id] ? 'currentColor' : 'none'}/>
-                    </span>
-                  </span>
-                  <span className="product-verified">
-                    <Icon name="check" size={9} stroke={3}/>Verified
-                  </span>
-                </div>
-                <div className="product-meta">{p.meta}</div>
-                <div className="product-name">{p.name}</div>
-                <div className="product-row">
-                  <span className="product-price">${p.price}</span>
-                  <span className="product-condition">{p.cond}</span>
-                </div>
-              </button>
-            ))}
-          </div>
-        </section>
-      );
-    }
-
-    /* ─────────── How It Works ─────────── */
-    function HowItWorks() {
-      const steps = [
-        { num: '01', title: 'Sourced',  desc: "From a seller's closet, a thrift partner, or an estate. Every piece has a known origin." },
-        { num: '02', title: 'Verified', desc: 'AI + human authenticators check age, authenticity, and condition before it goes live.' },
-        { num: '03', title: 'Yours',    desc: 'Ships from the seller. Backed by the Nunc guarantee. Wear it, love it, pass it on.' },
-      ];
-      return (
-        <section className="section container-wide">
-          <div className="section-head">
-            <h2 className="section-title">how it <span className="underscored">works</span>.</h2>
-            <p className="section-sub">Three steps. Every piece. No exceptions.</p>
-          </div>
-          <div className="steps">
-            {steps.map(s => (
-              <div className="step" key={s.num}>
-                <span className="step-num">{s.num}</span>
-                <div className="step-title">{s.title}</div>
-                <p className="step-desc">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      );
-    }
-
     /* ─────────── Newsletter ─────────── */
     function Newsletter() {
       return (
@@ -1358,7 +1231,7 @@
             <span className="newsletter-eyebrow">nunc drops · every friday</span>
             <div className="section-head">
               <h2 className="section-title">First dibs on <span className="underscored">Friday drops</span>.</h2>
-              <p className="section-sub">50 curated pieces every Friday at 10am ET. Subscribers see them an hour before anyone else.</p>
+              <p className="section-sub">Curated pieces every Friday at 10am ET. Subscribers see them an hour before anyone else.</p>
             </div>
             <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
               <input type="email" placeholder="you@email.com" required/>
@@ -1387,9 +1260,6 @@
               <p>
                 Every piece has a past — a city, a decade, an owner before you. We surface it,
                 verify it, and pass it on.
-              </p>
-              <p style={{ marginTop: 16 }}>
-                Found in a basement in Detroit. Verified by Nunc. Could be yours.
               </p>
               <button className="btn-sell" style={{ marginTop: 28 }}>
                 Read the manifesto
@@ -1439,8 +1309,8 @@
               </div>
             </div>
             <div className="footer-bottom">
-              <span>© 2026 Nunc — all pieces one of one</span>
-              <span>The archive, alive.</span>
+              <span>© 2026 Nunc </span>
+              <span>Sourched. Verified. Yours</span>
             </div>
           </div>
         </footer>
