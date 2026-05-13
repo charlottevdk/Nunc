@@ -1,0 +1,1473 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>nunc — the archive, alive.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       Nunc — Design Tokens
+       ============================================================ */
+    :root {
+      /* BRAND COLORS */
+      --butter:  #F7F1E0;
+      --pine:    #1A3A2E;
+      --peach:   #E8A87C;
+      --tomato:  #C44536;
+      --sage:    #A8B89C;
+
+      /* TINT / SHADE STEPS */
+      --pine-04: rgba(26, 58, 46, 0.04);
+      --pine-08: rgba(26, 58, 46, 0.08);
+      --pine-12: rgba(26, 58, 46, 0.12);
+      --pine-20: rgba(26, 58, 46, 0.20);
+      --pine-40: rgba(26, 58, 46, 0.40);
+      --pine-60: rgba(26, 58, 46, 0.60);
+      --pine-80: rgba(26, 58, 46, 0.80);
+
+      --butter-08: rgba(247, 241, 224, 0.08);
+      --butter-20: rgba(247, 241, 224, 0.20);
+      --butter-40: rgba(247, 241, 224, 0.40);
+      --butter-70: rgba(247, 241, 224, 0.70);
+
+      /* SEMANTIC */
+      --bg:           var(--butter);
+      --bg-elevated:  #FFFFFF;
+      --bg-inverse:   var(--pine);
+      --bg-warm:      var(--peach);
+      --bg-cool:      var(--sage);
+
+      --fg:           var(--pine);
+      --fg-strong:    var(--pine);
+      --fg-muted:     var(--pine-60);
+      --fg-subtle:    var(--pine-40);
+      --fg-inverse:   var(--butter);
+      --fg-accent:    var(--tomato);
+
+      --border-hairline: var(--pine-08);
+      --border-line:     var(--pine-12);
+      --border-strong:   var(--pine);
+
+      /* TYPEFACES */
+      --font-display: 'Bricolage Grotesque', 'Times New Roman', serif;
+      --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+      /* TYPE SCALE */
+      --fs-display-xl: 220px;
+      --fs-display-l:  88px;
+      --fs-display-m:  64px;
+      --fs-display-s:  44px;
+      --fs-display-xs: 32px;
+
+      --fs-body-xl: 22px;
+      --fs-body-l:  18px;
+      --fs-body-m:  15px;
+      --fs-body-s:  13px;
+      --fs-body-xs: 12px;
+
+      --fs-mono-l: 14px;
+      --fs-mono-m: 12px;
+      --fs-mono-s: 11px;
+      --fs-mono-xs: 10px;
+
+      --lh-tight:   0.95;
+      --lh-snug:    1.15;
+      --lh-body:    1.6;
+      --lh-loose:   1.7;
+
+      --tracking-display-tight: -0.045em;
+      --tracking-display:       -0.025em;
+      --tracking-body:           0;
+      --tracking-mono-stamp:     0.32em;
+      --tracking-mono-meta:      0.18em;
+      --tracking-mono-label:     0.25em;
+
+      --fw-regular:  400;
+      --fw-medium:   500;
+      --fw-semi:     600;
+      --fw-bold:     700;
+      --fw-black:    800;
+
+      /* SPACING */
+      --s-1:   4px;  --s-2:   8px;  --s-3:  12px;  --s-4:  16px;
+      --s-5:  20px;  --s-6:  24px;  --s-8:  32px;  --s-10: 40px;
+      --s-12: 48px;  --s-16: 64px;  --s-20: 80px;  --s-24: 100px;
+      --s-32: 128px;
+
+      /* RADII */
+      --r-none: 0;
+      --r-xs: 4px; --r-sm: 8px; --r-md: 14px;
+      --r-lg: 16px; --r-xl: 24px; --r-app: 36px;
+      --r-pill: 999px;
+
+      /* SHADOWS */
+      --shadow-xs: 0 2px 8px  rgba(26, 58, 46, 0.04);
+      --shadow-sm: 0 6px 24px rgba(26, 58, 46, 0.05);
+      --shadow-md: 0 8px 30px rgba(26, 58, 46, 0.06);
+      --shadow-lg: 0 10px 30px rgba(26, 58, 46, 0.10);
+      --shadow-xl: 0 20px 60px rgba(26, 58, 46, 0.15);
+
+      /* MOTION */
+      --ease-out:    cubic-bezier(0.22, 0.61, 0.36, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-fast:    140ms;
+      --dur-base:    220ms;
+      --dur-slow:    420ms;
+
+      /* LAYOUT */
+      --container-narrow: 640px;
+      --container:        880px;
+      --container-wide:   1040px;
+      --nav-h:            64px;
+    }
+
+    /* RESET */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--fs-body-m);
+      line-height: var(--lh-body);
+      color: var(--fg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-optical-sizing: auto;
+      overflow-x: hidden;
+    }
+    button { font: inherit; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+
+    /* TYPE ROLES */
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      color: var(--fg-strong);
+      letter-spacing: var(--tracking-display);
+      line-height: var(--lh-snug);
+      font-weight: var(--fw-bold);
+      margin: 0;
+    }
+
+    /* THE UNDERSCORE — Nunc's signature */
+    .nunc-underscore {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.12em;
+    }
+    .nunc-underscore::after {
+      content: '';
+      position: absolute;
+      left: 2%; right: 2%; bottom: 0;
+      height: 0.08em;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 clamp(40px, 9vw, 140px);
+    }
+    .container-wide {
+      max-width: var(--container-wide);
+      margin: 0 auto;
+      padding: 0 clamp(40px, 9vw, 140px);
+    }
+
+    /* ─── TOP NAV ─────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(247, 241, 224, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .nav-inner {
+      height: 72px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: var(--s-8);
+    }
+    .nav-mark {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 30px;
+      letter-spacing: -0.045em;
+      line-height: 1;
+      color: var(--pine);
+      position: relative;
+      padding-bottom: 6px;
+      display: inline-block;
+      justify-self: start;
+      margin: 0;
+    }
+    .nav-mark::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 4px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .search {
+      width: 100%;
+      max-width: 480px;
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      background: rgba(26, 58, 46, 0.04);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--r-pill);
+      padding: 10px 18px;
+      transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);
+    }
+    .search:focus-within {
+      border-color: var(--pine);
+      background: rgba(26, 58, 46, 0.06);
+    }
+    .search input {
+      flex: 1;
+      background: transparent;
+      border: none; outline: none;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--fg);
+    }
+    .search input::placeholder { color: var(--fg-subtle); }
+    .search-kbd {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      border: 1px solid var(--border-line);
+      padding: 2px 6px;
+      border-radius: var(--r-xs);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: var(--s-5);
+      justify-self: end;
+    }
+    .nav-link {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--fg);
+      transition: opacity var(--dur-base) var(--ease-out);
+      background: none; border: none;
+      cursor: pointer;
+      padding: 8px 4px;
+    }
+    .nav-link:hover { opacity: 0.7; }
+
+    .btn-sell {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 500;
+      background: var(--tomato);
+      color: var(--butter);
+      border: none;
+      border-radius: var(--r-pill);
+      padding: 11px 20px 11px 22px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+    }
+    .btn-sell::after {
+      content: '→';
+      font-family: var(--font-body);
+      letter-spacing: 0;
+      font-size: 14px;
+      transition: transform var(--dur-base) var(--ease-out);
+    }
+    .btn-sell:hover { opacity: 0.92; }
+    .btn-sell:hover::after { transform: translateX(3px); }
+    .btn-sell:active { transform: translateY(1px); }
+
+    /* ─── HERO ─────────────────────────── */
+    .hero { padding-top: var(--s-12); padding-bottom: var(--s-16); }
+    .hero-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-6);
+      padding-bottom: var(--s-10);
+      border-bottom: 1px solid var(--border-hairline);
+      flex-wrap: wrap;
+    }
+    .hero-top-meta {
+      display: flex;
+      gap: var(--s-6);
+      flex-wrap: wrap;
+    }
+
+    .buy-sell {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: var(--s-10) 0 var(--s-8);
+      gap: var(--s-6);
+    }
+    .buy-sell-word {
+      width: 100%;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(54px, 8vw, 120px);
+      letter-spacing: -0.06em;
+      line-height: 0.82;
+      color: var(--pine);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      position: relative;
+      display: block;
+      text-align: left;
+      transition: transform var(--dur-slow) var(--ease-out);
+      font-variation-settings: 'opsz' 72;
+    }
+    .buy-sell-word.right { text-align: right; }
+    .buy-sell-word::after {
+      content: '';
+      position: absolute;
+      left: 0%; right: 58%; bottom: 2px;
+      height: 10px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      transition: right var(--dur-slow) var(--ease-out), left var(--dur-slow) var(--ease-out);
+    }
+    .buy-sell-word.right::after { left: 58%; right: 0%; }
+    .buy-sell-word:hover::after { left: 0%; right: 2%; }
+    .buy-sell-word.right:hover::after { left: 2%; right: 0%; }
+    .buy-sell-word .dot { color: var(--tomato); font-family: inherit; }
+    .buy-sell-slash {
+      font-family: var(--font-display);
+      font-weight: 200;
+      font-size: clamp(56px, 7vw, 100px);
+      color: var(--pine-20);
+      line-height: 1;
+      user-select: none;
+      transform: translateY(-8px);
+    }
+
+    .hero-strapline {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-8);
+      padding-top: var(--s-8);
+      border-top: 1px solid var(--border-hairline);
+    }
+    .hero-strapline .big {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: clamp(28px, 3.4vw, 44px);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--pine);
+      max-width: 42ch;
+    }
+    .hero-strapline .big em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--pine);
+    }
+    .hero-strapline .big .accent {
+      background: linear-gradient(180deg, transparent 62%, rgba(196, 69, 54, 0.22) 62%);
+      padding: 0 2px;
+    }
+    .hero-side {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: var(--s-6) var(--s-8);
+      align-items: center;
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--border-hairline);
+    }
+    .hero-side .row .label { white-space: nowrap; }
+    .hero-side .row { display: flex; align-items: center; gap: var(--s-3); }
+    .hero-side .row .tick {
+      width: 18px; height: 18px;
+      border-radius: 999px;
+      background: var(--sage);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .hero-side .row .label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg);
+      font-weight: 500;
+    }
+    .hero-side .label .short { display: none; }
+
+    /* ─── SECTION HEAD ─────────────────────────── */
+    .section {
+      padding-top: var(--s-16);
+      padding-bottom: var(--s-16);
+      border-top: 1px solid var(--border-hairline);
+    }
+    .section-head {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: var(--s-6);
+      gap: var(--s-2);
+    }
+    .section-head-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      width: 100%;
+      gap: var(--s-6);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 4.8vw, 64px);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--pine);
+    }
+    .section-title .underscored {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 8px;
+    }
+    .section-title .underscored::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 8px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .section-sub {
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--fg-muted);
+      max-width: none;
+      text-align: left;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+    .see-all { white-space: nowrap; }
+
+    /* ─── ERAS ─────────────────────────── */
+    .eras {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: var(--s-4);
+    }
+    .era {
+      background: none; border: none; padding: 0;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s-3);
+      text-align: center;
+      transition: transform var(--dur-base) var(--ease-out);
+    }
+    .era-disc {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 999px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: transform var(--dur-slow) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+    }
+    .era:hover .era-disc {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .era-disc::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 999px;
+      box-shadow: inset 0 0 0 1px rgba(26,58,46,0.10);
+      pointer-events: none;
+    }
+    .era-disc .year {
+      position: absolute;
+      inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(20px, 2.4vw, 32px);
+      letter-spacing: -0.035em;
+      color: rgba(247, 241, 224, 0.92);
+      text-shadow: 0 1px 12px rgba(26,58,46,0.25);
+    }
+    .era-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg);
+      font-weight: 500;
+    }
+    .era-count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-top: -8px;
+    }
+
+    /* ─── CONDITION ─────────────────────────── */
+    .conditions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-5);
+    }
+    .cond {
+      background: var(--bg-elevated);
+      background-image: radial-gradient(circle, var(--pine-08) 1px, transparent 1.2px);
+      background-size: 14px 14px;
+      background-position: 7px 7px;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--r-lg);
+      padding: var(--s-8) var(--s-6) var(--s-6);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--s-5);
+      min-height: 220px;
+      transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .cond:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--pine);
+    }
+    .cond-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      background: var(--bg);
+      border: 1px solid var(--border-line);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--pine);
+      position: relative;
+      z-index: 1;
+    }
+    .cond.muted .cond-icon { color: var(--tomato); border-color: var(--peach); background: var(--butter); }
+    .cond-body { position: relative; z-index: 1; background: var(--bg-elevated); padding: var(--s-3) 0 0; margin: 0 calc(var(--s-6) * -1) calc(var(--s-6) * -1); padding: var(--s-4) var(--s-6) var(--s-6); border-bottom-left-radius: var(--r-lg); border-bottom-right-radius: var(--r-lg); }
+    .cond-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 26px;
+      letter-spacing: -0.025em;
+      color: var(--pine);
+      line-height: 1.1;
+      margin-bottom: var(--s-2);
+    }
+    .cond-desc {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--fg-muted);
+      line-height: 1.55;
+      max-width: 38ch;
+    }
+    .cond-count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+    }
+
+    /* ─── PRODUCT GRID ─────────────────────────── */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-10) var(--s-6);
+    }
+    .product {
+      background: none; border: none; padding: 0;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: var(--r-lg);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: var(--s-3);
+      transition: transform var(--dur-slow) var(--ease-out);
+    }
+    .product:hover .product-img { transform: translateY(-4px); }
+    .product-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(120% 80% at 25% 20%, rgba(247,241,224,0.20), transparent 55%);
+      pointer-events: none;
+    }
+    .product-heart {
+      position: absolute;
+      top: 12px; right: 12px;
+      width: 34px; height: 34px;
+      background: rgba(247,241,224,0.92);
+      backdrop-filter: blur(6px);
+      border: none;
+      border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background var(--dur-base) var(--ease-out);
+    }
+    .product-heart:hover { background: var(--butter); }
+    .product-verified {
+      position: absolute;
+      bottom: 12px; left: 12px;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--sage);
+      color: var(--pine);
+      padding: 5px 10px;
+      border-radius: var(--r-pill);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .product-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 4px;
+    }
+    .product-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+      color: var(--pine);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .product-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+    .product-price {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--tomato);
+      letter-spacing: -0.02em;
+    }
+    .product-condition {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+    }
+
+    /* ─── HOW IT WORKS ─────────────────────────── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-8);
+      position: relative;
+    }
+    .step {
+      position: relative;
+      padding: var(--s-2) 0;
+    }
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--tomato);
+      margin-bottom: var(--s-4);
+      display: block;
+    }
+    .step-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(28px, 3vw, 40px);
+      letter-spacing: -0.025em;
+      color: var(--pine);
+      margin-bottom: var(--s-3);
+      line-height: 1;
+    }
+    .step-desc {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--fg-muted);
+      max-width: 32ch;
+    }
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      right: calc(-1 * var(--s-8) / 2 - 14px);
+      width: 28px;
+      height: 1px;
+      background: var(--pine-12);
+    }
+    @media (max-width: 900px) {
+      .steps { grid-template-columns: 1fr; gap: var(--s-6); }
+      .step:not(:last-child)::after { display: none; }
+    }
+
+    /* ─── NEWSLETTER ─────────────────────────── */
+    .newsletter {
+      padding: var(--s-20) 0;
+      border-top: 1px solid var(--border-hairline);
+      background: var(--butter);
+    }
+    .newsletter-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--tomato);
+      display: block;
+      margin-bottom: var(--s-5);
+    }
+    .newsletter h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 5vw, 64px);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--pine);
+      margin-bottom: var(--s-4);
+    }
+    .newsletter-text p {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--fg-muted);
+      max-width: 56ch;
+      margin-bottom: var(--s-8);
+    }
+    .newsletter-form {
+      display: flex;
+      align-items: center;
+      gap: var(--s-2);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--r-pill);
+      padding: 6px 6px 6px 22px;
+      transition: border-color var(--dur-base) var(--ease-out);
+      max-width: 480px;
+    }
+    .newsletter-form:focus-within { border-color: var(--pine); }
+    .newsletter-form input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--fg);
+      padding: 12px 0;
+    }
+    .newsletter-form input::placeholder { color: var(--fg-subtle); }
+    .newsletter-meta {
+      margin-top: var(--s-3);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+    }
+
+    /* ─── MANIFESTO BAND ─────────────────────────── */
+    .manifesto {
+      background: var(--pine);
+      color: var(--butter);
+      margin-top: var(--s-16);
+    }
+    .manifesto-inner {
+      padding: var(--s-20) 0;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: var(--s-12);
+      align-items: center;
+    }
+    .manifesto h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(30px, 4vw, 48px);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--butter);
+      font-variation-settings: 'opsz' 72;
+      white-space: nowrap;
+    }
+    .manifesto h2 .dot { color: var(--tomato); }
+    .manifesto p {
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.7;
+      color: rgba(247, 241, 224, 0.78);
+      max-width: 44ch;
+    }
+    .manifesto .eyebrow-light {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--peach);
+      margin-bottom: var(--s-5);
+      display: block;
+    }
+
+    /* ─── FOOTER ─────────────────────────── */
+    .footer {
+      background: var(--butter);
+      padding: var(--s-16) 0 var(--s-8);
+      border-top: 1px solid var(--border-hairline);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--s-10);
+      padding-bottom: var(--s-12);
+    }
+    .footer-mark {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 80px;
+      letter-spacing: -0.06em;
+      color: var(--pine);
+      line-height: 0.85;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 12px;
+      font-variation-settings: 'opsz' 72;
+    }
+    .footer-mark::after {
+      content: '';
+      position: absolute;
+      left: 2%; right: 2%; bottom: 0;
+      height: 10px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .footer-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-top: var(--s-4);
+    }
+    .footer h4 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      font-weight: 500;
+      margin-bottom: var(--s-4);
+    }
+    .footer ul {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+    .footer ul a {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--fg);
+    }
+    .footer ul a:hover { opacity: 0.7; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--border-hairline);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+
+    /* ─── COMMON STAMP ─────────────────────────── */
+    .stamp {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .stamp.tomato { color: var(--tomato); }
+    .stamp .dot {
+      width: 6px; height: 6px;
+      background: var(--tomato);
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────── */
+
+    /* TABLET — 900px and below */
+    @media (max-width: 900px) {
+      .container, .container-wide { padding: 0 40px; }
+
+      .nav-inner { grid-template-columns: auto 1fr auto; height: 64px; gap: var(--s-4); }
+      .search { max-width: 320px; padding: 8px 14px; }
+      .search input { font-size: 13px; }
+      .search-kbd { display: none; }
+      .nav-right .nav-link.signup { display: none; }
+
+      .hero { padding-top: var(--s-10); padding-bottom: var(--s-12); }
+      .buy-sell { padding: var(--s-8) 0 var(--s-6); gap: var(--s-5); }
+      .buy-sell-word { font-size: clamp(48px, 13vw, 96px); }
+      .buy-sell-slash { font-size: clamp(48px, 11vw, 80px); transform: translateY(-6px); }
+
+      .hero-strapline { gap: var(--s-6); }
+      .hero-strapline .big { font-size: clamp(24px, 4.6vw, 36px); max-width: 100%; }
+      .hero-side {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: var(--s-6);
+      }
+      .hero-side .row .label { font-size: 10px; letter-spacing: 0.14em; white-space: nowrap; }
+      .hero-side .label .full { display: none; }
+      .hero-side .label .short { display: inline; }
+
+      .section { padding-top: var(--s-12); padding-bottom: var(--s-12); }
+      .section-head { margin-bottom: var(--s-8); }
+
+      .eras { grid-template-columns: repeat(4, 1fr); }
+      .conditions { grid-template-columns: repeat(2, 1fr); }
+      .products { grid-template-columns: repeat(2, 1fr); gap: var(--s-8) var(--s-5); }
+
+      .steps { grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+      .step:not(:last-child)::after { display: none; }
+      .step-title { font-size: clamp(22px, 3.4vw, 28px); }
+      .step-desc { font-size: 13px; }
+
+      .manifesto-inner { grid-template-columns: 1fr; gap: var(--s-8); padding: var(--s-12) 0; }
+      .newsletter { padding: var(--s-12) 0; }
+      .newsletter-inner { grid-template-columns: 1fr; gap: var(--s-8); }
+
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--s-8) var(--s-6); }
+    }
+
+    /* PHONE — 640px and below */
+    @media (max-width: 640px) {
+      .container, .container-wide { padding: 0 36px; }
+
+      /* Nav */
+      .nav-inner { height: 58px; gap: var(--s-3); }
+      .nav-mark { font-size: 24px; padding-bottom: 4px; }
+      .nav-mark::after { height: 3px; }
+      .search { display: none; }
+      .nav-right { gap: var(--s-2); }
+      .nav-right .nav-link { display: none; }
+      .btn-sell { padding: 9px 14px 9px 16px; font-size: 10px; letter-spacing: 0.2em; gap: 6px; }
+      .btn-sell::after { font-size: 12px; }
+
+      /* Hero */
+      .hero { padding-top: var(--s-6); padding-bottom: var(--s-10); }
+      .buy-sell { padding: var(--s-5) 0 var(--s-3); gap: var(--s-3); }
+      .buy-sell-word { font-size: clamp(40px, 18vw, 72px); }
+      .buy-sell-word::after { height: 7px; bottom: 1px; }
+      .buy-sell-slash { font-size: clamp(36px, 15vw, 60px); transform: translateY(-4px); }
+
+      .hero-strapline { gap: var(--s-5); padding-top: var(--s-5); }
+      .hero-strapline .big { font-size: clamp(22px, 6.4vw, 28px); line-height: 1.2; }
+
+      /* Ticks — one horizontal row, shorter labels */
+      .hero-side {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--s-3);
+        padding-top: var(--s-4);
+      }
+      .hero-side .row { gap: 6px; flex: 0 1 auto; }
+      .hero-side .row .tick { width: 14px; height: 14px; }
+      .hero-side .row .label { font-size: 9px; letter-spacing: 0.08em; white-space: nowrap; }
+      .hero-side .label .full { display: none; }
+      .hero-side .label .short { display: inline; }
+
+      /* Sections */
+      .section { padding-top: var(--s-10); padding-bottom: var(--s-10); }
+      .section-head { margin-bottom: var(--s-6); }
+      .section-title { font-size: clamp(30px, 9vw, 42px); }
+      .section-sub { font-size: 14px; }
+
+      /* Eras */
+      .eras { grid-template-columns: repeat(3, 1fr); gap: var(--s-3); }
+      .era-disc .year { font-size: clamp(15px, 5vw, 22px); }
+      .era-label { font-size: 9px; letter-spacing: 0.18em; }
+      .era-count { font-size: 9px; }
+
+      /* Conditions — stack to single column */
+      .conditions { grid-template-columns: 1fr; gap: var(--s-3); }
+      .cond { min-height: 0; padding: var(--s-6); gap: var(--s-4); }
+      .cond::before { top: var(--s-5); right: var(--s-5); }
+      .cond-name { font-size: 22px; }
+      .cond-desc { font-size: 13px; }
+
+      /* Products — smaller, more breathing room */
+      .products { grid-template-columns: repeat(2, 1fr); gap: var(--s-10) var(--s-6); }
+      .product-img { aspect-ratio: 5/6; border-radius: var(--r-md); }
+      .product-name { font-size: 14px; }
+      .product-price { font-size: 14px; }
+      .product-meta { font-size: 9px; letter-spacing: 0.14em; }
+      .product-condition { font-size: 8px; letter-spacing: 0.18em; }
+      .product-heart { width: 30px; height: 30px; top: 8px; right: 8px; }
+      .product-verified { padding: 4px 8px; font-size: 8px; letter-spacing: 0.18em; bottom: 8px; left: 8px; }
+
+      /* How It Works — keep 3 across, just tighten */
+      .steps { grid-template-columns: repeat(3, 1fr); gap: var(--s-3); }
+      .step-num { font-size: 9px; letter-spacing: 0.22em; margin-bottom: var(--s-4); }
+      .step-title { font-size: 18px; }
+      .step-desc { font-size: 11px; line-height: 1.45; }
+
+      /* Newsletter */
+      .newsletter { padding: var(--s-10) 0; }
+      .newsletter h2 { font-size: clamp(28px, 8vw, 36px); margin-bottom: var(--s-4); }
+      .newsletter-text p { font-size: 14px; }
+      .newsletter-inner { gap: var(--s-5); }
+      .newsletter-form { padding: 4px 4px 4px 16px; }
+      .newsletter-form input { font-size: 14px; padding: 9px 0; }
+      .newsletter-form .btn-sell { padding: 9px 14px; font-size: 10px; }
+
+      /* Manifesto */
+      .manifesto-inner { padding: var(--s-12) 0; }
+      .manifesto h2 { font-size: clamp(36px, 11vw, 56px); }
+      .manifesto p { font-size: 15px; }
+
+      /* Footer */
+      .footer { padding: var(--s-10) 0 var(--s-5); }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--s-6) var(--s-5); padding-bottom: var(--s-8); }
+      .footer-grid > div:first-child { grid-column: 1 / -1; }
+      .footer-mark { font-size: 52px; }
+      .footer-bottom { flex-direction: column; gap: var(--s-2); align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    /* ─────────── Data ─────────── */
+    const ERAS = [
+      { id: 'pre-50', label: 'Pre-1950s',   year: '<50', count: 38,  from: '#D9C7A6', to: '#9C7E4A' },
+      { id: '50s',    label: "1950s",       year: '50',  count: 124, from: '#E8A87C', to: '#A35E3F' },
+      { id: '60s',    label: "1960s",       year: '60',  count: 198, from: '#A89D5A', to: '#5C5828' },
+      { id: '70s',    label: "1970s",       year: '70',  count: 412, from: '#C66E3F', to: '#7A2E20' },
+      { id: '80s',    label: "1980s",       year: '80',  count: 521, from: '#7E5BA0', to: '#3A2255' },
+      { id: '90s',    label: "1990s",       year: '90',  count: 687, from: '#5A6B7A', to: '#2A3744' },
+      { id: 'y2k',    label: "2000s · Y2K", year: 'Y2K', count: 244, from: '#C6CBD3', to: '#6E6F78' },
+    ];
+
+    const CONDITIONS = [
+      { grade: 'NWT', icon: 'tag',     name: 'New with tags',  desc: 'Unworn. Original tags intact.',           count: 64,  muted: false },
+      { grade: 'PR',  icon: 'sparkle', name: 'Pristine',        desc: 'Unworn or near-unworn. No flaws.',        count: 312, muted: false },
+      { grade: 'EX',  icon: 'check',   name: 'Excellent',       desc: 'Lightly worn. No visible imperfections.', count: 901, muted: false },
+      { grade: 'LV',  icon: 'heart',   name: 'Loved',           desc: 'Honest wear that adds character.',        count: 642, muted: true  },
+      { grade: 'SL',  icon: 'needle',  name: 'Needs some love', desc: 'Wear. Priced for it. Repairable.',        count: 188, muted: true  },
+      { grade: 'AM',  icon: 'stitch',  name: 'Already mended',  desc: 'Repaired by hand. Repair logged.',        count: 47,  muted: true  },
+    ];
+
+    const PRODUCTS = [
+      { id: 1, name: 'Leather bomber, cropped',       era: '70s', price: 148, meta: 'DETROIT · 1974', cond: 'EXCELLENT', from: '#C66E3F', to: '#7A2E20' },
+      { id: 2, name: 'Selvedge denim jacket',         era: '90s', price:  92, meta: 'PORTLAND · 1991', cond: 'LOVED',    from: '#5A6B7A', to: '#2A3744' },
+      { id: 3, name: 'Cable-knit fisherman',          era: '80s', price:  68, meta: 'DUBLIN · 1983',   cond: 'PRISTINE', from: '#E7D7B4', to: '#A88E5A' },
+      { id: 4, name: 'Suede western, fringed',        era: '70s', price: 218, meta: 'AUSTIN · 1976',   cond: 'EXCELLENT', from: '#D9A479', to: '#7A4C28' },
+      { id: 5, name: 'Army field jacket, M-65',       era: '60s', price:  82, meta: 'BERLIN · 1968',   cond: 'LOVED',    from: '#7C7F4E', to: '#2F3318' },
+      { id: 6, name: 'Wool peacoat, double-breasted', era: '80s', price: 134, meta: 'BOSTON · 1985',   cond: 'EXCELLENT', from: '#A8513A', to: '#4A1D17' },
+      { id: 7, name: 'Silk slip dress, bias-cut',     era: '90s', price:  76, meta: 'TOKYO · 1998',    cond: 'PRISTINE', from: '#3A3A36', to: '#15140F' },
+      { id: 8, name: 'Mohair cardigan, oversized',    era: '90s', price:  58, meta: 'LA · 1994',       cond: 'LOVED',    from: '#9BAB8D', to: '#4E6044' },
+    ];
+
+    /* ─────────── Icons ─────────── */
+    function Icon({ name, size = 18, stroke = 1.75, fill = 'none' }) {
+      const paths = {
+        search:  <><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>,
+        heart:   <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>,
+        check:   <path d="M20 6 9 17l-5-5"/>,
+        arrow:   <><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></>,
+        tag:     <><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/></>,
+        sparkle: <path d="M12 2.5l1.8 6.2 6.2 1.8-6.2 1.8L12 18.5l-1.8-6.2L4 10.5l6.2-1.8z"/>,
+        needle:  <><path d="M3 21l5-5M8 16l9-9M16 8l5 5-3 3M16 8l3-3"/><circle cx="19" cy="5" r="1" fill="currentColor"/></>,
+        stitch:  <><path d="M3 12h2M9 12h2M15 12h2M21 12h0"/><path d="M5 12l2-3M7 9l2 3M11 12l2-3M13 9l2 3M17 12l2-3M19 9l2 3"/></>,
+      };
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill={fill}
+             stroke="currentColor" strokeWidth={stroke}
+             strokeLinecap="round" strokeLinejoin="round">
+          {paths[name]}
+        </svg>
+      );
+    }
+
+    /* ─────────── Nav ─────────── */
+    function Nav() {
+      return (
+        <header className="nav">
+          <div className="container-wide nav-inner">
+            <a href="#" className="nav-mark" aria-label="Nunc — home">nunc</a>
+            <label className="search">
+              <Icon name="search" size={16} stroke={1.8}/>
+              <input type="text" placeholder="search the archive — '70s leather, mohair, M-65…"/>
+              <span className="search-kbd">⌘ K</span>
+            </label>
+            <nav className="nav-right">
+              <button className="btn-sell">Sell now</button>
+              <button className="nav-link signup">Sign up</button>
+              <button className="nav-link">Log in</button>
+            </nav>
+          </div>
+        </header>
+      );
+    }
+
+    /* ─────────── Hero ─────────── */
+    function Hero() {
+      return (
+        <section className="hero container-wide">
+          <div className="buy-sell">
+            <button className="buy-sell-word">buy<span className="dot">.</span></button>
+            <span className="buy-sell-slash" aria-hidden="true">/</span>
+            <button className="buy-sell-word right">sell<span className="dot">.</span></button>
+          </div>
+
+          <div className="hero-strapline">
+            <div className="big">
+              keep one-of-ones from being lost to the <span className="accent">fast-fashion churn</span> — every piece sourced, verified, yours.
+            </div>
+            <div className="hero-side">
+              <div className="row">
+                <span className="tick"><Icon name="check" size={11} stroke={3}/></span>
+                <span className="label">
+                  <span className="full">verified before it goes live</span>
+                  <span className="short">verified</span>
+                </span>
+              </div>
+              <div className="row">
+                <span className="tick"><Icon name="check" size={11} stroke={3}/></span>
+                <span className="label">
+                  <span className="full">zero fast fashion · ever</span>
+                  <span className="short">no fast fashion</span>
+                </span>
+              </div>
+              <div className="row">
+                <span className="tick"><Icon name="check" size={11} stroke={3}/></span>
+                <span className="label">
+                  <span className="full">one photo · one owner · one of one</span>
+                  <span className="short">one of one</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─────────── Shop by Era ─────────── */
+    function ShopByEra() {
+      return (
+        <section className="section container-wide">
+          <div className="section-head">
+            <h2 className="section-title">shop by <span className="underscored">era</span>.</h2>
+            <p className="section-sub">
+              Seven decades of one-of-ones. Tap a year — see what we've sourced.
+            </p>
+          </div>
+          <div className="eras">
+            {ERAS.map(e => (
+              <button key={e.id} className="era">
+                <div className="era-disc" style={{ background: `linear-gradient(155deg, ${e.from}, ${e.to})` }}>
+                  <span className="year">'{e.year === 'Y2K' ? 'y2k' : e.year === '<50' ? '49' : e.year}</span>
+                </div>
+                <span className="era-label">{e.label}</span>
+                <span className="era-count">{e.count} pieces</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    /* ─────────── Shop by Condition ─────────── */
+    function ShopByCondition() {
+      return (
+        <section className="section container-wide">
+          <div className="section-head">
+            <h2 className="section-title">honest <span className="underscored">condition</span>.</h2>
+            <p className="section-sub">
+              Every piece graded by a human — and priced honestly. Mended is a feature, not a flaw.
+            </p>
+          </div>
+          <div className="conditions">
+            {CONDITIONS.map(c => (
+              <button key={c.grade} className={`cond ${c.muted ? 'muted' : ''}`}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                  <span className="cond-icon"><Icon name={c.icon} size={22} stroke={1.6}/></span>
+                  <span className="cond-count">{c.count} pieces</span>
+                </div>
+                <div className="cond-body">
+                  <div className="cond-name">{c.name}</div>
+                  <div className="cond-desc">{c.desc}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    /* ─────────── Just Verified ─────────── */
+    function JustVerified() {
+      const [liked, setLiked] = useState({});
+      const toggle = (id) => setLiked(L => ({ ...L, [id]: !L[id] }));
+
+      return (
+        <section className="section container-wide">
+          <div className="section-head">
+            <div className="section-head-top">
+              <h2 className="section-title">just <span className="underscored">verified</span>.</h2>
+              <a href="#" className="stamp tomato see-all">
+                See all <Icon name="arrow" size={12} stroke={2}/>
+              </a>
+            </div>
+            <p className="section-sub">Fresh from the studio. Every piece authenticated by hand before it ever goes live.</p>
+          </div>
+          <div className="products">
+            {PRODUCTS.map(p => (
+              <button key={p.id} className="product">
+                <div className="product-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
+                  <span
+                    onClick={(e) => { e.stopPropagation(); toggle(p.id); }}
+                    className="product-heart"
+                    role="button"
+                    aria-label="Save"
+                  >
+                    <span style={{ color: liked[p.id] ? 'var(--tomato)' : 'var(--pine)', display: 'flex' }}>
+                      <Icon name="heart" size={15} stroke={1.8} fill={liked[p.id] ? 'currentColor' : 'none'}/>
+                    </span>
+                  </span>
+                  <span className="product-verified">
+                    <Icon name="check" size={9} stroke={3}/>Verified
+                  </span>
+                </div>
+                <div className="product-meta">{p.meta}</div>
+                <div className="product-name">{p.name}</div>
+                <div className="product-row">
+                  <span className="product-price">${p.price}</span>
+                  <span className="product-condition">{p.cond}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    /* ─────────── How It Works ─────────── */
+    function HowItWorks() {
+      const steps = [
+        { num: '01', title: 'Sourced',  desc: "From a seller's closet, a thrift partner, or an estate. Every piece has a known origin." },
+        { num: '02', title: 'Verified', desc: 'AI + human authenticators check age, authenticity, and condition before it goes live.' },
+        { num: '03', title: 'Yours',    desc: 'Ships from the seller. Backed by the Nunc guarantee. Wear it, love it, pass it on.' },
+      ];
+      return (
+        <section className="section container-wide">
+          <div className="section-head">
+            <h2 className="section-title">how it <span className="underscored">works</span>.</h2>
+            <p className="section-sub">Three steps. Every piece. No exceptions.</p>
+          </div>
+          <div className="steps">
+            {steps.map(s => (
+              <div className="step" key={s.num}>
+                <span className="step-num">{s.num}</span>
+                <div className="step-title">{s.title}</div>
+                <p className="step-desc">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    /* ─────────── Newsletter ─────────── */
+    function Newsletter() {
+      return (
+        <section className="newsletter">
+          <div className="container-wide">
+            <span className="newsletter-eyebrow">nunc drops · every friday</span>
+            <div className="section-head">
+              <h2 className="section-title">First dibs on <span className="underscored">Friday drops</span>.</h2>
+              <p className="section-sub">50 curated pieces every Friday at 10am ET. Subscribers see them an hour before anyone else.</p>
+            </div>
+            <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
+              <input type="email" placeholder="you@email.com" required/>
+              <button type="submit" className="btn-sell">Get drops</button>
+            </form>
+            <div className="newsletter-meta">No spam · unsubscribe anytime</div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─────────── Manifesto ─────────── */
+    function Manifesto() {
+      return (
+        <section className="manifesto">
+          <div className="container-wide manifesto-inner">
+            <div>
+              <span className="eyebrow-light">the nunc manifesto</span>
+              <h2>
+                100% vintage<span className="dot">.</span><br/>
+                0% fast fashion<span className="dot">.</span><br/>
+                no exceptions<span className="dot">.</span>
+              </h2>
+            </div>
+            <div>
+              <p>
+                Every piece has a past — a city, a decade, an owner before you. We surface it,
+                verify it, and pass it on.
+              </p>
+              <p style={{ marginTop: 16 }}>
+                Found in a basement in Detroit. Verified by Nunc. Could be yours.
+              </p>
+              <button className="btn-sell" style={{ marginTop: 28 }}>
+                Read the manifesto
+              </button>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─────────── Footer ─────────── */
+    function Footer() {
+      return (
+        <footer className="footer">
+          <div className="container-wide">
+            <div className="footer-grid">
+              <div>
+                <div className="footer-mark">nunc</div>
+                <div className="footer-tag">Sourced · verified · yours</div>
+              </div>
+              <div>
+                <h4>Shop</h4>
+                <ul>
+                  <li><a href="#">By era</a></li>
+                  <li><a href="#">By condition</a></li>
+                  <li><a href="#">Nunc drops</a></li>
+                  <li><a href="#">Just verified</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4>Sell</h4>
+                <ul>
+                  <li><a href="#">How it works</a></li>
+                  <li><a href="#">List a piece</a></li>
+                  <li><a href="#">Seller fees</a></li>
+                  <li><a href="#">Thrift partners</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4>The archive</h4>
+                <ul>
+                  <li><a href="#">About</a></li>
+                  <li><a href="#">Verification</a></li>
+                  <li><a href="#">Journal</a></li>
+                  <li><a href="#">Instagram</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="footer-bottom">
+              <span>© 2026 Nunc — all pieces one of one</span>
+              <span>The archive, alive.</span>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    /* ─────────── App ─────────── */
+    function App() {
+      return (
+        <>
+          <Nav/>
+          <main>
+            <Hero/>
+            <JustVerified/>
+            <HowItWorks/>
+            <ShopByEra/>
+            <ShopByCondition/>
+            <Newsletter/>
+            <Manifesto/>
+          </main>
+          <Footer/>
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('app'));
+    root.render(<App/>);
+  </script>
+</body>
+</html>
