@@ -970,7 +970,7 @@
 
     .mobile-menu {
       position: fixed;
-      top: 58px; left: 0; right: 0; bottom: 0;
+      top: 64px; left: 0; right: 0; bottom: 0;
       background: var(--butter);
       z-index: 28;
       display: flex;
@@ -1019,6 +1019,69 @@
     .mobile-nav-actions .btn-sell { justify-content: center; width: 100%; }
     .mobile-nav-actions .nav-link { text-align: center; width: 100%; }
 
+    /* ─── ACCORDION ─────────────────────────── */
+    .mobile-nav-accordion { border-bottom: 1px solid var(--border-hairline); }
+    .mobile-nav-link.accordion-trigger {
+      border-bottom: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-4);
+    }
+    .chevron-icon {
+      display: flex;
+      flex-shrink: 0;
+      transition: transform var(--dur-base) var(--ease-out);
+    }
+    .chevron-icon.open { transform: rotate(180deg); }
+    .mobile-nav-accordion-body {
+      padding: var(--s-2) 0 var(--s-4);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .mobile-nav-subitem {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      padding: 10px var(--s-3);
+      border-radius: var(--r-md);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--fg);
+      text-decoration: none;
+      transition: background var(--dur-base) var(--ease-out);
+    }
+    .mobile-nav-subitem:hover { background: var(--pine-04); }
+    .subitem-swatch {
+      width: 22px; height: 22px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(26,58,46,0.12);
+    }
+    .subitem-icon {
+      width: 28px; height: 28px;
+      border-radius: 999px;
+      background: var(--pine-04);
+      border: 1px solid var(--border-hairline);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--pine);
+    }
+    .subitem-icon.muted { color: var(--tomato); border-color: var(--peach); background: var(--butter); }
+    .subitem-count {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
     /* ─── RESPONSIVE ─────────────────────────── */
 
     /* TABLET — 900px and below */
@@ -1029,7 +1092,8 @@
       .search { max-width: 320px; padding: 8px 14px; }
       .search input { font-size: 13px; }
       .search-kbd { display: none; }
-      .nav-right .nav-link.signup { display: none; }
+      .nav-right .nav-link { display: none; }
+      .nav-burger { display: flex; align-items: center; justify-content: center; }
 
       .hero { padding-top: var(--s-10); padding-bottom: var(--s-12); }
       .buy-sell { padding: var(--s-8) 0 var(--s-6); gap: var(--s-5); }
@@ -1165,7 +1229,7 @@
       .footer-bottom { flex-direction: column; gap: var(--s-2); align-items: flex-start; }
 
       /* Mobile menu + responsive fixes */
-      .nav-burger { display: flex; align-items: center; justify-content: center; }
+      .mobile-menu { top: 58px; }
       .section-sub { white-space: normal; }
     }
   </style>
@@ -1224,6 +1288,7 @@
         stitch:  <><path d="M3 12h2M9 12h2M15 12h2M21 12h0"/><path d="M5 12l2-3M7 9l2 3M11 12l2-3M13 9l2 3M17 12l2-3M19 9l2 3"/></>,
         menu:    <><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></>,
         x:       <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
+        chevron: <path d="M6 9l6 6 6-6"/>,
       };
       return (
         <svg width={size} height={size} viewBox="0 0 24 24" fill={fill}
@@ -1231,6 +1296,65 @@
              strokeLinecap="round" strokeLinejoin="round">
           {paths[name]}
         </svg>
+      );
+    }
+
+    /* ─────────── Mobile Menu ─────────── */
+    function MobileMenu({ close }) {
+      const [openSection, setOpenSection] = useState(null);
+      const toggle = (s) => setOpenSection(cur => cur === s ? null : s);
+      return (
+        <div className="mobile-menu" role="dialog" aria-label="Navigation">
+          <div className="mobile-nav-links">
+
+            <div className="mobile-nav-accordion">
+              <button className="mobile-nav-link accordion-trigger" onClick={() => toggle('era')} aria-expanded={openSection === 'era'}>
+                Shop by era
+                <span className={`chevron-icon${openSection === 'era' ? ' open' : ''}`}><Icon name="chevron" size={16} stroke={2}/></span>
+              </button>
+              {openSection === 'era' && (
+                <div className="mobile-nav-accordion-body">
+                  {ERAS.map(e => (
+                    <a key={e.id} href="#" className="mobile-nav-subitem" onClick={close}>
+                      <span className="subitem-swatch" style={{ background: `linear-gradient(135deg, ${e.from}, ${e.to})` }}/>
+                      <span>'{e.year === 'Y2K' ? 'y2k' : e.year === '<50' ? '49' : e.year} · {e.label}</span>
+                      <span className="subitem-count">{e.count} pcs</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="mobile-nav-accordion">
+              <button className="mobile-nav-link accordion-trigger" onClick={() => toggle('condition')} aria-expanded={openSection === 'condition'}>
+                Shop by condition
+                <span className={`chevron-icon${openSection === 'condition' ? ' open' : ''}`}><Icon name="chevron" size={16} stroke={2}/></span>
+              </button>
+              {openSection === 'condition' && (
+                <div className="mobile-nav-accordion-body">
+                  {CONDITIONS.map(c => (
+                    <a key={c.grade} href="#" className="mobile-nav-subitem" onClick={close}>
+                      <span className={`subitem-icon${c.muted ? ' muted' : ''}`}><Icon name={c.icon} size={14} stroke={1.6}/></span>
+                      <span>{c.name}</span>
+                      <span className="subitem-count">{c.count} pcs</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <a href="#" className="mobile-nav-link" onClick={close}>Friday drops</a>
+            <a href="#" className="mobile-nav-link" onClick={close}>Just verified</a>
+            <a href="#" className="mobile-nav-link small" onClick={close}>How it works</a>
+            <a href="#" className="mobile-nav-link small" onClick={close}>About</a>
+            <a href="#" className="mobile-nav-link small" onClick={close}>Instagram</a>
+          </div>
+          <div className="mobile-nav-actions">
+            <button className="btn-sell">Sell now</button>
+            <button className="nav-link" onClick={close}>Sign up</button>
+            <button className="nav-link" onClick={close} style={{ opacity: 0.7 }}>Log in</button>
+          </div>
+        </div>
       );
     }
 
@@ -1267,24 +1391,7 @@
               </nav>
             </div>
           </header>
-          {open && (
-            <div className="mobile-menu" role="dialog" aria-label="Navigation">
-              <div className="mobile-nav-links">
-                <a href="#" className="mobile-nav-link" onClick={close}>Shop by era</a>
-                <a href="#" className="mobile-nav-link" onClick={close}>Shop by condition</a>
-                <a href="#" className="mobile-nav-link" onClick={close}>Friday drops</a>
-                <a href="#" className="mobile-nav-link" onClick={close}>Just verified</a>
-                <a href="#" className="mobile-nav-link small" onClick={close}>How it works</a>
-                <a href="#" className="mobile-nav-link small" onClick={close}>About</a>
-                <a href="#" className="mobile-nav-link small" onClick={close}>Instagram</a>
-              </div>
-              <div className="mobile-nav-actions">
-                <button className="btn-sell">Sell now</button>
-                <button className="nav-link" onClick={close}>Sign up</button>
-                <button className="nav-link" onClick={close} style={{ opacity: 0.7 }}>Log in</button>
-              </div>
-            </div>
-          )}
+          {open && <MobileMenu close={close}/>}
         </>
       );
     }
