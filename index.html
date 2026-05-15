@@ -954,6 +954,71 @@
       flex-shrink: 0;
     }
 
+    /* ─── MOBILE MENU ─────────────────────────── */
+    .nav-burger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      color: var(--fg);
+      border-radius: var(--r-sm);
+      transition: background var(--dur-base) var(--ease-out);
+      flex-shrink: 0;
+    }
+    .nav-burger:hover { background: var(--pine-04); }
+
+    .mobile-menu {
+      position: fixed;
+      top: 58px; left: 0; right: 0; bottom: 0;
+      background: var(--butter);
+      z-index: 28;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: var(--s-6);
+      border-top: 1px solid var(--border-hairline);
+    }
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--border-hairline);
+      flex: 1;
+    }
+    .mobile-nav-link {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--pine);
+      padding: var(--s-5) 0;
+      border-bottom: 1px solid var(--border-hairline);
+      text-decoration: none;
+      display: block;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: opacity var(--dur-base) var(--ease-out);
+    }
+    .mobile-nav-link:hover { opacity: 0.65; }
+    .mobile-nav-link.small {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--pine-60);
+    }
+    .mobile-nav-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+      padding-top: var(--s-8);
+    }
+    .mobile-nav-actions .btn-sell { justify-content: center; width: 100%; }
+    .mobile-nav-actions .nav-link { text-align: center; width: 100%; }
+
     /* ─── RESPONSIVE ─────────────────────────── */
 
     /* TABLET — 900px and below */
@@ -1010,8 +1075,10 @@
       .nav-inner { height: 58px; gap: var(--s-3); }
       .nav-mark { font-size: 24px; padding-bottom: 4px; }
       .nav-mark::after { height: 3px; }
-      .search { display: none; }
+      .search { max-width: none; padding: 7px 10px; }
+      .search input { font-size: 13px; }
       .nav-right { gap: var(--s-2); }
+      .nav-right .btn-sell { display: none; }
       .nav-right .nav-link { display: none; }
       .btn-sell { padding: 9px 14px 9px 16px; font-size: 10px; letter-spacing: 0.2em; gap: 6px; }
       .btn-sell::after { font-size: 12px; }
@@ -1096,6 +1163,10 @@
       .footer-grid > div:first-child { grid-column: 1 / -1; }
       .footer-mark { font-size: 52px; }
       .footer-bottom { flex-direction: column; gap: var(--s-2); align-items: flex-start; }
+
+      /* Mobile menu + responsive fixes */
+      .nav-burger { display: flex; align-items: center; justify-content: center; }
+      .section-sub { white-space: normal; }
     }
   </style>
 </head>
@@ -1151,6 +1222,8 @@
         sparkle: <path d="M12 2.5l1.8 6.2 6.2 1.8-6.2 1.8L12 18.5l-1.8-6.2L4 10.5l6.2-1.8z"/>,
         needle:  <><path d="M3 21l5-5M8 16l9-9M16 8l5 5-3 3M16 8l3-3"/><circle cx="19" cy="5" r="1" fill="currentColor"/></>,
         stitch:  <><path d="M3 12h2M9 12h2M15 12h2M21 12h0"/><path d="M5 12l2-3M7 9l2 3M11 12l2-3M13 9l2 3M17 12l2-3M19 9l2 3"/></>,
+        menu:    <><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></>,
+        x:       <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
       };
       return (
         <svg width={size} height={size} viewBox="0 0 24 24" fill={fill}
@@ -1163,22 +1236,56 @@
 
     /* ─────────── Nav ─────────── */
     function Nav() {
+      const [open, setOpen] = useState(false);
+      const close = () => setOpen(false);
+      React.useEffect(() => {
+        document.body.style.overflow = open ? 'hidden' : '';
+        return () => { document.body.style.overflow = ''; };
+      }, [open]);
       return (
-        <header className="nav">
-          <div className="container-wide nav-inner">
-            <a href="#" className="nav-mark" aria-label="Nunc — home">nunc</a>
-            <label className="search">
-              <Icon name="search" size={16} stroke={1.8}/>
-              <input type="text" placeholder="search the archive — '70s leather, mohair, M-65…"/>
-              <span className="search-kbd">⌘ K</span>
-            </label>
-            <nav className="nav-right">
-              <button className="btn-sell">Sell now</button>
-              <button className="nav-link signup">Sign up</button>
-              <button className="nav-link">Log in</button>
-            </nav>
-          </div>
-        </header>
+        <>
+          <header className="nav">
+            <div className="container-wide nav-inner">
+              <a href="#" className="nav-mark" aria-label="Nunc — home">nunc</a>
+              <label className="search">
+                <Icon name="search" size={16} stroke={1.8}/>
+                <input type="text" placeholder="search the archive — '70s leather, mohair, M-65…"/>
+                <span className="search-kbd">⌘ K</span>
+              </label>
+              <nav className="nav-right">
+                <button className="btn-sell">Sell now</button>
+                <button className="nav-link signup">Sign up</button>
+                <button className="nav-link">Log in</button>
+                <button
+                  className="nav-burger"
+                  onClick={() => setOpen(o => !o)}
+                  aria-label={open ? 'Close menu' : 'Open menu'}
+                  aria-expanded={open}
+                >
+                  <Icon name={open ? 'x' : 'menu'} size={20} stroke={1.8}/>
+                </button>
+              </nav>
+            </div>
+          </header>
+          {open && (
+            <div className="mobile-menu" role="dialog" aria-label="Navigation">
+              <div className="mobile-nav-links">
+                <a href="#" className="mobile-nav-link" onClick={close}>Shop by era</a>
+                <a href="#" className="mobile-nav-link" onClick={close}>Shop by condition</a>
+                <a href="#" className="mobile-nav-link" onClick={close}>Friday drops</a>
+                <a href="#" className="mobile-nav-link" onClick={close}>Just verified</a>
+                <a href="#" className="mobile-nav-link small" onClick={close}>How it works</a>
+                <a href="#" className="mobile-nav-link small" onClick={close}>About</a>
+                <a href="#" className="mobile-nav-link small" onClick={close}>Instagram</a>
+              </div>
+              <div className="mobile-nav-actions">
+                <button className="btn-sell">Sell now</button>
+                <button className="nav-link" onClick={close}>Sign up</button>
+                <button className="nav-link" onClick={close} style={{ opacity: 0.7 }}>Log in</button>
+              </div>
+            </div>
+          )}
+        </>
       );
     }
 
