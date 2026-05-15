@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>nunc — the manifesto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Caveat:wght@400;600&family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --butter:  #F7F1E0;
+      --pine:    #1A3A2E;
+      --peach:   #E8A87C;
+      --tomato:  #C44536;
+      --sage:    #A8B89C;
+
+      --pine-04: rgba(26,58,46,0.04);
+      --pine-08: rgba(26,58,46,0.08);
+      --pine-12: rgba(26,58,46,0.12);
+      --pine-20: rgba(26,58,46,0.20);
+      --pine-40: rgba(26,58,46,0.40);
+      --pine-60: rgba(26,58,46,0.60);
+
+      --bg:          var(--butter);
+      --bg-elevated: #FFFFFF;
+      --fg:          var(--pine);
+      --fg-muted:    var(--pine-60);
+      --fg-subtle:   var(--pine-40);
+
+      --border-hairline: var(--pine-08);
+      --border-line:     var(--pine-12);
+
+      --font-display: 'Bricolage Grotesque', serif;
+      --font-body:    'Inter', sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+      --font-hand:    'Caveat', cursive;
+
+      --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px;
+      --s-6:24px; --s-8:32px; --s-10:40px; --s-12:48px; --s-16:64px; --s-20:80px; --s-24:100px;
+
+      --r-sm:8px; --r-md:14px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+      --shadow-xs: 0 2px 8px rgba(26,58,46,0.04);
+      --shadow-sm: 0 6px 24px rgba(26,58,46,0.05);
+      --shadow-md: 0 8px 30px rgba(26,58,46,0.08);
+
+      --ease-out: cubic-bezier(0.22,0.61,0.36,1);
+      --dur-base: 220ms;
+      --nav-h: 64px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--fg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.025em; font-weight: 700; margin: 0; }
+    p { margin: 0; }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(247,241,224,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 clamp(20px,6vw,80px);
+      height: var(--nav-h);
+      display: flex; align-items: center; gap: var(--s-6);
+    }
+    .nav-mark {
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 26px;
+      letter-spacing: -0.045em; color: var(--pine);
+      position: relative; padding-bottom: 4px;
+    }
+    .nav-mark::after {
+      content: '';
+      position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat; background-size: 100% 100%;
+    }
+    .nav-links { display: flex; align-items: center; gap: var(--s-6); margin-left: auto; }
+    .nav-link {
+      font-size: 14px; font-weight: 500; color: var(--fg-muted);
+      background: none; border: none; padding: 8px 0;
+      transition: color var(--dur-base) var(--ease-out);
+    }
+    .nav-link:hover { color: var(--fg); }
+    .btn-browse {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.22em;
+      text-transform: uppercase; font-weight: 500;
+      background: var(--pine); color: var(--butter);
+      border: none; border-radius: var(--r-pill);
+      padding: 10px 18px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: opacity var(--dur-base) var(--ease-out);
+    }
+    .btn-browse::after { content: '→'; font-family: var(--font-body); font-size: 13px; letter-spacing: 0; }
+    .btn-browse:hover { opacity: 0.88; }
+
+    /* ─── CONTENT WRAP ─── */
+    .page-wrap {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 clamp(20px,6vw,80px) var(--s-24);
+    }
+    .narrow { max-width: 640px; }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: var(--s-16) 0 var(--s-12);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.32em;
+      text-transform: uppercase; color: var(--tomato);
+      font-weight: 500; margin-bottom: var(--s-5); display: block;
+    }
+    .hero-title {
+      font-size: clamp(48px,7vw,96px);
+      letter-spacing: -0.045em; line-height: 0.92;
+      font-weight: 800; font-variation-settings: 'opsz' 72;
+      margin-bottom: var(--s-8);
+    }
+    .hero-title .dot { color: var(--tomato); }
+    .hero-intro {
+      font-family: var(--font-display);
+      font-size: clamp(20px,2.4vw,28px);
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: -0.015em;
+      color: var(--fg-muted);
+      max-width: 58ch;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-5);
+      margin-top: var(--s-12);
+      padding-top: var(--s-8);
+      border-top: 1px solid var(--border-hairline);
+    }
+    .stat { display: flex; flex-direction: column; gap: 4px; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(32px,4vw,52px);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--pine);
+      font-variation-settings: 'opsz' 72;
+    }
+    .stat-num .accent { color: var(--tomato); }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.24em;
+      text-transform: uppercase; color: var(--fg-muted); font-weight: 500;
+    }
+
+    /* ─── SECTION ─── */
+    .about-section {
+      padding: var(--s-16) 0;
+      border-bottom: 1px solid var(--border-hairline);
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--s-16);
+      align-items: start;
+    }
+    .about-section.full { grid-template-columns: 1fr; }
+    .section-sidebar {}
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.32em;
+      text-transform: uppercase; color: var(--tomato); font-weight: 600;
+      display: block; margin-bottom: var(--s-3);
+    }
+    .section-title-sm {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(22px,2.5vw,30px);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .section-body {}
+    .section-body p {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--fg-muted);
+      max-width: 58ch;
+    }
+    .section-body p + p { margin-top: var(--s-5); }
+
+    /* ─── MANIFESTO BLOCK ─── */
+    .manifesto-block {
+      background: var(--pine);
+      border-radius: var(--r-xl);
+      padding: var(--s-12) var(--s-12);
+      margin: var(--s-16) 0;
+    }
+    .manifesto-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.32em;
+      text-transform: uppercase; color: var(--peach);
+      font-weight: 500; margin-bottom: var(--s-6); display: block;
+    }
+    .manifesto-lines { display: flex; flex-direction: column; gap: var(--s-2); }
+    .manifesto-line {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(28px,4vw,52px);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--butter);
+      font-variation-settings: 'opsz' 72;
+    }
+    .manifesto-line .dot { color: var(--tomato); }
+    .manifesto-body {
+      margin-top: var(--s-8);
+      padding-top: var(--s-8);
+      border-top: 1px solid rgba(247,241,224,0.12);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-8);
+    }
+    .manifesto-body p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(247,241,224,0.72);
+    }
+
+    /* ─── VERIFICATION STEPS ─── */
+    .verify-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-6);
+      margin-top: var(--s-8);
+    }
+    .verify-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--r-xl);
+      padding: var(--s-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+    .verify-num {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--tomato);
+      font-weight: 600;
+    }
+    .verify-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .verify-desc {
+      font-size: 14px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+    }
+    .verify-time {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--fg-subtle);
+      margin-top: auto;
+    }
+
+    /* ─── NOTE CARD ─── */
+    .founder-note {
+      transform: rotate(-0.5deg);
+      margin: var(--s-12) 0 var(--s-8);
+      max-width: 520px;
+    }
+    .note-paper {
+      background: #F4E9C8;
+      border-radius: var(--r-md);
+      padding: 28px 28px 28px 68px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 4px 18px rgba(26,58,46,0.10), 0 1px 3px rgba(26,58,46,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+    .note-paper::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 30px, rgba(26,58,46,0.08) 30px, rgba(26,58,46,0.08) 31px);
+      pointer-events: none;
+    }
+    .note-paper::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0; left: 56px;
+      width: 1.5px; background: rgba(196,69,54,0.35); pointer-events: none;
+    }
+    .note-text {
+      font-family: var(--font-hand);
+      font-size: 20px; line-height: 31px;
+      color: var(--pine); font-weight: 400;
+    }
+    .note-sig {
+      font-family: var(--font-hand);
+      font-size: 18px; color: var(--fg-muted);
+      margin-top: 12px; line-height: 31px;
+    }
+    .note-tape {
+      position: absolute; top: -5px; left: 50%;
+      transform: translateX(-50%);
+      width: 52px; height: 16px;
+      background: rgba(247,241,224,0.55);
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(26,58,46,0.12);
+    }
+
+    /* ─── ERA TIMELINE ─── */
+    .era-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: var(--s-8);
+    }
+    .era-row {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: center;
+      gap: var(--s-6);
+      padding: var(--s-5) 0;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .era-row:last-child { border-bottom: none; }
+    .era-disc-sm {
+      width: 56px; height: 56px;
+      border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 12px rgba(26,58,46,0.15);
+      flex-shrink: 0;
+    }
+    .era-disc-yr {
+      font-family: var(--font-display);
+      font-weight: 700; font-size: 14px;
+      letter-spacing: -0.02em;
+      color: rgba(247,241,224,0.92);
+    }
+    .era-info {}
+    .era-name {
+      font-family: var(--font-display);
+      font-weight: 700; font-size: 18px; letter-spacing: -0.02em;
+    }
+    .era-desc { font-size: 13px; color: var(--fg-muted); margin-top: 2px; }
+    .era-count-pill {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--fg-subtle);
+      white-space: nowrap;
+    }
+
+    /* ─── CTA ─── */
+    .cta-band {
+      background: var(--pine); border-radius: var(--r-xl);
+      padding: var(--s-12);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--s-8);
+      align-items: center;
+      margin: var(--s-16) 0 0;
+    }
+    .cta-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(24px,3vw,38px);
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      color: var(--butter);
+      font-variation-settings: 'opsz' 72;
+    }
+    .cta-title .dot { color: var(--tomato); }
+    .cta-sub {
+      font-size: 15px; color: rgba(247,241,224,0.65);
+      margin-top: var(--s-3); line-height: 1.6;
+    }
+    .cta-buttons { display: flex; flex-direction: column; gap: var(--s-3); flex-shrink: 0; }
+    .btn-cta-primary {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.22em;
+      text-transform: uppercase; font-weight: 600;
+      background: var(--tomato); color: var(--butter);
+      border: none; border-radius: var(--r-pill);
+      padding: 14px 24px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+      transition: opacity var(--dur-base) var(--ease-out);
+    }
+    .btn-cta-primary::after { content: '→'; font-family: var(--font-body); font-size: 14px; letter-spacing: 0; }
+    .btn-cta-primary:hover { opacity: 0.9; }
+    .btn-cta-secondary {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.22em;
+      text-transform: uppercase; font-weight: 500;
+      background: none;
+      border: 1px solid rgba(247,241,224,0.2);
+      border-radius: var(--r-pill);
+      padding: 12px 24px; cursor: pointer;
+      color: rgba(247,241,224,0.7);
+      white-space: nowrap;
+      transition: border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+    }
+    .btn-cta-secondary:hover { border-color: rgba(247,241,224,0.5); color: var(--butter); }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      border-top: 1px solid var(--border-hairline);
+      padding: var(--s-8) 0;
+      margin-top: var(--s-16);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: var(--s-4);
+    }
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--fg-subtle);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .about-section { grid-template-columns: 1fr; gap: var(--s-8); }
+      .manifesto-body { grid-template-columns: 1fr; gap: var(--s-5); }
+      .verify-grid { grid-template-columns: 1fr; }
+      .cta-band { grid-template-columns: 1fr; }
+      .cta-buttons { flex-direction: row; }
+    }
+    @media (max-width: 560px) {
+      .hero-stats { grid-template-columns: repeat(2, 1fr); gap: var(--s-4); }
+      .manifesto-block { padding: var(--s-8); }
+      .era-row { grid-template-columns: 56px 1fr; }
+      .era-count-pill { display: none; }
+      .cta-buttons { flex-direction: column; }
+      .nav-links .nav-link { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav (plain HTML — no React needed for this page) -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-mark">nunc</a>
+    <div class="nav-links">
+      <a href="browse.html" class="nav-link">The archive</a>
+      <a href="sell.html" class="nav-link">Sell</a>
+      <a href="browse.html" class="btn-browse">Browse</a>
+    </div>
+  </div>
+</header>
+
+<div class="page-wrap">
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="hero-eyebrow">◆ The Nunc manifesto</span>
+    <h1 class="hero-title">
+      the archive<span class="dot">,</span><br/>
+      alive<span class="dot">.</span>
+    </h1>
+    <p class="hero-intro">
+      Every decade leaves behind things worth keeping. A bomber jacket that survived three owners. A peacoat still carrying the smell of a city. A slip dress that never should have ended up in a thrift bin. We find them, verify them, and put them back in circulation — because a one-of-one deserves a second life, not a landfill.
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">2<span class="accent">,</span>107</div>
+        <div class="stat-label">Pieces verified</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">7</div>
+        <div class="stat-label">Decades covered</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">48h</div>
+        <div class="stat-label">Avg. verification time</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0<span class="accent">%</span></div>
+        <div class="stat-label">Fast fashion. Ever.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Manifesto -->
+  <div class="manifesto-block">
+    <span class="manifesto-eyebrow">◆ What we stand for</span>
+    <div class="manifesto-lines">
+      <div class="manifesto-line">100% vintage<span class="dot">.</span></div>
+      <div class="manifesto-line">0% fast fashion<span class="dot">.</span></div>
+      <div class="manifesto-line">no exceptions<span class="dot">.</span></div>
+    </div>
+    <div class="manifesto-body">
+      <p>
+        Fast fashion moves pieces from factory to landfill in eighteen months. We move them from one careful owner to another — and they get better with every decade they survive.
+      </p>
+      <p>
+        We don't list anything new. We don't list replicas. We don't list anything we couldn't tell you the story of. If a piece doesn't pass verification, it doesn't go live. Full stop.
+      </p>
+    </div>
+  </div>
+
+  <!-- Founder note -->
+  <section class="about-section">
+    <div class="section-sidebar">
+      <span class="section-num">01</span>
+      <h2 class="section-title-sm">Why we built this.</h2>
+    </div>
+    <div class="section-body">
+      <p>
+        Vintage resale has a trust problem. Too many platforms let anything through — "vintage-inspired," fast fashion rebranded as retro, pieces with no provenance and no accountability. Buyers get burned. Good pieces get buried.
+      </p>
+      <p>
+        Nunc started from a single conviction: that the archive deserves better. That a genuine 1974 leather bomber shouldn't have to compete with a factory replica. That buyers should be able to trust what they see, and sellers should be able to reach buyers who actually care.
+      </p>
+
+      <div class="founder-note">
+        <div class="note-tape"></div>
+        <div class="note-paper">
+          <div class="note-text">Every piece we turn down is a line we hold. The day we list something that doesn't belong here is the day we become what we're trying to fix.</div>
+          <div class="note-sig">— the nunc team, est. 2026</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Verification -->
+  <section class="about-section">
+    <div class="section-sidebar">
+      <span class="section-num">02</span>
+      <h2 class="section-title-sm">How verification works.</h2>
+    </div>
+    <div class="section-body">
+      <p>
+        Every piece goes through a three-stage process before it ever goes live. No shortcuts. We'd rather turn a piece away than let something through that we're not sure of.
+      </p>
+      <div class="verify-grid">
+        <div class="verify-card">
+          <span class="verify-num">Step 01</span>
+          <div class="verify-title">Intake &amp; photography</div>
+          <div class="verify-desc">Seller uploads photos of the item, the label, and the care tag. We flag anything that looks off before human review begins.</div>
+          <div class="verify-time">AI-assisted · immediate</div>
+        </div>
+        <div class="verify-card">
+          <span class="verify-num">Step 02</span>
+          <div class="verify-title">Human authentication</div>
+          <div class="verify-desc">A Nunc verifier reviews age indicators, construction quality, label typography, and stitching. Era, fabric, and condition are confirmed.</div>
+          <div class="verify-time">Human review · 24–48h</div>
+        </div>
+        <div class="verify-card">
+          <span class="verify-num">Step 03</span>
+          <div class="verify-title">Listed &amp; logged</div>
+          <div class="verify-desc">The piece goes live with its full record attached — era, condition grade, fabric composition, provenance note. Permanent and public.</div>
+          <div class="verify-time">Permanent record</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Era timeline -->
+  <section class="about-section">
+    <div class="section-sidebar">
+      <span class="section-num">03</span>
+      <h2 class="section-title-sm">Seven decades of the archive.</h2>
+    </div>
+    <div class="section-body">
+      <p>
+        We source from every era that left behind something worth keeping. Some decades are rare — a pre-1950s find is a serious score. Some are abundant. All are verified to the same standard.
+      </p>
+      <div class="era-timeline">
+        <div class="era-row">
+          <div class="era-disc-sm" style="background: linear-gradient(135deg,#D9C7A6,#9C7E4A)">
+            <span class="era-disc-yr">'49</span>
+          </div>
+          <div class="era-info">
+            <div class="era-name">Pre-1950s</div>
+            <div class="era-desc">Pre-war construction. Hand-stitched details. Things that have no business lasting this long.</div>
+          </div>
+          <span class="era-count-pill">38 pieces</span>
+        </div>
+        <div class="era-row">
+          <div class="era-disc-sm" style="background: linear-gradient(135deg,#E8A87C,#A35E3F)">
+            <span class="era-disc-yr">'50</span>
+          </div>
+          <div class="era-info">
+            <div class="era-name">1950s</div>
+            <div class="era-desc">Post-war optimism in every seam. Circle skirts, Hawaiian shirts, the dawn of casual.</div>
+          </div>
+          <span class="era-count-pill">124 pieces</span>
+        </div>
+        <div class="era-row">
+          <div class="era-disc-sm" style="background: linear-gradient(135deg,#A89D5A,#5C5828)">
+            <span class="era-disc-yr">'60</span>
+          </div>
+          <div class="era-info">
+            <div class="era-name">1960s</div>
+            <div class="era-desc">The decade that couldn't decide what it wanted. Mod, hippie, tailoring, all at once.</div>
+          </div>
+          <span class="era-count-pill">198 pieces</span>
+        </div>
+        <div class="era-row">
+          <div class="era-disc-sm" style="background: linear-gradient(135deg,#C66E3F,#7A2E20)">
+            <span class="era-disc-yr">'70</span>
+          </div>
+          <div class="era-info">
+            <div class="era-name">1970s</div>
+            <div class="era-desc">The golden era of leather, denim, and things you can't buy new anymore.</div>
+          </div>
+          <span class="era-count-pill">412 pieces</span>
+        </div>
+        <div class="era-row">
+          <div class="era-disc-sm" style="background: linear-gradient(135deg,#7E5BA0,#3A2255)">
+            <span class="era-disc-yr">'80</span>
+          </div>
+          <div class="era-info">
+            <div class="era-name">1980s</div>
+            <div class="era-desc">Oversized everything. Power dressing. Mohair. The decade that went too far and was right to.</div>
+          </div>
+          <span class="era-count-pill">521 pieces</span>
+        </div>
+        <div class="era-row">
+          <div class="era-disc-sm" style="background: linear-gradient(135deg,#5A6B7A,#2A3744)">
+            <span class="era-disc-yr">'90</span>
+          </div>
+          <div class="era-info">
+            <div class="era-name">1990s</div>
+            <div class="era-desc">The decade that thought minimalism was a phase. Selvedge denim. Slip dresses. Chore coats.</div>
+          </div>
+          <span class="era-count-pill">687 pieces</span>
+        </div>
+        <div class="era-row">
+          <div class="era-disc-sm" style="background: linear-gradient(135deg,#C6CBD3,#6E6F78)">
+            <span class="era-disc-yr">y2k</span>
+          </div>
+          <div class="era-info">
+            <div class="era-name">2000s · Y2K</div>
+            <div class="era-desc">Just old enough to be interesting again. Low-rise, metallics, the first wave of logomania.</div>
+          </div>
+          <span class="era-count-pill">244 pieces</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Condition philosophy -->
+  <section class="about-section">
+    <div class="section-sidebar">
+      <span class="section-num">04</span>
+      <h2 class="section-title-sm">Honest condition. Always.</h2>
+    </div>
+    <div class="section-body">
+      <p>
+        We grade every piece on a six-point scale, from New with Tags down to Already Mended. We don't hide wear — we describe it, price for it, and log it.
+      </p>
+      <p>
+        A piece graded Loved isn't a lesser piece. It's a piece with a history you can see. A piece graded Already Mended has been cared for — the repair is documented, the mender is credited. We think that's worth more than pretending it never happened.
+      </p>
+      <p>
+        No grade is shameful. The only shameful thing would be calling a Loved piece Excellent and hoping no one notices.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-band">
+    <div>
+      <h2 class="cta-title">Ready to find something<span class="dot">?</span></h2>
+      <p class="cta-sub">2,107 verified pieces. Seven decades. One of them has your name on it.</p>
+    </div>
+    <div class="cta-buttons">
+      <a href="browse.html" class="btn-cta-primary">Browse the archive</a>
+      <a href="sell.html" class="btn-cta-secondary">Sell a piece</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-wrap">
+  <div class="footer">
+    <span class="footer-copy">© 2026 Nunc — sourced. verified. yours.</span>
+    <span class="footer-copy">The archive, alive.</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -954,6 +954,166 @@
       flex-shrink: 0;
     }
 
+    /* ─── AUTH MODAL ─────────────────────────── */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 50;
+      background: rgba(26, 58, 46, 0.45);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: var(--s-5);
+      animation: fadeIn var(--dur-base) var(--ease-out);
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal {
+      background: var(--butter);
+      border-radius: var(--r-xl);
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 24px 80px rgba(26,58,46,0.22);
+      overflow: hidden;
+      animation: slideUp var(--dur-slow) var(--ease-out);
+    }
+    @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+    .modal-header {
+      padding: var(--s-6) var(--s-6) 0;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-mark {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.04em;
+      color: var(--pine);
+      position: relative;
+      padding-bottom: 3px;
+    }
+    .modal-mark::after {
+      content: '';
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 3px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat; background-size: 100% 100%;
+    }
+    .modal-close {
+      background: none; border: none;
+      color: var(--fg-muted); cursor: pointer;
+      padding: 6px;
+      border-radius: var(--r-sm);
+      display: flex;
+      transition: color var(--dur-base) var(--ease-out);
+    }
+    .modal-close:hover { color: var(--fg); }
+    .modal-tabs {
+      display: flex;
+      margin: var(--s-6) var(--s-6) 0;
+      border-bottom: 1px solid var(--border-hairline);
+      gap: 0;
+    }
+    .modal-tab {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: none; border: none;
+      padding: var(--s-3) var(--s-5);
+      color: var(--fg-subtle);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+    }
+    .modal-tab.active { color: var(--pine); border-bottom-color: var(--pine); }
+    .modal-body { padding: var(--s-6); }
+    .modal-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--s-4); }
+    .modal-field:last-of-type { margin-bottom: 0; }
+    .modal-field-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--fg-muted);
+    }
+    .modal-input {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-line);
+      border-radius: var(--r-md);
+      padding: 12px 14px;
+      font-size: 15px;
+      color: var(--fg);
+      transition: border-color var(--dur-base) var(--ease-out);
+      width: 100%;
+      font-family: var(--font-body);
+    }
+    .modal-input:focus { outline: none; border-color: var(--pine-40); }
+    .modal-input::placeholder { color: var(--fg-subtle); }
+    .modal-submit {
+      width: 100%;
+      margin-top: var(--s-5);
+      background: var(--tomato);
+      color: var(--butter);
+      border: none;
+      border-radius: var(--r-pill);
+      padding: 15px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+    }
+    .modal-submit::after { content: '→'; font-family: var(--font-body); font-size: 15px; letter-spacing:0; }
+    .modal-submit:hover { opacity: 0.9; }
+    .modal-submit:active { transform: translateY(1px); }
+    .modal-divider {
+      display: flex; align-items: center; gap: var(--s-4);
+      margin: var(--s-5) 0;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+    }
+    .modal-divider::before, .modal-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border-hairline);
+    }
+    .modal-google {
+      width: 100%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-line);
+      border-radius: var(--r-pill);
+      padding: 13px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--fg);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+    }
+    .modal-google:hover { background: var(--pine-04); border-color: var(--pine-20); }
+    .modal-footer-note {
+      padding: var(--s-4) var(--s-6);
+      border-top: 1px solid var(--border-hairline);
+      font-size: 12px;
+      color: var(--fg-subtle);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .modal-footer-note button {
+      background: none; border: none;
+      color: var(--pine);
+      font-size: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
     /* ─── MOBILE MENU ─────────────────────────── */
     .nav-burger {
       display: none;
@@ -1299,8 +1459,86 @@
       );
     }
 
+    /* ─────────── Auth Modal ─────────── */
+    function AuthModal({ defaultTab = 'signup', onClose }) {
+      const [tab, setTab] = React.useState(defaultTab);
+      const [name, setName] = React.useState('');
+      const [email, setEmail] = React.useState('');
+      const [password, setPassword] = React.useState('');
+
+      React.useEffect(() => {
+        const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+        document.addEventListener('keydown', handleKey);
+        return () => document.removeEventListener('keydown', handleKey);
+      }, [onClose]);
+
+      return (
+        <div className="modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+          <div className="modal" role="dialog" aria-modal="true">
+            <div className="modal-header">
+              <span className="modal-mark">nunc</span>
+              <button className="modal-close" onClick={onClose} aria-label="Close">
+                <Icon name="x" size={18} stroke={1.8}/>
+              </button>
+            </div>
+            <div className="modal-tabs">
+              <button className={`modal-tab${tab === 'signup' ? ' active' : ''}`} onClick={() => setTab('signup')}>Sign up</button>
+              <button className={`modal-tab${tab === 'login' ? ' active' : ''}`} onClick={() => setTab('login')}>Log in</button>
+            </div>
+            <div className="modal-body">
+              {tab === 'signup' ? (
+                <>
+                  <div className="modal-field">
+                    <label className="modal-field-label">Your name</label>
+                    <input className="modal-input" type="text" placeholder="First name" value={name} onChange={e => setName(e.target.value)}/>
+                  </div>
+                  <div className="modal-field">
+                    <label className="modal-field-label">Email</label>
+                    <input className="modal-input" type="email" placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)}/>
+                  </div>
+                  <div className="modal-field">
+                    <label className="modal-field-label">Password</label>
+                    <input className="modal-input" type="password" placeholder="min. 8 characters" value={password} onChange={e => setPassword(e.target.value)}/>
+                  </div>
+                  <button className="modal-submit">Create account</button>
+                  <div className="modal-divider">or</div>
+                  <button className="modal-google">
+                    <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Continue with Google
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="modal-field">
+                    <label className="modal-field-label">Email</label>
+                    <input className="modal-input" type="email" placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)}/>
+                  </div>
+                  <div className="modal-field">
+                    <label className="modal-field-label">Password</label>
+                    <input className="modal-input" type="password" placeholder="your password" value={password} onChange={e => setPassword(e.target.value)}/>
+                  </div>
+                  <button className="modal-submit">Log in</button>
+                  <div className="modal-divider">or</div>
+                  <button className="modal-google">
+                    <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Continue with Google
+                  </button>
+                </>
+              )}
+            </div>
+            <div className="modal-footer-note">
+              {tab === 'signup'
+                ? <>Already have an account? <button onClick={() => setTab('login')}>Log in</button></>
+                : <>No account yet? <button onClick={() => setTab('signup')}>Sign up free</button></>
+              }
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     /* ─────────── Mobile Menu ─────────── */
-    function MobileMenu({ close }) {
+    function MobileMenu({ close, onSignup, onLogin }) {
       const [openSection, setOpenSection] = useState(null);
       const toggle = (s) => setOpenSection(cur => cur === s ? null : s);
       return (
@@ -1343,23 +1581,23 @@
               )}
             </div>
 
-            <a href="#" className="mobile-nav-link" onClick={close}>Friday drops</a>
-            <a href="#" className="mobile-nav-link" onClick={close}>Just verified</a>
-            <a href="#" className="mobile-nav-link small" onClick={close}>How it works</a>
-            <a href="#" className="mobile-nav-link small" onClick={close}>About</a>
+            <a href="browse.html" className="mobile-nav-link" onClick={close}>Friday drops</a>
+            <a href="browse.html" className="mobile-nav-link" onClick={close}>Just verified</a>
+            <a href="about.html" className="mobile-nav-link small" onClick={close}>How it works</a>
+            <a href="about.html" className="mobile-nav-link small" onClick={close}>About</a>
             <a href="#" className="mobile-nav-link small" onClick={close}>Instagram</a>
           </div>
           <div className="mobile-nav-actions">
             <a href="sell.html" className="btn-sell">Sell now</a>
-            <button className="nav-link" onClick={close}>Sign up</button>
-            <button className="nav-link" onClick={close} style={{ opacity: 0.7 }}>Log in</button>
+            <button className="nav-link" onClick={() => { close(); onSignup(); }}>Sign up</button>
+            <button className="nav-link" onClick={() => { close(); onLogin(); }} style={{ opacity: 0.7 }}>Log in</button>
           </div>
         </div>
       );
     }
 
     /* ─────────── Nav ─────────── */
-    function Nav() {
+    function Nav({ onSignup, onLogin }) {
       const [open, setOpen] = useState(false);
       const close = () => setOpen(false);
       React.useEffect(() => {
@@ -1378,8 +1616,8 @@
               </label>
               <nav className="nav-right">
                 <a href="sell.html" className="btn-sell">Sell now</a>
-                <button className="nav-link signup">Sign up</button>
-                <button className="nav-link">Log in</button>
+                <button className="nav-link signup" onClick={onSignup}>Sign up</button>
+                <button className="nav-link" onClick={onLogin}>Log in</button>
                 <button
                   className="nav-burger"
                   onClick={() => setOpen(o => !o)}
@@ -1391,7 +1629,7 @@
               </nav>
             </div>
           </header>
-          {open && <MobileMenu close={close}/>}
+          {open && <MobileMenu close={close} onSignup={onSignup} onLogin={onLogin}/>}
         </>
       );
     }
@@ -1501,7 +1739,7 @@
           <div className="section-head">
             <div className="section-head-top">
               <h2 className="section-title">just <span className="underscored">verified</span>.</h2>
-              <a href="#" className="stamp tomato see-all">
+              <a href="browse.html" className="stamp tomato see-all">
                 See all <Icon name="arrow" size={12} stroke={2}/>
               </a>
             </div>
@@ -1509,7 +1747,7 @@
           </div>
           <div className="products">
             {PRODUCTS.map(p => (
-              <button key={p.id} className="product">
+              <a href="product.html" key={p.id} className="product">
                 <div className="product-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
                   <span
                     onClick={(e) => { e.stopPropagation(); toggle(p.id); }}
@@ -1531,7 +1769,7 @@
                   <span className="product-price">${p.price}</span>
                   <span className="product-condition">{p.cond}</span>
                 </div>
-              </button>
+              </a>
             ))}
           </div>
         </section>
@@ -1606,9 +1844,9 @@
               <p style={{ marginTop: 16 }}>
                 
               </p>
-              <button className="btn-sell" style={{ marginTop: 28 }}>
+              <a href="about.html" className="btn-sell" style={{ marginTop: 28 }}>
                 Read the manifesto
-              </button>
+              </a>
             </div>
           </div>
         </section>
@@ -1628,27 +1866,27 @@
               <div>
                 <h4>Shop</h4>
                 <ul>
-                  <li><a href="#">By era</a></li>
-                  <li><a href="#">By condition</a></li>
-                  <li><a href="#">Nunc drops</a></li>
-                  <li><a href="#">Just verified</a></li>
+                  <li><a href="browse.html">By era</a></li>
+                  <li><a href="browse.html">By condition</a></li>
+                  <li><a href="browse.html">Nunc drops</a></li>
+                  <li><a href="browse.html">Just verified</a></li>
                 </ul>
               </div>
               <div>
                 <h4>Sell</h4>
                 <ul>
-                  <li><a href="#">How it works</a></li>
-                  <li><a href="#">List a piece</a></li>
-                  <li><a href="#">Seller fees</a></li>
-                  <li><a href="#">Thrift partners</a></li>
+                  <li><a href="about.html">How it works</a></li>
+                  <li><a href="sell.html">List a piece</a></li>
+                  <li><a href="about.html">Seller fees</a></li>
+                  <li><a href="about.html">Thrift partners</a></li>
                 </ul>
               </div>
               <div>
                 <h4>The archive</h4>
                 <ul>
-                  <li><a href="#">About</a></li>
-                  <li><a href="#">Verification</a></li>
-                  <li><a href="#">Journal</a></li>
+                  <li><a href="about.html">About</a></li>
+                  <li><a href="about.html">Verification</a></li>
+                  <li><a href="about.html">Journal</a></li>
                   <li><a href="#">Instagram</a></li>
                 </ul>
               </div>
@@ -1664,9 +1902,13 @@
 
     /* ─────────── App ─────────── */
     function App() {
+      const [authModal, setAuthModal] = React.useState(null); // null | 'signup' | 'login'
+      const openSignup = () => setAuthModal('signup');
+      const openLogin  = () => setAuthModal('login');
+      const closeModal = () => setAuthModal(null);
       return (
         <>
-          <Nav/>
+          <Nav onSignup={openSignup} onLogin={openLogin}/>
           <main>
             <Hero/>
             <JustVerified/>
@@ -1677,6 +1919,7 @@
             <Manifesto/>
           </main>
           <Footer/>
+          {authModal && <AuthModal defaultTab={authModal} onClose={closeModal}/>}
         </>
       );
     }

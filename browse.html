@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>nunc — the archive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --butter:  #F7F1E0;
+      --pine:    #1A3A2E;
+      --peach:   #E8A87C;
+      --tomato:  #C44536;
+      --sage:    #A8B89C;
+
+      --pine-04: rgba(26,58,46,0.04);
+      --pine-08: rgba(26,58,46,0.08);
+      --pine-12: rgba(26,58,46,0.12);
+      --pine-20: rgba(26,58,46,0.20);
+      --pine-40: rgba(26,58,46,0.40);
+      --pine-60: rgba(26,58,46,0.60);
+
+      --bg:          var(--butter);
+      --bg-elevated: #FFFFFF;
+      --fg:          var(--pine);
+      --fg-muted:    var(--pine-60);
+      --fg-subtle:   var(--pine-40);
+
+      --border-hairline: var(--pine-08);
+      --border-line:     var(--pine-12);
+
+      --font-display: 'Bricolage Grotesque', serif;
+      --font-body:    'Inter', sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+
+      --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px;
+      --s-6:24px; --s-8:32px; --s-10:40px; --s-12:48px; --s-16:64px; --s-20:80px;
+
+      --r-sm:8px; --r-md:14px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+      --shadow-xs: 0 2px 8px rgba(26,58,46,0.04);
+      --shadow-sm: 0 6px 24px rgba(26,58,46,0.05);
+      --shadow-md: 0 8px 30px rgba(26,58,46,0.08);
+
+      --ease-out: cubic-bezier(0.22,0.61,0.36,1);
+      --dur-base: 220ms;
+      --dur-slow: 420ms;
+      --nav-h: 64px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--fg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2 { font-family: var(--font-display); letter-spacing: -0.025em; font-weight: 700; margin: 0; }
+    input { font: inherit; color: inherit; }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(247,241,224,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(20px,6vw,80px);
+      height: var(--nav-h);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: var(--s-6);
+    }
+    .nav-mark {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 26px;
+      letter-spacing: -0.045em;
+      color: var(--pine);
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .nav-mark::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 3px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .nav-search {
+      width: 100%;
+      max-width: 420px;
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      background: var(--pine-04);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--r-pill);
+      padding: 9px 16px;
+      transition: border-color var(--dur-base) var(--ease-out);
+    }
+    .nav-search:focus-within { border-color: var(--pine-40); }
+    .nav-search input {
+      flex: 1;
+      background: transparent;
+      border: none; outline: none;
+      font-size: 14px;
+      color: var(--fg);
+    }
+    .nav-search input::placeholder { color: var(--fg-subtle); }
+    .nav-right {
+      display: flex; align-items: center; gap: var(--s-4);
+      justify-self: end;
+    }
+    .btn-sell {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 500;
+      background: var(--tomato);
+      color: var(--butter);
+      border: none;
+      border-radius: var(--r-pill);
+      padding: 10px 18px 10px 20px;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: opacity var(--dur-base) var(--ease-out);
+    }
+    .btn-sell::after { content: '→'; font-family: var(--font-body); font-size: 13px; letter-spacing: 0; }
+    .btn-sell:hover { opacity: 0.9; }
+    .nav-link {
+      font-size: 14px; font-weight: 500;
+      color: var(--fg-muted);
+      background: none; border: none;
+      padding: 8px 4px;
+      transition: color var(--dur-base) var(--ease-out);
+    }
+    .nav-link:hover { color: var(--fg); }
+
+    /* ─── PAGE ─── */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(20px,6vw,80px) var(--s-20);
+    }
+
+    /* ─── ARCHIVE HEADER ─── */
+    .archive-header {
+      padding: var(--s-10) 0 var(--s-8);
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--s-6);
+      flex-wrap: wrap;
+    }
+    .archive-title {
+      font-size: clamp(36px,5vw,64px);
+      letter-spacing: -0.035em;
+      line-height: 1;
+      font-weight: 800;
+      font-variation-settings: 'opsz' 72;
+    }
+    .archive-title .dot { color: var(--tomato); }
+    .archive-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      padding-bottom: 6px;
+    }
+
+    /* ─── FILTER BAR ─── */
+    .filter-bar {
+      padding: var(--s-5) 0;
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      font-weight: 600;
+      white-space: nowrap;
+      min-width: 60px;
+    }
+    /* Era filter — discs */
+    .era-filters {
+      display: flex;
+      gap: var(--s-2);
+      flex-wrap: wrap;
+    }
+    .era-filter-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: none;
+      border: 1.5px solid var(--border-line);
+      border-radius: var(--r-pill);
+      padding: 5px 12px 5px 6px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+    }
+    .era-filter-btn:hover { border-color: var(--pine-40); color: var(--fg); }
+    .era-filter-btn.active {
+      border-color: var(--pine);
+      background: var(--pine);
+      color: var(--butter);
+    }
+    .era-filter-swatch {
+      width: 18px; height: 18px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(26,58,46,0.12);
+    }
+    /* Condition filter — pills */
+    .cond-filters { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+    .cond-filter-btn {
+      background: none;
+      border: 1.5px solid var(--border-line);
+      border-radius: var(--r-pill);
+      padding: 5px 14px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      cursor: pointer;
+      transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+    }
+    .cond-filter-btn:hover { border-color: var(--pine-40); color: var(--fg); }
+    .cond-filter-btn.active {
+      border-color: var(--pine);
+      background: var(--pine);
+      color: var(--butter);
+    }
+
+    /* Active filter chips */
+    .active-filters {
+      display: flex;
+      gap: var(--s-2);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .active-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--pine-08);
+      border: 1px solid var(--border-line);
+      border-radius: var(--r-pill);
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      cursor: pointer;
+      transition: background var(--dur-base) var(--ease-out);
+    }
+    .active-chip:hover { background: var(--pine-12); }
+    .clear-all {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--tomato);
+      background: none; border: none;
+      padding: 4px 0;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+    .clear-all:hover { opacity: 1; }
+
+    /* Sort */
+    .sort-wrap {
+      display: flex; align-items: center; gap: var(--s-3);
+      margin-left: auto;
+    }
+    .sort-select {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      background: none;
+      border: 1px solid var(--border-line);
+      border-radius: var(--r-pill);
+      padding: 6px 14px;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 28px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%231A3A2E' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+
+    /* ─── GRID ─── */
+    .results-meta {
+      padding: var(--s-5) 0 var(--s-6);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-10) var(--s-5);
+    }
+    .product-card {
+      display: flex; flex-direction: column;
+      cursor: pointer; text-align: left;
+    }
+    .product-card-img {
+      width: 100%; aspect-ratio: 4/5;
+      border-radius: var(--r-lg);
+      position: relative; overflow: hidden;
+      margin-bottom: var(--s-3);
+      transition: transform var(--dur-slow) var(--ease-out);
+    }
+    .product-card:hover .product-card-img { transform: translateY(-4px); }
+    .product-card-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(120% 80% at 25% 20%, rgba(247,241,224,0.18), transparent 55%);
+      pointer-events: none;
+    }
+    .product-card-heart {
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 32px; height: 32px;
+      background: rgba(247,241,224,0.9);
+      backdrop-filter: blur(4px);
+      border: none;
+      border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background var(--dur-base) var(--ease-out);
+      z-index: 2;
+    }
+    .product-card-heart:hover { background: var(--butter); }
+    .product-card-badge {
+      position: absolute;
+      bottom: 10px; left: 10px;
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--sage);
+      color: var(--pine);
+      padding: 4px 9px;
+      border-radius: var(--r-pill);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .product-card-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 3px;
+    }
+    .product-card-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      color: var(--pine);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .product-card-row {
+      display: flex; align-items: baseline;
+      justify-content: space-between;
+    }
+    .product-card-price {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--tomato);
+      letter-spacing: -0.02em;
+    }
+    .product-card-cond {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+    }
+
+    /* Empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: var(--s-20) 0;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s-4);
+    }
+    .empty-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+      color: var(--fg-muted);
+    }
+    .empty-sub {
+      font-size: 14px;
+      color: var(--fg-subtle);
+    }
+    .empty-clear {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid var(--border-line);
+      border-radius: var(--r-pill);
+      padding: 8px 18px;
+      color: var(--fg-muted);
+      cursor: pointer;
+      margin-top: var(--s-2);
+      transition: border-color var(--dur-base) var(--ease-out);
+    }
+    .empty-clear:hover { border-color: var(--fg); color: var(--fg); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+      .nav-inner { grid-template-columns: auto 1fr auto; }
+    }
+    @media (max-width: 640px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: var(--s-8) var(--s-3); }
+      .archive-header { padding: var(--s-6) 0; }
+      .archive-title { font-size: clamp(30px,10vw,48px); }
+      .filter-label { min-width: 50px; font-size: 8px; }
+      .era-filter-btn { font-size: 9px; padding: 4px 10px 4px 5px; }
+      .cond-filter-btn { font-size: 9px; padding: 4px 10px; }
+      .nav-link { display: none; }
+      .sort-wrap { margin-left: 0; }
+      .filter-row { gap: var(--s-2); }
+    }
+  </style>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+<div id="app"></div>
+
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+const ERAS = [
+  { id: 'pre-50', label: 'Pre-1950s', short: "'49", from: '#D9C7A6', to: '#9C7E4A' },
+  { id: '50s',    label: '1950s',     short: "'50", from: '#E8A87C', to: '#A35E3F' },
+  { id: '60s',    label: '1960s',     short: "'60", from: '#A89D5A', to: '#5C5828' },
+  { id: '70s',    label: '1970s',     short: "'70", from: '#C66E3F', to: '#7A2E20' },
+  { id: '80s',    label: '1980s',     short: "'80", from: '#7E5BA0', to: '#3A2255' },
+  { id: '90s',    label: '1990s',     short: "'90", from: '#5A6B7A', to: '#2A3744' },
+  { id: 'y2k',    label: 'Y2K',       short: 'y2k', from: '#C6CBD3', to: '#6E6F78' },
+];
+
+const CONDITIONS = [
+  { grade: 'NWT', name: 'New with tags' },
+  { grade: 'PR',  name: 'Pristine'      },
+  { grade: 'EX',  name: 'Excellent'     },
+  { grade: 'LV',  name: 'Loved'         },
+  { grade: 'SL',  name: 'Needs some love'},
+  { grade: 'AM',  name: 'Already mended'},
+];
+
+const PRODUCTS = [
+  { id:1,  name:'Leather bomber, cropped',       era:'70s', price:148, meta:'DETROIT · 1974', cond:'EX', from:'#C66E3F', to:'#7A2E20' },
+  { id:2,  name:'Selvedge denim jacket',          era:'90s', price:92,  meta:'PORTLAND · 1991',cond:'LV', from:'#5A6B7A', to:'#2A3744' },
+  { id:3,  name:'Cable-knit fisherman',           era:'80s', price:68,  meta:'DUBLIN · 1983',  cond:'PR', from:'#E7D7B4', to:'#A88E5A' },
+  { id:4,  name:'Suede western, fringed',         era:'70s', price:218, meta:'AUSTIN · 1976',  cond:'EX', from:'#D9A479', to:'#7A4C28' },
+  { id:5,  name:'Army field jacket, M-65',        era:'60s', price:82,  meta:'BERLIN · 1968',  cond:'LV', from:'#7C7F4E', to:'#2F3318' },
+  { id:6,  name:'Wool peacoat, double-breasted',  era:'80s', price:134, meta:'BOSTON · 1985',  cond:'EX', from:'#A8513A', to:'#4A1D17' },
+  { id:7,  name:'Silk slip dress, bias-cut',      era:'90s', price:76,  meta:'TOKYO · 1998',   cond:'PR', from:'#3A3A36', to:'#15140F' },
+  { id:8,  name:'Mohair cardigan, oversized',     era:'90s', price:58,  meta:'LA · 1994',      cond:'LV', from:'#9BAB8D', to:'#4E6044' },
+  { id:9,  name:'Denim chore coat, indigo',       era:'90s', price:110, meta:'PARIS · 1993',   cond:'EX', from:'#3D5A8A', to:'#1A2A4A' },
+  { id:10, name:'Tartan wool blazer',             era:'80s', price:96,  meta:'EDINBURGH · 1988',cond:'PR',from:'#6B4E3D', to:'#2E1E18' },
+  { id:11, name:'Corduroy shirt jacket',          era:'70s', price:74,  meta:'NASHVILLE · 1972',cond:'LV',from:'#8B6914', to:'#3D2E08' },
+  { id:12, name:'Raw silk blouse, patterned',     era:'60s', price:62,  meta:'MILAN · 1965',   cond:'EX', from:'#A87840', to:'#5C3820' },
+  { id:13, name:'Waxed cotton anorak',            era:'90s', price:128, meta:'OSLO · 1996',    cond:'AM', from:'#4A5E4A', to:'#1E2E1E' },
+  { id:14, name:'Linen blazer, unstructured',     era:'y2k', price:88,  meta:'BARCELONA · 2002',cond:'EX',from:'#B8A882', to:'#6E6050' },
+  { id:15, name:'Velvet smoking jacket',          era:'80s', price:158, meta:'LONDON · 1982',  cond:'PR', from:'#5E3058', to:'#28102A' },
+  { id:16, name:'Cotton workwear trousers',       era:'60s', price:54,  meta:'CHICAGO · 1963', cond:'LV', from:'#7A6E5A', to:'#3A3028' },
+];
+
+function Icon({ name, size=18, stroke=1.75, fill='none' }) {
+  const paths = {
+    search:  <><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>,
+    heart:   <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>,
+    check:   <path d="M20 6 9 17l-5-5"/>,
+    x:       <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
+    sliders: <><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></>,
+  };
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={fill}
+         stroke="currentColor" strokeWidth={stroke}
+         strokeLinecap="round" strokeLinejoin="round">
+      {paths[name]}
+    </svg>
+  );
+}
+
+function Nav() {
+  return (
+    <header className="nav">
+      <div className="nav-inner">
+        <a href="index.html" className="nav-mark">nunc</a>
+        <div className="nav-search">
+          <Icon name="search" size={14} stroke={1.8}/>
+          <input type="text" placeholder="search — '70s leather, mohair, M-65…"/>
+        </div>
+        <div className="nav-right">
+          <a href="sell.html" className="btn-sell">Sell now</a>
+          <button className="nav-link">Log in</button>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function App() {
+  const [eraFilters, setEraFilters]   = useState([]);
+  const [condFilters, setCondFilters] = useState([]);
+  const [sort, setSort]               = useState('newest');
+  const [liked, setLiked]             = useState({});
+
+  const toggleEra = (id) => setEraFilters(f => f.includes(id) ? f.filter(x => x !== id) : [...f, id]);
+  const toggleCond= (g)  => setCondFilters(f => f.includes(g)  ? f.filter(x => x !== g)  : [...f, g]);
+  const toggleLike= (id, e) => { e.stopPropagation(); setLiked(l => ({ ...l, [id]: !l[id] })); };
+  const clearAll  = () => { setEraFilters([]); setCondFilters([]); };
+
+  const filtered = useMemo(() => {
+    let list = [...PRODUCTS];
+    if (eraFilters.length)  list = list.filter(p => eraFilters.includes(p.era));
+    if (condFilters.length) list = list.filter(p => condFilters.includes(p.cond));
+    if (sort === 'price-asc')  list.sort((a,b) => a.price - b.price);
+    if (sort === 'price-desc') list.sort((a,b) => b.price - a.price);
+    return list;
+  }, [eraFilters, condFilters, sort]);
+
+  const hasFilters = eraFilters.length > 0 || condFilters.length > 0;
+
+  return (
+    <>
+      <Nav/>
+      <div className="page-wrap">
+
+        <div className="archive-header">
+          <div>
+            <h1 className="archive-title">the archive<span className="dot">.</span></h1>
+          </div>
+          <div className="archive-count">{filtered.length} pieces · {PRODUCTS.length} total</div>
+        </div>
+
+        <div className="filter-bar">
+          <div className="filter-row">
+            <span className="filter-label">Era</span>
+            <div className="era-filters">
+              {ERAS.map(e => (
+                <button
+                  key={e.id}
+                  className={`era-filter-btn${eraFilters.includes(e.id) ? ' active' : ''}`}
+                  onClick={() => toggleEra(e.id)}
+                >
+                  <span className="era-filter-swatch" style={{ background: `linear-gradient(135deg, ${e.from}, ${e.to})` }}/>
+                  {e.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="filter-row">
+            <span className="filter-label">Grade</span>
+            <div className="cond-filters">
+              {CONDITIONS.map(c => (
+                <button
+                  key={c.grade}
+                  className={`cond-filter-btn${condFilters.includes(c.grade) ? ' active' : ''}`}
+                  onClick={() => toggleCond(c.grade)}
+                >
+                  {c.grade} · {c.name}
+                </button>
+              ))}
+            </div>
+            <div className="sort-wrap">
+              <Icon name="sliders" size={13} stroke={1.7}/>
+              <select className="sort-select" value={sort} onChange={e => setSort(e.target.value)}>
+                <option value="newest">Newest first</option>
+                <option value="price-asc">Price: low → high</option>
+                <option value="price-desc">Price: high → low</option>
+              </select>
+            </div>
+          </div>
+
+          {hasFilters && (
+            <div className="active-filters">
+              {eraFilters.map(id => {
+                const e = ERAS.find(x => x.id === id);
+                return (
+                  <button key={id} className="active-chip" onClick={() => toggleEra(id)}>
+                    {e.label} <Icon name="x" size={9} stroke={2}/>
+                  </button>
+                );
+              })}
+              {condFilters.map(g => {
+                const c = CONDITIONS.find(x => x.grade === g);
+                return (
+                  <button key={g} className="active-chip" onClick={() => toggleCond(g)}>
+                    {c.name} <Icon name="x" size={9} stroke={2}/>
+                  </button>
+                );
+              })}
+              <button className="clear-all" onClick={clearAll}>Clear all</button>
+            </div>
+          )}
+        </div>
+
+        <div className="results-meta">{filtered.length} piece{filtered.length !== 1 ? 's' : ''} found</div>
+
+        <div className="product-grid">
+          {filtered.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-title">Nothing matches that filter.</div>
+              <div className="empty-sub">Try a different era or condition — there's always something good.</div>
+              <button className="empty-clear" onClick={clearAll}>Clear filters</button>
+            </div>
+          ) : filtered.map(p => (
+            <a href="product.html" key={p.id} className="product-card">
+              <div className="product-card-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
+                <button
+                  className="product-card-heart"
+                  onClick={(e) => toggleLike(p.id, e)}
+                  aria-label="Save"
+                >
+                  <span style={{ color: liked[p.id] ? 'var(--tomato)' : 'var(--pine)', display:'flex' }}>
+                    <Icon name="heart" size={13} stroke={1.8} fill={liked[p.id] ? 'currentColor' : 'none'}/>
+                  </span>
+                </button>
+                <div className="product-card-badge">
+                  <Icon name="check" size={8} stroke={3}/> Verified
+                </div>
+              </div>
+              <div className="product-card-meta">{p.meta}</div>
+              <div className="product-card-name">{p.name}</div>
+              <div className="product-card-row">
+                <span className="product-card-price">${p.price}</span>
+                <span className="product-card-cond">{p.cond}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('app'));
+root.render(<App/>);
+</script>
+</body>
+</html>

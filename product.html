@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>nunc — leather bomber, cropped</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Caveat:wght@400;600&family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --butter:  #F7F1E0;
+      --pine:    #1A3A2E;
+      --peach:   #E8A87C;
+      --tomato:  #C44536;
+      --sage:    #A8B89C;
+
+      --pine-04: rgba(26,58,46,0.04);
+      --pine-08: rgba(26,58,46,0.08);
+      --pine-12: rgba(26,58,46,0.12);
+      --pine-20: rgba(26,58,46,0.20);
+      --pine-40: rgba(26,58,46,0.40);
+      --pine-60: rgba(26,58,46,0.60);
+
+      --bg:           var(--butter);
+      --bg-elevated:  #FFFFFF;
+      --fg:           var(--pine);
+      --fg-muted:     var(--pine-60);
+      --fg-subtle:    var(--pine-40);
+
+      --border-hairline: var(--pine-08);
+      --border-line:     var(--pine-12);
+
+      --font-display: 'Bricolage Grotesque', 'Times New Roman', serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+      --font-hand:    'Caveat', cursive;
+
+      --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px;
+      --s-6:24px; --s-8:32px; --s-10:40px; --s-12:48px; --s-16:64px; --s-20:80px;
+
+      --r-sm:8px; --r-md:14px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+      --shadow-xs: 0 2px 8px rgba(26,58,46,0.04);
+      --shadow-sm: 0 6px 24px rgba(26,58,46,0.05);
+      --shadow-md: 0 8px 30px rgba(26,58,46,0.08);
+      --shadow-lg: 0 16px 48px rgba(26,58,46,0.12);
+
+      --ease-out: cubic-bezier(0.22,0.61,0.36,1);
+      --dur-base: 220ms;
+      --dur-slow: 420ms;
+      --nav-h: 64px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--fg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(247,241,224,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(20px,6vw,80px);
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: var(--s-4);
+    }
+    .nav-back {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--fg-muted);
+      background: none; border: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: color var(--dur-base) var(--ease-out);
+      padding: 8px 0;
+      flex-shrink: 0;
+    }
+    .nav-back:hover { color: var(--fg); }
+    .nav-mark {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 26px;
+      letter-spacing: -0.045em;
+      color: var(--pine);
+      position: relative;
+      padding-bottom: 4px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .nav-mark::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 3px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .nav-save {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+      background: none;
+      border: 1px solid var(--border-line);
+      border-radius: var(--r-pill);
+      padding: 8px 16px;
+      color: var(--fg-muted);
+      display: flex; align-items: center; gap: 8px;
+      transition: border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+      flex-shrink: 0;
+    }
+    .nav-save:hover { border-color: var(--fg); color: var(--fg); }
+    .nav-save.saved { border-color: var(--tomato); color: var(--tomato); }
+
+    /* ─── LAYOUT ─── */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(20px,6vw,80px) var(--s-20);
+    }
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-12);
+      padding-top: var(--s-8);
+    }
+
+    /* ─── IMAGE COLUMN ─── */
+    .image-col { position: sticky; top: calc(var(--nav-h) + var(--s-8)); height: fit-content; }
+    .main-image {
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: var(--r-xl);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .main-image-inner {
+      width: 100%; height: 100%;
+    }
+    .image-badge {
+      position: absolute;
+      bottom: var(--s-4); left: var(--s-4);
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(168,184,156,0.95);
+      color: var(--pine);
+      padding: 6px 12px;
+      border-radius: var(--r-pill);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+    }
+    .thumb-strip {
+      display: flex;
+      gap: var(--s-2);
+      margin-top: var(--s-3);
+    }
+    .thumb {
+      flex: 1;
+      aspect-ratio: 1;
+      border-radius: var(--r-md);
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+      opacity: 0.65;
+    }
+    .thumb.active { border-color: var(--pine); opacity: 1; }
+    .thumb:hover { opacity: 0.9; }
+    .thumb-inner { width: 100%; height: 100%; }
+
+    /* ─── DETAIL COLUMN ─── */
+    .detail-col { padding-top: var(--s-2); }
+
+    .product-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      margin-bottom: var(--s-4);
+      flex-wrap: wrap;
+    }
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: var(--r-pill);
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .chip-era {
+      background: linear-gradient(135deg, #C66E3F, #7A2E20);
+      color: rgba(247,241,224,0.95);
+    }
+    .chip-cond {
+      background: var(--pine-08);
+      color: var(--fg-muted);
+      border: 1px solid var(--border-line);
+    }
+    .chip-loc {
+      color: var(--fg-subtle);
+      font-size: 9px;
+    }
+
+    .product-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(28px,3.5vw,44px);
+      letter-spacing: -0.035em;
+      line-height: 1.0;
+      color: var(--pine);
+      margin-bottom: var(--s-5);
+      font-variation-settings: 'opsz' 72;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--s-4);
+      margin-bottom: var(--s-6);
+      padding-bottom: var(--s-6);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .price-main {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 48px;
+      letter-spacing: -0.04em;
+      color: var(--tomato);
+      line-height: 1;
+    }
+    .price-era-hint {
+      font-size: 13px;
+      color: var(--fg-subtle);
+    }
+
+    /* Buy button */
+    .btn-buy {
+      width: 100%;
+      background: var(--pine);
+      color: var(--butter);
+      border: none;
+      border-radius: var(--r-pill);
+      padding: 18px 28px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+      margin-bottom: var(--s-3);
+    }
+    .btn-buy::after {
+      content: '→';
+      font-family: var(--font-body);
+      font-size: 16px;
+      letter-spacing: 0;
+      transition: transform var(--dur-base) var(--ease-out);
+    }
+    .btn-buy:hover { opacity: 0.9; }
+    .btn-buy:hover::after { transform: translateX(4px); }
+    .btn-buy:active { transform: translateY(1px); }
+    .buy-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--fg-subtle);
+      margin-bottom: var(--s-6);
+    }
+
+    /* ─── DETAIL ROWS ─── */
+    .detail-section {
+      padding: var(--s-5) 0;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .detail-section:last-of-type { border-bottom: none; }
+    .detail-section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      font-weight: 600;
+      margin-bottom: var(--s-3);
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-2) var(--s-4);
+    }
+    .detail-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .detail-key {
+      font-size: 11px;
+      color: var(--fg-subtle);
+      font-weight: 500;
+    }
+    .detail-val {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    /* Condition badge */
+    .cond-badge {
+      display: flex;
+      gap: var(--s-4);
+      align-items: flex-start;
+      background: var(--pine-04);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--r-lg);
+      padding: var(--s-4) var(--s-5);
+    }
+    .cond-grade-big {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--pine);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .cond-name-big { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .cond-desc-big { font-size: 13px; color: var(--fg-muted); line-height: 1.5; }
+
+    /* Measurements table */
+    .measure-table {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-3);
+    }
+    .measure-cell {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--r-md);
+      padding: var(--s-3) var(--s-4);
+      text-align: center;
+    }
+    .measure-val {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      color: var(--pine);
+    }
+    .measure-unit { font-size: 11px; color: var(--fg-subtle); }
+    .measure-key {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      margin-top: 2px;
+    }
+
+    /* Provenance note */
+    .note-wrap { transform: rotate(-0.3deg); margin: var(--s-2) 0; }
+    .note-paper {
+      background: #F4E9C8;
+      border-radius: var(--r-md);
+      padding: 24px 24px 24px 60px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(26,58,46,0.10), 0 1px 3px rgba(26,58,46,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+    .note-paper::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 30px, rgba(26,58,46,0.08) 30px, rgba(26,58,46,0.08) 31px);
+      pointer-events: none;
+    }
+    .note-paper::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; left: 50px;
+      width: 1.5px;
+      background: rgba(196,69,54,0.35);
+      pointer-events: none;
+    }
+    .note-label {
+      font-family: var(--font-hand);
+      font-size: 13px;
+      color: var(--fg-subtle);
+      margin-bottom: 6px;
+      font-weight: 400;
+      line-height: 31px;
+    }
+    .note-text {
+      font-family: var(--font-hand);
+      font-size: 20px;
+      line-height: 31px;
+      color: var(--pine);
+      font-weight: 400;
+    }
+    .note-tape {
+      position: absolute;
+      top: -5px; left: 50%;
+      transform: translateX(-50%);
+      width: 52px; height: 16px;
+      background: rgba(247,241,224,0.55);
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(26,58,46,0.12);
+    }
+
+    /* ─── RELATED ─── */
+    .related { padding-top: var(--s-16); border-top: 1px solid var(--border-hairline); margin-top: var(--s-12); }
+    .related-head {
+      display: flex; align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: var(--s-8);
+    }
+    .related-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(24px,3vw,36px);
+      letter-spacing: -0.025em;
+    }
+    .related-title .underscored {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 6px;
+    }
+    .related-title .underscored::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 6px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-8) var(--s-5);
+    }
+    .product-card {
+      display: flex; flex-direction: column;
+      cursor: pointer; background: none; border: none; padding: 0; text-align: left;
+    }
+    .product-card-img {
+      width: 100%; aspect-ratio: 4/5;
+      border-radius: var(--r-lg);
+      position: relative; overflow: hidden;
+      margin-bottom: var(--s-3);
+      transition: transform var(--dur-slow) var(--ease-out);
+    }
+    .product-card:hover .product-card-img { transform: translateY(-4px); }
+    .product-card-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(120% 80% at 25% 20%, rgba(247,241,224,0.20), transparent 55%);
+      pointer-events: none;
+    }
+    .product-card-verified {
+      position: absolute;
+      bottom: 10px; left: 10px;
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--sage);
+      color: var(--pine);
+      padding: 4px 9px;
+      border-radius: var(--r-pill);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .product-card-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 4px;
+    }
+    .product-card-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      color: var(--pine);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .product-card-row {
+      display: flex; align-items: baseline;
+      justify-content: space-between;
+    }
+    .product-card-price {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--tomato);
+      letter-spacing: -0.02em;
+    }
+    .product-card-cond {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+    }
+
+    /* Stamp */
+    .stamp {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--fg-muted);
+      border: 1px solid var(--border-line);
+      padding: 5px 12px;
+      border-radius: var(--r-pill);
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .stamp.tomato { color: var(--tomato); border-color: rgba(196,69,54,0.3); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .product-layout { grid-template-columns: 1fr; gap: var(--s-8); }
+      .image-col { position: static; }
+      .related-grid { grid-template-columns: repeat(2, 1fr); }
+      .measure-table { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .price-main { font-size: 36px; }
+      .product-title { font-size: clamp(24px,8vw,36px); }
+      .detail-grid { grid-template-columns: 1fr; }
+      .related-grid { grid-template-columns: repeat(2, 1fr); gap: var(--s-6) var(--s-3); }
+      .nav-save span { display: none; }
+    }
+  </style>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+<div id="app"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+const PRODUCT = {
+  id: 1,
+  name: 'Leather bomber, cropped',
+  era: '1970s',
+  eraId: '70s',
+  eraFrom: '#C66E3F',
+  eraTo: '#7A2E20',
+  price: 148,
+  meta: 'DETROIT · 1974',
+  city: 'Detroit',
+  year: 1974,
+  condition: 'EX',
+  condName: 'Excellent',
+  condDesc: 'Lightly worn. No visible imperfections. Hardware intact, lining clean, leather supple.',
+  fabric: '100% genuine leather · polyester lining',
+  origin: 'USA',
+  measurements: [
+    { key: 'Chest', val: '96', unit: 'cm' },
+    { key: 'Length', val: '58', unit: 'cm' },
+    { key: 'Shoulder', val: '42', unit: 'cm' },
+    { key: 'Sleeve', val: '60', unit: 'cm' },
+  ],
+  provenance: 'Found at an estate sale in Detroit, 1974 on the label. Previous owner worked at a Motown record pressing plant — or so the seller said. The leather still smells faintly of engine oil and something sweeter. Could be a musician, could be a machinist.',
+};
+
+const RELATED = [
+  { id: 4, name: 'Suede western, fringed',        meta: 'AUSTIN · 1976',   price: 218, cond: 'EXCELLENT', from: '#D9A479', to: '#7A4C28' },
+  { id: 5, name: 'Army field jacket, M-65',       meta: 'BERLIN · 1968',   price:  82, cond: 'LOVED',    from: '#7C7F4E', to: '#2F3318' },
+  { id: 6, name: 'Wool peacoat, double-breasted', meta: 'BOSTON · 1985',   price: 134, cond: 'EXCELLENT', from: '#A8513A', to: '#4A1D17' },
+  { id: 2, name: 'Selvedge denim jacket',         meta: 'PORTLAND · 1991', price:  92, cond: 'LOVED',    from: '#5A6B7A', to: '#2A3744' },
+];
+
+const ANGLES = [
+  { label: 'Front', from: '#C66E3F', to: '#7A2E20' },
+  { label: 'Back',  from: '#9A5030', to: '#5A2015' },
+  { label: 'Label', from: '#B06038', to: '#6A2818' },
+  { label: 'Detail',from: '#D07848', to: '#8A3828' },
+];
+
+function Icon({ name, size = 18, stroke = 1.75, fill = 'none' }) {
+  const paths = {
+    arrowL:  <><path d="M19 12H5"/><path d="m11 19-7-7 7-7"/></>,
+    arrow:   <><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></>,
+    check:   <path d="M20 6 9 17l-5-5"/>,
+    heart:   <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>,
+    shield:  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>,
+    truck:   <><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></>,
+  };
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={fill}
+         stroke="currentColor" strokeWidth={stroke}
+         strokeLinecap="round" strokeLinejoin="round">
+      {paths[name]}
+    </svg>
+  );
+}
+
+function Nav({ saved, onSave }) {
+  return (
+    <header className="nav">
+      <div className="nav-inner">
+        <a href="browse.html" className="nav-back">
+          <Icon name="arrowL" size={14} stroke={2}/> Archive
+        </a>
+        <a href="index.html" className="nav-mark">nunc</a>
+        <button className={`nav-save${saved ? ' saved' : ''}`} onClick={onSave}>
+          <Icon name="heart" size={13} stroke={1.8} fill={saved ? 'currentColor' : 'none'}/>
+          <span>{saved ? 'Saved' : 'Save'}</span>
+        </button>
+      </div>
+    </header>
+  );
+}
+
+function ImageGallery() {
+  const [active, setActive] = useState(0);
+  return (
+    <div className="image-col">
+      <div className="main-image">
+        <div className="main-image-inner" style={{ background: `linear-gradient(155deg, ${ANGLES[active].from}, ${ANGLES[active].to})` }}/>
+        <div className="image-badge">
+          <Icon name="check" size={9} stroke={3}/> Verified by Nunc
+        </div>
+      </div>
+      <div className="thumb-strip">
+        {ANGLES.map((a, i) => (
+          <button key={i} className={`thumb${active === i ? ' active' : ''}`} onClick={() => setActive(i)}>
+            <div className="thumb-inner" style={{ background: `linear-gradient(155deg, ${a.from}, ${a.to})` }}/>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProductDetail({ saved, onSave }) {
+  const p = PRODUCT;
+  return (
+    <div className="detail-col">
+      <div className="product-eyebrow">
+        <span className="chip chip-era" style={{ background: `linear-gradient(135deg, ${p.eraFrom}, ${p.eraTo})` }}>
+          {p.era}
+        </span>
+        <span className="chip chip-cond">{p.condName}</span>
+        <span className="chip chip-loc">{p.meta}</span>
+      </div>
+
+      <h1 className="product-title">{p.name}</h1>
+
+      <div className="price-row">
+        <div className="price-main">${p.price}</div>
+        <div className="price-era-hint">Fair price for this era + condition</div>
+      </div>
+
+      <button className="btn-buy" type="button">
+        Buy this piece
+      </button>
+      <div className="buy-note">
+        <Icon name="shield" size={11} stroke={1.6}/> Backed by the Nunc guarantee · ships within 3 days
+      </div>
+
+      {/* Condition */}
+      <div className="detail-section">
+        <div className="detail-section-label">Condition</div>
+        <div className="cond-badge">
+          <div className="cond-grade-big">{p.condition}</div>
+          <div>
+            <div className="cond-name-big">{p.condName}</div>
+            <div className="cond-desc-big">{p.condDesc}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Details */}
+      <div className="detail-section">
+        <div className="detail-section-label">Details</div>
+        <div className="detail-grid">
+          <div className="detail-row">
+            <span className="detail-key">Fabric</span>
+            <span className="detail-val">{p.fabric}</span>
+          </div>
+          <div className="detail-row">
+            <span className="detail-key">Origin</span>
+            <span className="detail-val">{p.origin}</span>
+          </div>
+          <div className="detail-row">
+            <span className="detail-key">Era</span>
+            <span className="detail-val">{p.era} · {p.year}</span>
+          </div>
+          <div className="detail-row">
+            <span className="detail-key">City found</span>
+            <span className="detail-val">{p.city}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Measurements */}
+      <div className="detail-section">
+        <div className="detail-section-label">Measurements</div>
+        <div className="measure-table">
+          {p.measurements.map(m => (
+            <div className="measure-cell" key={m.key}>
+              <div className="measure-val">{m.val}</div>
+              <div className="measure-unit">{m.unit}</div>
+              <div className="measure-key">{m.key}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Provenance */}
+      <div className="detail-section">
+        <div className="detail-section-label">A note from before</div>
+        <div className="note-wrap">
+          <div className="note-tape"/>
+          <div className="note-paper">
+            <div className="note-label">who did this belong to?</div>
+            <div className="note-text">{p.provenance}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Trust */}
+      <div className="detail-section">
+        <div style={{ display:'flex', gap:'var(--s-5)', flexWrap:'wrap' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8, fontSize:13, color:'var(--fg-muted)' }}>
+            <Icon name="shield" size={15} stroke={1.6}/> Nunc guarantee
+          </div>
+          <div style={{ display:'flex', alignItems:'center', gap:8, fontSize:13, color:'var(--fg-muted)' }}>
+            <Icon name="truck" size={15} stroke={1.6}/> Ships within 3 days
+          </div>
+          <div style={{ display:'flex', alignItems:'center', gap:8, fontSize:13, color:'var(--fg-muted)' }}>
+            <Icon name="check" size={15} stroke={1.6}/> Hand-verified
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [saved, setSaved] = useState(false);
+  return (
+    <>
+      <Nav saved={saved} onSave={() => setSaved(s => !s)}/>
+      <div className="page-wrap">
+        <div className="product-layout">
+          <ImageGallery/>
+          <ProductDetail saved={saved} onSave={() => setSaved(s => !s)}/>
+        </div>
+
+        <div className="related">
+          <div className="related-head">
+            <h2 className="related-title">More from the <span className="underscored">'70s</span>.</h2>
+            <a href="browse.html" className="stamp tomato">
+              See all <Icon name="arrow" size={11} stroke={2}/>
+            </a>
+          </div>
+          <div className="related-grid">
+            {RELATED.map(r => (
+              <a href="product.html" key={r.id} className="product-card">
+                <div className="product-card-img" style={{ background: `linear-gradient(150deg, ${r.from}, ${r.to})` }}>
+                  <div className="product-card-verified">
+                    <Icon name="check" size={8} stroke={3}/> Verified
+                  </div>
+                </div>
+                <div className="product-card-meta">{r.meta}</div>
+                <div className="product-card-name">{r.name}</div>
+                <div className="product-card-row">
+                  <span className="product-card-price">${r.price}</span>
+                  <span className="product-card-cond">{r.cond}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('app'));
+root.render(<App/>);
+</script>
+</body>
+</html>
