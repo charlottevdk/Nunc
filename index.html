@@ -1587,10 +1587,18 @@
                 <div className="mobile-nav-accordion-body">
                   <div className="mobile-nav-sub-label">Categories</div>
                   {CATEGORIES.map(cat => (
-                    <a key={cat.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>
-                      <span>{cat.label}</span>
-                      <span className="subitem-count">→</span>
-                    </a>
+                    <div key={cat.id} style={{ marginBottom: 'var(--s-3)' }}>
+                      <a href="browse.html" className="mobile-nav-subitem" onClick={close}
+                         style={{ fontWeight: 700, color: 'var(--pine)', fontSize: 15 }}>
+                        {cat.label}
+                      </a>
+                      {cat.sub.map(s => (
+                        <a key={s} href="browse.html" className="mobile-nav-subitem" onClick={close}
+                           style={{ paddingLeft: 24, fontSize: 13, color: 'var(--pine-60)', fontWeight: 400 }}>
+                          {s}
+                        </a>
+                      ))}
+                    </div>
                   ))}
                   <div className="mobile-nav-sub-label">By era</div>
                   {ERAS.map(e => (

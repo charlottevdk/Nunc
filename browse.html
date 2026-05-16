@@ -628,14 +628,18 @@
     }
     .sidebar-cat-group { margin-bottom: var(--s-1); }
     .sidebar-cat-label {
-      display: block; width: 100%; background: none; border: none; text-align: left;
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; background: none; border: none; text-align: left;
       font-size: 13px; font-weight: 700; color: var(--fg);
-      padding: 5px var(--s-2); border-radius: var(--r-sm); cursor: pointer;
-      margin-top: var(--s-2); transition: color var(--dur-base);
+      padding: 6px var(--s-2); border-radius: var(--r-sm); cursor: pointer;
+      margin-top: var(--s-2); transition: color var(--dur-base); gap: var(--s-2);
     }
     .sidebar-cat-label:first-child { margin-top: 0; }
     .sidebar-cat-label:hover { color: var(--pine); }
     .sidebar-cat-label.active { color: var(--tomato); }
+    .sidebar-cat-chevron { flex-shrink: 0; color: var(--fg-subtle); transition: transform var(--dur-base) var(--ease-out); }
+    .sidebar-cat-chevron.open { transform: rotate(180deg); }
+    .sidebar-sub-list { animation: fadeSlide 140ms var(--ease-out); }
     .sidebar-sub-item {
       display: flex; align-items: center; gap: var(--s-2);
       width: 100%; background: none; border: none; text-align: left;
@@ -687,16 +691,18 @@
       .cat-sidebar.open .cat-sidebar-head { grid-column: 1 / -1; }
       .filter-toggle-bar { display: flex; }
       .filter-bar .filter-row { display: none; }
-      .nav-link { display: none; }
+      .nav-right .nav-link.signup { display: none; }
     }
     @media (max-width: 640px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: var(--s-8) var(--s-3); }
       .archive-header { padding: var(--s-6) 0; }
       .archive-title { font-size: clamp(30px,10vw,48px); }
-      .cat-sidebar.open { columns: 1; }
+      .cat-sidebar.open { grid-template-columns: 1fr; }
       .sort-wrap { margin-left: 0; }
       .filter-row { gap: var(--s-2); overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
       .filter-row::-webkit-scrollbar { display: none; }
+      .nav-right .nav-link.signup { display: none; }
+      .nav-right .nav-link:not(.signup) { display: flex; font-size: 13px; padding: 6px 2px; }
     }
   </style>
 
@@ -782,6 +788,7 @@ function Icon({ name, size=18, stroke=1.75, fill='none' }) {
     x:        <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
     sliders:  <><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></>,
     chevronD: <path d="m6 9 6 6 6-6"/>,
+    chevron:  <path d="m6 9 6 6 6-6"/>,
     menu:     <><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></>,
   };
   return (
@@ -855,6 +862,7 @@ function Nav() {
           </div>
           <div className="nav-right">
             <a href="sell.html" className="btn-sell">Sell now</a>
+            <a href="auth.html" className="nav-link signup">Sign up</a>
             <a href="auth.html" className="nav-link">Log in</a>
             <button className="nav-burger" onClick={() => setOpen(o => !o)} aria-label={open ? 'Close menu' : 'Open menu'}>
               <Icon name={open ? 'x' : 'menu'} size={20} stroke={1.8}/>
@@ -869,6 +877,9 @@ function Nav() {
 
 function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, matFilters, styleFilters, sizeFilters,
   selectCat, selectSubcat, toggleEra, toggleCond, toggleMat, toggleStyle, toggleSize, hasFilters, clearAll, sidebarOpen }) {
+  const [openCat, setOpenCat] = useState(null);
+  const toggleCat = (id) => setOpenCat(cur => cur === id ? null : id);
+
   return (
     <div className={`cat-sidebar${sidebarOpen ? ' open' : ''}`}>
       <div className="cat-sidebar-head">
@@ -882,20 +893,27 @@ function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, ma
         {CATEGORIES.map(c => (
           <div key={c.id} className="sidebar-cat-group">
             <button
-              className={`sidebar-cat-label${catFilter === c.id && !subcatFilters.length ? ' active' : ''}`}
-              onClick={() => selectCat(c.id)}
+              className={`sidebar-cat-label${catFilter === c.id ? ' active' : ''}`}
+              onClick={() => toggleCat(c.id)}
             >
-              {c.label}
+              <span>{c.label}</span>
+              <span className={`sidebar-cat-chevron${openCat === c.id ? ' open' : ''}`}>
+                <Icon name="chevronD" size={11} stroke={2.5}/>
+              </span>
             </button>
-            {c.sub.map(s => (
-              <button
-                key={s}
-                className={`sidebar-sub-item${subcatFilters.includes(s) ? ' active' : ''}`}
-                onClick={() => selectSubcat(c.id, s)}
-              >
-                {s}
-              </button>
-            ))}
+            {openCat === c.id && (
+              <div className="sidebar-sub-list">
+                {c.sub.map(s => (
+                  <button
+                    key={s}
+                    className={`sidebar-sub-item${subcatFilters.includes(s) ? ' active' : ''}`}
+                    onClick={() => selectSubcat(c.id, s)}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
