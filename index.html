@@ -1116,7 +1116,9 @@
 
     /* ─── MOBILE MENU ─────────────────────────── */
     .nav-burger {
-      display: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: none;
       border: none;
       cursor: pointer;
@@ -1214,6 +1216,16 @@
       transition: background var(--dur-base) var(--ease-out);
     }
     .mobile-nav-subitem:hover { background: var(--pine-04); }
+    .mobile-nav-sub-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--fg-subtle);
+      padding: var(--s-4) var(--s-3) var(--s-2);
+      margin-top: var(--s-1);
+    }
     .subitem-swatch {
       width: 22px; height: 22px;
       border-radius: 999px;
@@ -1253,7 +1265,6 @@
       .search input { font-size: 13px; }
       .search-kbd { display: none; }
       .nav-right .nav-link { display: none; }
-      .nav-burger { display: flex; align-items: center; justify-content: center; }
 
       .hero { padding-top: var(--s-10); padding-bottom: var(--s-12); }
       .buy-sell { padding: var(--s-8) 0 var(--s-6); gap: var(--s-5); }
@@ -1307,9 +1318,8 @@
       }
       .search input { display: none; }
       .search-kbd { display: none; }
-      /* Nav right: show sell + login, hide browse + signup */
+      /* Nav right: show sell + login, hide signup */
       .nav-right { gap: var(--s-1); }
-      .mega-trigger { display: none; }
       .nav-right .nav-link.signup { display: none; }
       .nav-right .nav-link:not(.signup) { display: flex; font-size: 13px; padding: 6px 2px; }
       .nav-right .btn-sell { display: inline-flex; }
@@ -1407,113 +1417,6 @@
       .section-sub { white-space: normal; }
     }
 
-    /* ─── MEGA MENU ─── */
-    .mega-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 29;
-      background: rgba(26,58,46,0.06);
-    }
-    .mega-panel {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      background: #fff;
-      border-bottom: 1px solid rgba(26,58,46,0.08);
-      box-shadow: 0 8px 32px rgba(26,58,46,0.10);
-      display: flex;
-      overflow: hidden;
-      animation: megaSlide 160ms cubic-bezier(0.22,0.61,0.36,1);
-    }
-    @keyframes megaSlide {
-      from { opacity: 0; transform: translateY(-10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .mega-cats {
-      width: 210px;
-      flex-shrink: 0;
-      border-right: 1px solid rgba(26,58,46,0.08);
-      padding: 12px 0;
-      background: rgba(26,58,46,0.03);
-    }
-    .mega-cat-btn {
-      display: block;
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      border-left: 2px solid transparent;
-      padding: 11px 24px;
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 500;
-      color: rgba(26,58,46,0.6);
-      cursor: pointer;
-      transition: background 220ms, color 220ms, border-color 220ms;
-      white-space: nowrap;
-    }
-    .mega-cat-btn:hover { background: rgba(26,58,46,0.06); color: #1A3A2E; }
-    .mega-cat-btn.active {
-      background: rgba(26,58,46,0.06);
-      color: #1A3A2E;
-      font-weight: 600;
-      border-left-color: #C44536;
-    }
-    .mega-right {
-      flex: 1;
-      padding: 24px 40px;
-      max-height: 420px;
-      overflow-y: auto;
-    }
-    .mega-right-head {
-      font-family: 'Bricolage Grotesque', serif;
-      font-weight: 700;
-      font-size: 20px;
-      letter-spacing: -0.025em;
-      color: #1A3A2E;
-      margin-bottom: 16px;
-    }
-    .mega-sub-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0 24px;
-    }
-    .mega-sub-btn {
-      background: none;
-      border: none;
-      border-bottom: 1px solid rgba(26,58,46,0.08);
-      text-align: left;
-      padding: 10px 0;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(26,58,46,0.6);
-      cursor: pointer;
-      transition: color 220ms;
-      white-space: nowrap;
-    }
-    .mega-sub-btn:hover { color: #1A3A2E; }
-    .mega-trigger {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-weight: 500;
-      background: none;
-      border: none;
-      padding: 8px 4px;
-      color: rgba(26,58,46,0.6);
-      cursor: pointer;
-      display: flex; align-items: center; gap: 5px;
-      transition: color 220ms;
-      white-space: nowrap;
-    }
-    .mega-trigger:hover { color: #1A3A2E; }
-    .mega-trigger.open { color: #1A3A2E; font-weight: 600; }
-    @media (max-width: 640px) {
-      .mega-cats { width: 140px; }
-      .mega-sub-grid { grid-template-columns: repeat(2, 1fr); }
-      .mega-right { padding: 16px 20px; }
-    }
   </style>
 </head>
 <body>
@@ -1592,52 +1495,6 @@
              strokeLinecap="round" strokeLinejoin="round">
           {paths[name]}
         </svg>
-      );
-    }
-
-    /* ─────────── Mega Menu ─────────── */
-    function MegaMenu({ onClose }) {
-      const [hovered, setHovered] = React.useState(CATEGORIES[0].id);
-      const activeCat = CATEGORIES.find(c => c.id === hovered);
-
-      React.useEffect(() => {
-        const fn = e => { if (e.key === 'Escape') onClose(); };
-        document.addEventListener('keydown', fn);
-        return () => document.removeEventListener('keydown', fn);
-      }, [onClose]);
-
-      return (
-        <div className="mega-backdrop" onClick={onClose}>
-          <div className="mega-panel" onClick={e => e.stopPropagation()}>
-            <div className="mega-cats">
-              {CATEGORIES.map(cat => (
-                <button
-                  key={cat.id}
-                  className={`mega-cat-btn${hovered === cat.id ? ' active' : ''}`}
-                  onMouseEnter={() => setHovered(cat.id)}
-                  onClick={onClose}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-            <div className="mega-right">
-              <div className="mega-right-head">
-                <a href="browse.html" onClick={onClose} style={{ color:'inherit', textDecoration:'none' }}>
-                  {activeCat.label}
-                </a>
-              </div>
-              <div className="mega-sub-grid">
-                {activeCat.sub.map(s => (
-                  <a key={s} href="browse.html" className="mega-sub-btn" onClick={onClose}
-                     style={{ display:'block', color:'inherit', textDecoration:'none' }}>
-                    {s}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
       );
     }
 
@@ -1721,59 +1578,39 @@
 
     /* ─────────── Mobile Menu ─────────── */
     function MobileMenu({ close, onSignup, onLogin }) {
-      const [openSection, setOpenSection] = useState(null);
-      const toggle = (s) => setOpenSection(cur => cur === s ? null : s);
+      const [browseOpen, setBrowseOpen] = useState(false);
       return (
         <div className="mobile-menu" role="dialog" aria-label="Navigation">
           <div className="mobile-nav-links">
 
             <div className="mobile-nav-accordion">
-              <button className="mobile-nav-link accordion-trigger" onClick={() => toggle('era')} aria-expanded={openSection === 'era'}>
-                Shop by era
-                <span className={`chevron-icon${openSection === 'era' ? ' open' : ''}`}><Icon name="chevron" size={16} stroke={2}/></span>
+              <button className="mobile-nav-link accordion-trigger" onClick={() => setBrowseOpen(o => !o)} aria-expanded={browseOpen}>
+                Browse
+                <span className={`chevron-icon${browseOpen ? ' open' : ''}`}><Icon name="chevron" size={16} stroke={2}/></span>
               </button>
-              {openSection === 'era' && (
+              {browseOpen && (
                 <div className="mobile-nav-accordion-body">
-                  {ERAS.map(e => (
-                    <a key={e.id} href="#" className="mobile-nav-subitem" onClick={close}>
-                      <span className="subitem-swatch" style={{ background: `linear-gradient(135deg, ${e.from}, ${e.to})` }}/>
-                      <span>'{e.year === 'Y2K' ? 'y2k' : e.year === '<50' ? '49' : e.year} · {e.label}</span>
-                      <span className="subitem-count">{e.count} pcs</span>
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="mobile-nav-accordion">
-              <button className="mobile-nav-link accordion-trigger" onClick={() => toggle('condition')} aria-expanded={openSection === 'condition'}>
-                Shop by condition
-                <span className={`chevron-icon${openSection === 'condition' ? ' open' : ''}`}><Icon name="chevron" size={16} stroke={2}/></span>
-              </button>
-              {openSection === 'condition' && (
-                <div className="mobile-nav-accordion-body">
-                  {CONDITIONS.map(c => (
-                    <a key={c.grade} href="#" className="mobile-nav-subitem" onClick={close}>
-                      <span className={`subitem-icon${c.muted ? ' muted' : ''}`}><Icon name={c.icon} size={14} stroke={1.6}/></span>
-                      <span>{c.name}</span>
-                      <span className="subitem-count">{c.count} pcs</span>
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="mobile-nav-accordion">
-              <button className="mobile-nav-link accordion-trigger" onClick={() => toggle('categories')} aria-expanded={openSection === 'categories'}>
-                Browse categories
-                <span className={`chevron-icon${openSection === 'categories' ? ' open' : ''}`}><Icon name="chevron" size={16} stroke={2}/></span>
-              </button>
-              {openSection === 'categories' && (
-                <div className="mobile-nav-accordion-body">
+                  <div className="mobile-nav-sub-label">Categories</div>
                   {CATEGORIES.map(cat => (
                     <a key={cat.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>
                       <span>{cat.label}</span>
                       <span className="subitem-count">→</span>
+                    </a>
+                  ))}
+                  <div className="mobile-nav-sub-label">By era</div>
+                  {ERAS.map(e => (
+                    <a key={e.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>
+                      <span className="subitem-swatch" style={{ background: `linear-gradient(135deg, ${e.from}, ${e.to})` }}/>
+                      <span>{e.label}</span>
+                      <span className="subitem-count">{e.count} pcs</span>
+                    </a>
+                  ))}
+                  <div className="mobile-nav-sub-label">By grade</div>
+                  {CONDITIONS.map(c => (
+                    <a key={c.grade} href="browse.html" className="mobile-nav-subitem" onClick={close}>
+                      <span className={`subitem-icon${c.muted ? ' muted' : ''}`}><Icon name={c.icon} size={14} stroke={1.6}/></span>
+                      <span>{c.name}</span>
+                      <span className="subitem-count">{c.count} pcs</span>
                     </a>
                   ))}
                 </div>
@@ -1796,7 +1633,7 @@
     }
 
     /* ─────────── Nav ─────────── */
-    function Nav({ onSignup, onLogin, onBrowse, megaOpen }) {
+    function Nav({ onSignup, onLogin }) {
       const [open, setOpen] = useState(false);
       const close = () => setOpen(false);
       React.useEffect(() => {
@@ -1814,9 +1651,6 @@
                 <span className="search-kbd">⌘ K</span>
               </label>
               <nav className="nav-right">
-                <button className={`mega-trigger${megaOpen ? ' open' : ''}`} onClick={onBrowse}>
-                  Browse <Icon name="chevron" size={12} stroke={2}/>
-                </button>
                 <a href="sell.html" className="btn-sell">Sell now</a>
                 <button className="nav-link signup" onClick={onSignup}>Sign up</button>
                 <button className="nav-link" onClick={onLogin}>Log in</button>
@@ -2104,15 +1938,13 @@
 
     /* ─────────── App ─────────── */
     function App() {
-      const [authModal, setAuthModal] = React.useState(null); // null | 'signup' | 'login'
-      const [megaOpen,  setMegaOpen]  = React.useState(false);
+      const [authModal, setAuthModal] = React.useState(null);
       const openSignup = () => setAuthModal('signup');
       const openLogin  = () => setAuthModal('login');
       const closeModal = () => setAuthModal(null);
       return (
         <>
-          <Nav onSignup={openSignup} onLogin={openLogin} onBrowse={() => setMegaOpen(true)} megaOpen={megaOpen}/>
-          {megaOpen && <MegaMenu onClose={() => setMegaOpen(false)}/>}
+          <Nav onSignup={openSignup} onLogin={openLogin}/>
           <main>
             <Hero/>
             <JustVerified/>
