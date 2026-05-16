@@ -521,19 +521,12 @@
     }
 
     /* ─── MEGA MENU ─── */
-    .mega-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 29;
-      background: rgba(26,58,46,0.06);
-    }
-    .mega-panel {
-      position: absolute;
-      top: 0; left: 0; right: 0;
+    .mega-backdrop { position: fixed; inset: 0; z-index: 29; background: rgba(26,58,46,0.06); }
+    .mega-panel-wrap {
+      position: absolute; top: 0; left: 0; right: 0;
       background: var(--bg-elevated);
       border-bottom: 1px solid var(--border-hairline);
       box-shadow: 0 8px 32px rgba(26,58,46,0.10);
-      display: flex;
       overflow: hidden;
       animation: megaSlide 160ms var(--ease-out);
     }
@@ -541,91 +534,145 @@
       from { opacity: 0; transform: translateY(-10px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    .mega-tab-row {
+      display: flex; align-items: center;
+      border-bottom: 1px solid var(--border-hairline);
+      padding: 0 var(--s-4);
+    }
+    .mega-tab-btn {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.26em;
+      text-transform: uppercase; font-weight: 500; background: none; border: none;
+      border-bottom: 2px solid transparent; padding: 12px 16px; margin-bottom: -1px;
+      color: var(--fg-subtle); cursor: pointer;
+      transition: color var(--dur-base), border-color var(--dur-base);
+    }
+    .mega-tab-btn:hover { color: var(--fg); }
+    .mega-tab-btn.active { color: var(--pine); border-bottom-color: var(--tomato); }
+    .mega-done-btn {
+      margin-left: auto; font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      background: none; border: 1px solid var(--border-line);
+      border-radius: var(--r-pill); padding: 5px 14px; color: var(--fg-muted); cursor: pointer;
+      transition: border-color var(--dur-base), color var(--dur-base);
+    }
+    .mega-done-btn:hover { border-color: var(--fg); color: var(--fg); }
+    .mega-panel { display: flex; overflow: hidden; }
     .mega-cats {
-      width: 200px;
-      flex-shrink: 0;
+      width: 200px; flex-shrink: 0;
       border-right: 1px solid var(--border-hairline);
-      padding: var(--s-3) 0;
-      overflow-y: auto;
-      background: var(--pine-04);
+      padding: var(--s-3) 0; overflow-y: auto; background: var(--pine-04);
     }
     .mega-cat-btn {
-      display: block;
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      border-left: 2px solid transparent;
-      padding: 11px var(--s-6);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--fg-muted);
-      cursor: pointer;
+      display: block; width: 100%; text-align: left; background: none; border: none;
+      border-left: 2px solid transparent; padding: 11px var(--s-6);
+      font-size: 14px; font-weight: 500; color: var(--fg-muted); cursor: pointer;
       transition: background var(--dur-base), color var(--dur-base), border-color var(--dur-base);
       white-space: nowrap;
     }
     .mega-cat-btn:hover { background: var(--pine-08); color: var(--fg); }
-    .mega-cat-btn.active {
-      background: var(--pine-08);
-      color: var(--pine);
-      font-weight: 600;
-      border-left-color: var(--tomato);
-    }
-    .mega-right {
-      flex: 1;
-      padding: var(--s-6) var(--s-8);
-      overflow-y: auto;
-      max-height: 420px;
-    }
-    .mega-right-head {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 20px;
-      letter-spacing: -0.025em;
-      color: var(--pine);
-      margin-bottom: var(--s-4);
-    }
-    .mega-sub-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0 var(--s-5);
-    }
+    .mega-cat-btn.active { background: var(--pine-08); color: var(--pine); font-weight: 600; border-left-color: var(--tomato); }
+    .mega-right { flex: 1; padding: var(--s-6) var(--s-8); overflow-y: auto; max-height: 380px; }
+    .mega-right-head { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.025em; color: var(--pine); margin-bottom: var(--s-4); }
+    .mega-sub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 var(--s-5); }
     .mega-sub-btn {
-      background: none;
-      border: none;
-      border-bottom: 1px solid var(--border-hairline);
-      text-align: left;
-      padding: 10px 0;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--fg-muted);
-      cursor: pointer;
-      transition: color var(--dur-base);
-      white-space: nowrap;
+      background: none; border: none; border-bottom: 1px solid var(--border-hairline);
+      text-align: left; padding: 10px 0; font-size: 13px; font-weight: 500;
+      color: var(--fg-muted); cursor: pointer; transition: color var(--dur-base); white-space: nowrap;
     }
     .mega-sub-btn:hover { color: var(--pine); }
+    .mega-era-content { padding: var(--s-5) var(--s-8); display: flex; flex-wrap: wrap; gap: var(--s-3); }
+    .mega-era-pill {
+      display: flex; align-items: center; gap: 8px; background: none;
+      border: 1.5px solid var(--border-line); border-radius: var(--r-pill);
+      padding: 5px 12px 5px 6px; cursor: pointer; font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg-muted);
+      transition: border-color var(--dur-base), background var(--dur-base), color var(--dur-base);
+    }
+    .mega-era-pill:hover { border-color: var(--pine-40); color: var(--fg); }
+    .mega-era-pill.active { border-color: var(--pine); background: var(--pine); color: var(--butter); }
+    .mega-era-swatch { width: 18px; height: 18px; border-radius: 999px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(26,58,46,0.12); }
+    .mega-grade-content { padding: var(--s-5) var(--s-8); display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-3); }
+    .mega-grade-pill {
+      display: flex; align-items: center; gap: 10px; background: none;
+      border: 1.5px solid var(--border-line); border-radius: var(--r-md);
+      padding: 10px 14px; cursor: pointer; text-align: left;
+      transition: border-color var(--dur-base), background var(--dur-base), color var(--dur-base);
+    }
+    .mega-grade-pill:hover { border-color: var(--pine-40); }
+    .mega-grade-pill.active { border-color: var(--pine); background: var(--pine); color: var(--butter); }
+    .mega-grade-code { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; font-weight: 700; flex-shrink: 0; }
+    .mega-grade-name { font-size: 13px; }
     .mega-trigger {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-weight: 500;
-      background: none;
-      border: none;
-      padding: 8px 4px;
-      color: var(--fg-muted);
-      cursor: pointer;
-      display: flex; align-items: center; gap: 5px;
-      transition: color var(--dur-base);
-      white-space: nowrap;
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase; font-weight: 500; background: none; border: none;
+      padding: 8px 4px; color: var(--fg-muted); cursor: pointer;
+      display: flex; align-items: center; gap: 5px; transition: color var(--dur-base); white-space: nowrap;
     }
     .mega-trigger:hover { color: var(--fg); }
     .mega-trigger.open { color: var(--pine); font-weight: 600; }
+
+    /* ─── BROWSE LAYOUT ─── */
+    .browse-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 0 var(--s-10);
+      align-items: start;
+      padding-top: var(--s-6);
+    }
+    .browse-main { min-width: 0; }
+    .cat-sidebar {
+      position: sticky;
+      top: calc(var(--nav-h) + var(--s-6));
+      padding-right: var(--s-5);
+      border-right: 1px solid var(--border-hairline);
+    }
+    .cat-sidebar-head {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--fg-subtle); font-weight: 600;
+      padding-bottom: var(--s-3); margin-bottom: var(--s-1);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .cat-accordion-item { border-bottom: 1px solid var(--border-hairline); }
+    .cat-accordion-btn {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; background: none; border: none;
+      font-size: 14px; font-weight: 500; color: var(--fg-muted);
+      cursor: pointer; transition: color var(--dur-base); text-align: left; gap: var(--s-2);
+    }
+    .cat-accordion-btn:hover { color: var(--fg); }
+    .cat-accordion-btn.open { color: var(--pine); font-weight: 600; }
+    .cat-accordion-btn svg { flex-shrink: 0; color: var(--fg-subtle); transition: transform var(--dur-base) var(--ease-out); }
+    .cat-accordion-btn.open svg { transform: rotate(180deg); }
+    .cat-sub-list { padding: 0 0 var(--s-2) var(--s-1); display: flex; flex-direction: column; animation: fadeSlide 160ms var(--ease-out); }
+    .cat-sub-item {
+      background: none; border: none; text-align: left; padding: 7px 8px;
+      font-size: 13px; color: var(--fg-muted); cursor: pointer; border-radius: var(--r-sm);
+      transition: background var(--dur-base), color var(--dur-base);
+    }
+    .cat-sub-item:hover { background: var(--pine-04); color: var(--fg); }
+    .cat-sub-item.active { color: var(--tomato); background: rgba(196,69,54,0.06); font-weight: 500; }
+    .cat-sidebar-clear {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--tomato); background: none; border: none;
+      padding: var(--s-4) 0; cursor: pointer; opacity: 0.8;
+    }
+    .cat-sidebar-clear:hover { opacity: 1; }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(3, 1fr); }
       .nav-inner { grid-template-columns: auto 1fr auto; }
+      .browse-layout { grid-template-columns: 1fr; }
+      .cat-sidebar {
+        position: static; border-right: none; padding-right: 0;
+        border-bottom: 1px solid var(--border-hairline); padding-bottom: var(--s-4);
+        margin-bottom: var(--s-2);
+        display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 var(--s-6);
+        align-items: start;
+      }
+      .cat-sidebar-head { grid-column: 1 / -1; }
+      .mega-sub-grid { grid-template-columns: repeat(2, 1fr); }
+      .mega-grade-content { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 640px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: var(--s-8) var(--s-3); }
@@ -633,13 +680,15 @@
       .archive-title { font-size: clamp(30px,10vw,48px); }
       .filter-label { min-width: 50px; font-size: 8px; }
       .era-filter-btn { font-size: 9px; padding: 4px 10px 4px 5px; }
-      .cat-filter-btn { font-size: 9px; padding: 4px 10px; }
       .cond-filter-btn { font-size: 9px; padding: 4px 10px; }
       .nav-link { display: none; }
       .sort-wrap { margin-left: 0; }
-      .filter-row { gap: var(--s-2); }
-      .filter-row { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+      .filter-row { gap: var(--s-2); overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
       .filter-row::-webkit-scrollbar { display: none; }
+      .cat-sidebar { grid-template-columns: 1fr; }
+      .mega-cats { width: 130px; }
+      .mega-right { padding: var(--s-4) var(--s-5); }
+      .mega-grade-content { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 
@@ -727,7 +776,8 @@ function Icon({ name, size=18, stroke=1.75, fill='none' }) {
   );
 }
 
-function MegaMenu({ onClose, onSelectCat, onSelectSubcat }) {
+function MegaMenu({ onClose, onSelectCat, onSelectSubcat, onToggleEra, onToggleCond, eraFilters, condFilters }) {
+  const [tab, setTab] = React.useState('categories');
   const [hovered, setHovered] = React.useState(CATEGORIES[0].id);
   const activeCat = CATEGORIES.find(c => c.id === hovered);
 
@@ -739,30 +789,71 @@ function MegaMenu({ onClose, onSelectCat, onSelectSubcat }) {
 
   return (
     <div className="mega-backdrop" onClick={onClose}>
-      <div className="mega-panel" onClick={e => e.stopPropagation()}>
-        <div className="mega-cats">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat.id}
-              className={`mega-cat-btn${hovered === cat.id ? ' active' : ''}`}
-              onMouseEnter={() => setHovered(cat.id)}
-              onClick={() => { onSelectCat(cat.id); onClose(); }}
-            >
-              {cat.label}
-            </button>
-          ))}
+      <div className="mega-panel-wrap" onClick={e => e.stopPropagation()}>
+
+        {/* Tab row */}
+        <div className="mega-tab-row">
+          <button className={`mega-tab-btn${tab==='categories'?' active':''}`} onClick={() => setTab('categories')}>Categories</button>
+          <button className={`mega-tab-btn${tab==='decades'?' active':''}`} onClick={() => setTab('decades')}>Decades</button>
+          <button className={`mega-tab-btn${tab==='grade'?' active':''}`} onClick={() => setTab('grade')}>Grade</button>
+          <button className="mega-done-btn" onClick={onClose}>Done</button>
         </div>
-        <div className="mega-right">
-          <div className="mega-right-head">{activeCat.label}</div>
-          <div className="mega-sub-grid">
-            {activeCat.sub.map(s => (
-              <button key={s} className="mega-sub-btn"
-                onClick={() => { onSelectSubcat(activeCat.id, s); onClose(); }}>
-                {s}
+
+        {/* Categories */}
+        {tab === 'categories' && (
+          <div className="mega-panel">
+            <div className="mega-cats">
+              {CATEGORIES.map(cat => (
+                <button key={cat.id}
+                  className={`mega-cat-btn${hovered===cat.id?' active':''}`}
+                  onMouseEnter={() => setHovered(cat.id)}
+                  onClick={() => { onSelectCat(cat.id); onClose(); }}>
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+            <div className="mega-right">
+              <div className="mega-right-head">{activeCat.label}</div>
+              <div className="mega-sub-grid">
+                {activeCat.sub.map(s => (
+                  <button key={s} className="mega-sub-btn"
+                    onClick={() => { onSelectSubcat(activeCat.id, s); onClose(); }}>
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Decades */}
+        {tab === 'decades' && (
+          <div className="mega-era-content">
+            {ERAS.map(e => (
+              <button key={e.id}
+                className={`mega-era-pill${eraFilters.includes(e.id)?' active':''}`}
+                onClick={() => onToggleEra(e.id)}>
+                <span className="mega-era-swatch" style={{ background:`linear-gradient(135deg,${e.from},${e.to})` }}/>
+                {e.label}
               </button>
             ))}
           </div>
-        </div>
+        )}
+
+        {/* Grade */}
+        {tab === 'grade' && (
+          <div className="mega-grade-content">
+            {CONDITIONS.map(c => (
+              <button key={c.grade}
+                className={`mega-grade-pill${condFilters.includes(c.grade)?' active':''}`}
+                onClick={() => onToggleCond(c.grade)}>
+                <span className="mega-grade-code">{c.grade}</span>
+                <span className="mega-grade-name">{c.name}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
       </div>
     </div>
   );
@@ -786,6 +877,44 @@ function Nav({ onOpenMega, megaOpen }) {
         </div>
       </div>
     </header>
+  );
+}
+
+function CategorySidebar({ catFilter, subcatFilters, selectCat, toggleSubcat }) {
+  return (
+    <div className="cat-sidebar">
+      <div className="cat-sidebar-head">Categories</div>
+      {CATEGORIES.map(c => {
+        const isOpen = catFilter === c.id;
+        return (
+          <div key={c.id} className="cat-accordion-item">
+            <button
+              className={`cat-accordion-btn${isOpen ? ' open' : ''}`}
+              onClick={() => selectCat(c.id)}
+            >
+              <span>{c.label}</span>
+              <Icon name="chevronD" size={13} stroke={2}/>
+            </button>
+            {isOpen && (
+              <div className="cat-sub-list">
+                {c.sub.map(s => (
+                  <button key={s}
+                    className={`cat-sub-item${subcatFilters.includes(s) ? ' active' : ''}`}
+                    onClick={() => toggleSubcat(s)}>
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+      {catFilter && (
+        <button className="cat-sidebar-clear" onClick={() => selectCat(catFilter)}>
+          Clear category ×
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -836,6 +965,10 @@ function App() {
           onClose={() => setMegaOpen(false)}
           onSelectCat={handleMegaCat}
           onSelectSubcat={handleMegaSubcat}
+          onToggleEra={toggleEra}
+          onToggleCond={toggleCond}
+          eraFilters={eraFilters}
+          condFilters={condFilters}
         />
       )}
       <div className="page-wrap">
@@ -861,36 +994,6 @@ function App() {
               ))}
             </div>
           </div>
-
-          {/* Category */}
-          <div className="filter-row">
-            <span className="filter-label">Category</span>
-            <div className="cat-filters">
-              {CATEGORIES.map(c => (
-                <button key={c.id}
-                  className={`cat-filter-btn${catFilter === c.id ? ' active' : ''}`}
-                  onClick={() => selectCat(c.id)}>
-                  {c.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Subcategories — appear when a category is selected */}
-          {activeCat && (
-            <div className="subcat-row">
-              <span className="subcat-label">↳ {activeCat.label}</span>
-              <div className="subcat-filters">
-                {activeCat.sub.map(s => (
-                  <button key={s}
-                    className={`subcat-btn${subcatFilters.includes(s) ? ' active' : ''}`}
-                    onClick={() => toggleSubcat(s)}>
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Condition + sort */}
           <div className="filter-row">
@@ -938,35 +1041,44 @@ function App() {
           )}
         </div>
 
-        <div className="results-meta">{filtered.length} piece{filtered.length !== 1 ? 's' : ''} found</div>
-
-        <div className="product-grid">
-          {filtered.length === 0 ? (
-            <div className="empty-state">
-              <div className="empty-title">Nothing matches that filter.</div>
-              <div className="empty-sub">Try loosening the filters — there's always something good in the archive.</div>
-              <button className="empty-clear" onClick={clearAll}>Clear all filters</button>
-            </div>
-          ) : filtered.map(p => (
-            <a href="product.html" key={p.id} className="product-card">
-              <div className="product-card-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
-                <button className="product-card-heart" onClick={(e) => toggleLike(p.id, e)} aria-label="Save">
-                  <span style={{ color: liked[p.id] ? 'var(--tomato)' : 'var(--pine)', display:'flex' }}>
-                    <Icon name="heart" size={13} stroke={1.8} fill={liked[p.id] ? 'currentColor' : 'none'}/>
-                  </span>
-                </button>
-                <div className="product-card-badge">
-                  <Icon name="check" size={8} stroke={3}/> Verified
+        <div className="browse-layout">
+          <CategorySidebar
+            catFilter={catFilter}
+            subcatFilters={subcatFilters}
+            selectCat={selectCat}
+            toggleSubcat={toggleSubcat}
+          />
+          <div className="browse-main">
+            <div className="results-meta">{filtered.length} piece{filtered.length !== 1 ? 's' : ''} found</div>
+            <div className="product-grid">
+              {filtered.length === 0 ? (
+                <div className="empty-state">
+                  <div className="empty-title">Nothing matches that filter.</div>
+                  <div className="empty-sub">Try loosening the filters — there's always something good in the archive.</div>
+                  <button className="empty-clear" onClick={clearAll}>Clear all filters</button>
                 </div>
-              </div>
-              <div className="product-card-meta">{p.meta}</div>
-              <div className="product-card-name">{p.name}</div>
-              <div className="product-card-row">
-                <span className="product-card-price">${p.price}</span>
-                <span className="product-card-cond">{p.cond}</span>
-              </div>
-            </a>
-          ))}
+              ) : filtered.map(p => (
+                <a href="product.html" key={p.id} className="product-card">
+                  <div className="product-card-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
+                    <button className="product-card-heart" onClick={(e) => toggleLike(p.id, e)} aria-label="Save">
+                      <span style={{ color: liked[p.id] ? 'var(--tomato)' : 'var(--pine)', display:'flex' }}>
+                        <Icon name="heart" size={13} stroke={1.8} fill={liked[p.id] ? 'currentColor' : 'none'}/>
+                      </span>
+                    </button>
+                    <div className="product-card-badge">
+                      <Icon name="check" size={8} stroke={3}/> Verified
+                    </div>
+                  </div>
+                  <div className="product-card-meta">{p.meta}</div>
+                  <div className="product-card-name">{p.name}</div>
+                  <div className="product-card-row">
+                    <span className="product-card-price">${p.price}</span>
+                    <span className="product-card-cond">{p.cond}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </>
