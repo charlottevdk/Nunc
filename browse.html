@@ -565,37 +565,6 @@
     .mobile-chevron { display: flex; flex-shrink: 0; transition: transform var(--dur-base) var(--ease-out); }
     .mobile-chevron.open { transform: rotate(180deg); }
 
-    /* ─── FILTER SECTION (sidebar) ─── */
-    .filter-section { padding-bottom: var(--s-4); }
-    .filter-section + .filter-section { border-top: 1px solid var(--border-hairline); }
-    .filter-section-head {
-      display: flex; align-items: center; justify-content: space-between;
-      width: 100%; background: none; border: none; cursor: pointer; gap: var(--s-2);
-      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.3em;
-      text-transform: uppercase; font-weight: 600; color: var(--fg-subtle);
-      padding: var(--s-3) 0; text-align: left;
-    }
-    .filter-section-head svg { flex-shrink: 0; transition: transform var(--dur-base) var(--ease-out); }
-    .filter-section-head.open svg { transform: rotate(180deg); }
-    .filter-section-body { display: flex; flex-direction: column; gap: 1px; margin-bottom: var(--s-2); }
-    .filter-item {
-      display: flex; align-items: center; gap: var(--s-3);
-      width: 100%; background: none; border: none; padding: 7px var(--s-2);
-      border-radius: var(--r-sm); font-size: 13px; font-weight: 500;
-      color: var(--fg-muted); cursor: pointer; text-align: left;
-      transition: background var(--dur-base), color var(--dur-base);
-    }
-    .filter-item:hover { background: var(--pine-04); color: var(--fg); }
-    .filter-item.active { color: var(--pine); background: var(--pine-08); font-weight: 600; }
-    .filter-item-swatch { width: 14px; height: 14px; border-radius: 999px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(26,58,46,0.10); }
-    .filter-item-code { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; font-weight: 700; flex-shrink: 0; min-width: 26px; }
-    .filter-item-note { font-size: 11px; color: var(--fg-subtle); }
-    .filter-sidebar-clear {
-      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--tomato); background: none; border: none;
-      padding: var(--s-3) 0; cursor: pointer; opacity: 0.8;
-    }
-    .filter-sidebar-clear:hover { opacity: 1; }
 
     /* ─── FILTER TOGGLE (mobile) ─── */
     .filter-toggle-bar {
@@ -642,31 +611,68 @@
       padding-bottom: var(--s-3); margin-bottom: var(--s-2);
       border-bottom: 2px solid var(--border-line);
     }
-    .cat-accordion-item { }
-    .cat-accordion-btn {
-      width: 100%; display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 0; background: none; border: none;
-      font-size: 14px; font-weight: 500; color: var(--fg-muted);
-      cursor: pointer; transition: color var(--dur-base); text-align: left; gap: var(--s-2);
-    }
-    .cat-accordion-btn:hover { color: var(--fg); }
-    .cat-accordion-btn.open { color: var(--pine); font-weight: 600; }
-    .cat-accordion-btn svg { flex-shrink: 0; color: var(--fg-subtle); transition: transform var(--dur-base) var(--ease-out); }
-    .cat-accordion-btn.open svg { transform: rotate(180deg); }
-    .cat-sub-list { padding: 0 0 var(--s-2) var(--s-1); display: flex; flex-direction: column; animation: fadeSlide 160ms var(--ease-out); }
-    .cat-sub-item {
-      background: none; border: none; text-align: left; padding: 7px 8px;
-      font-size: 13px; color: var(--fg-muted); cursor: pointer; border-radius: var(--r-sm);
-      transition: background var(--dur-base), color var(--dur-base);
-    }
-    .cat-sub-item:hover { background: var(--pine-04); color: var(--fg); }
-    .cat-sub-item.active { color: var(--tomato); background: rgba(196,69,54,0.06); font-weight: 500; }
     .cat-sidebar-clear {
       font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em;
       text-transform: uppercase; color: var(--tomato); background: none; border: none;
-      padding: var(--s-3) 0; cursor: pointer; opacity: 0.8;
+      cursor: pointer; opacity: 0.8; padding: 0;
     }
     .cat-sidebar-clear:hover { opacity: 1; }
+
+    /* ─── SIDEBAR SECTIONS (always visible) ─── */
+    .sidebar-section { padding: var(--s-3) 0 var(--s-4); border-top: 1px solid var(--border-hairline); }
+    .sidebar-section:first-of-type { border-top: none; padding-top: var(--s-2); }
+    .sidebar-section-label {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.32em;
+      text-transform: uppercase; font-weight: 600; color: var(--fg-subtle);
+      padding-bottom: var(--s-2); display: block;
+    }
+    .sidebar-cat-group { margin-bottom: var(--s-1); }
+    .sidebar-cat-label {
+      display: block; width: 100%; background: none; border: none; text-align: left;
+      font-size: 13px; font-weight: 700; color: var(--fg);
+      padding: 5px var(--s-2); border-radius: var(--r-sm); cursor: pointer;
+      margin-top: var(--s-2); transition: color var(--dur-base);
+    }
+    .sidebar-cat-label:first-child { margin-top: 0; }
+    .sidebar-cat-label:hover { color: var(--pine); }
+    .sidebar-cat-label.active { color: var(--tomato); }
+    .sidebar-sub-item {
+      display: flex; align-items: center; gap: var(--s-2);
+      width: 100%; background: none; border: none; text-align: left;
+      font-size: 12px; font-weight: 400; color: var(--fg-muted);
+      padding: 4px var(--s-2) 4px 20px; border-radius: var(--r-sm); cursor: pointer;
+      transition: background var(--dur-base), color var(--dur-base);
+    }
+    .sidebar-sub-item:hover { background: var(--pine-04); color: var(--fg); }
+    .sidebar-sub-item.active { color: var(--tomato); background: rgba(196,69,54,0.06); font-weight: 500; }
+    .sidebar-era-item {
+      display: flex; align-items: center; gap: var(--s-3);
+      width: 100%; background: none; border: none; text-align: left;
+      font-size: 13px; font-weight: 500; color: var(--fg-muted);
+      padding: 5px var(--s-2); border-radius: var(--r-sm); cursor: pointer;
+      transition: background var(--dur-base), color var(--dur-base);
+    }
+    .sidebar-era-item:hover { background: var(--pine-04); color: var(--fg); }
+    .sidebar-era-item.active { color: var(--pine); background: var(--pine-08); font-weight: 600; }
+    .sidebar-era-swatch { width: 13px; height: 13px; border-radius: 999px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(26,58,46,0.10); }
+    .sidebar-grade-item {
+      display: flex; align-items: center; gap: var(--s-3);
+      width: 100%; background: none; border: none; text-align: left;
+      font-size: 13px; font-weight: 500; color: var(--fg-muted);
+      padding: 5px var(--s-2); border-radius: var(--r-sm); cursor: pointer;
+      transition: background var(--dur-base), color var(--dur-base);
+    }
+    .sidebar-grade-item:hover { background: var(--pine-04); color: var(--fg); }
+    .sidebar-grade-item.active { color: var(--pine); background: var(--pine-08); font-weight: 600; }
+    .sidebar-grade-code { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; font-weight: 700; flex-shrink: 0; min-width: 24px; }
+    .sidebar-size-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-1); }
+    .sidebar-size-btn {
+      background: none; border: 1px solid var(--border-line); border-radius: var(--r-sm);
+      padding: 6px 4px; font-size: 11px; font-weight: 500; color: var(--fg-muted); cursor: pointer;
+      text-align: center; transition: border-color var(--dur-base), background var(--dur-base), color var(--dur-base);
+    }
+    .sidebar-size-btn:hover { border-color: var(--pine-40); color: var(--fg); }
+    .sidebar-size-btn.active { border-color: var(--pine); background: var(--pine); color: var(--butter); }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
@@ -715,17 +721,12 @@ const ERAS = [
 ];
 
 const CATEGORIES = [
-  { id: 'outerwear', label: 'Outerwear',       sub: ['Leather jackets', 'Coats & overcoats', 'Bombers', 'Parkas & anoraks', 'Windbreakers', 'Gilets & vests', 'Overshirts'] },
-  { id: 'tops',      label: 'Tops & shirts',   sub: ['Blouses', 'Button-downs', 'T-shirts', 'Tank tops', 'Crop tops', 'Printed shirts'] },
-  { id: 'knitwear',  label: 'Knitwear',        sub: ['Cardigans', 'Pullovers', 'Turtlenecks', 'Knit vests', 'Mohair', 'Fair Isle'] },
-  { id: 'denim',     label: 'Denim',            sub: ['Jeans', 'Denim jackets', 'Denim shirts', 'Denim skirts', 'Overalls'] },
-  { id: 'dresses',   label: 'Dresses',          sub: ['Mini dresses', 'Midi dresses', 'Maxi dresses', 'Slip dresses', 'Wrap dresses', 'Shirt dresses'] },
-  { id: 'skirts',    label: 'Skirts',           sub: ['Mini skirts', 'Midi skirts', 'Maxi skirts', 'Pleated', 'A-line', 'Wrap skirts'] },
-  { id: 'coords',    label: 'Co-ords',          sub: ['Trouser sets', 'Skirt sets', 'Shorts sets', 'Matching suits'] },
-  { id: 'blazers',   label: 'Blazers',          sub: ['Structured', 'Oversized', 'Double-breasted', 'Pinstripe', 'Velvet'] },
-  { id: 'trousers',  label: 'Trousers',         sub: ['Wide-leg', 'Straight cut', 'Flares', 'Cargo', 'Tailored', 'Cropped'] },
-  { id: 'workwear',  label: 'Workwear',         sub: ['Chore coats', 'Field jackets', 'Coveralls', 'Work shirts', 'Utility vests'] },
-  { id: 'accessories', label: 'Accessories',   sub: ['Bags', 'Belts', 'Scarves & bandanas', 'Hats & caps', 'Jewellery', 'Sunglasses'] },
+  { id: 'outerwear', label: 'Outerwear',        sub: ['Leather jackets', 'Coats & overcoats', 'Bombers', 'Parkas & anoraks', 'Windbreakers', 'Overshirts', 'Field jackets', 'Chore coats', 'Gilets & vests'] },
+  { id: 'tops',      label: 'Tops & knitwear',  sub: ['Blouses', 'Button-downs', 'T-shirts', 'Tank tops', 'Printed shirts', 'Cardigans', 'Pullovers', 'Turtlenecks', 'Knit vests', 'Mohair', 'Fair Isle'] },
+  { id: 'bottoms',   label: 'Bottoms',          sub: ['Jeans', 'Denim skirts', 'Overalls', 'Wide-leg', 'Straight cut', 'Flares', 'Cargo', 'Tailored', 'Mini skirts', 'Midi skirts', 'Maxi skirts', 'Pleated', 'A-line', 'Wrap skirts'] },
+  { id: 'dresses',   label: 'Dresses & sets',   sub: ['Mini dresses', 'Midi dresses', 'Maxi dresses', 'Slip dresses', 'Wrap dresses', 'Shirt dresses', 'Trouser sets', 'Skirt sets', 'Matching suits'] },
+  { id: 'blazers',   label: 'Blazers & suiting',sub: ['Structured', 'Oversized', 'Double-breasted', 'Pinstripe', 'Velvet', 'Denim jackets'] },
+  { id: 'accessories', label: 'Accessories',    sub: ['Bags', 'Belts', 'Scarves & bandanas', 'Hats & caps', 'Jewellery', 'Sunglasses'] },
 ];
 
 const CONDITIONS = [
@@ -751,26 +752,26 @@ const SIZES = [
 ];
 
 const PRODUCTS = [
-  { id:1,  name:'Leather bomber, cropped',       era:'70s',  cat:'outerwear', sub:'Leather jackets',   price:148, meta:'DETROIT · 1974',   cond:'EX', mat:'Leather',  style:'Oversized',    size:'M',  from:'#C66E3F', to:'#7A2E20' },
-  { id:2,  name:'Selvedge denim jacket',          era:'90s',  cat:'denim',     sub:'Denim jackets',     price:92,  meta:'PORTLAND · 1991',  cond:'LV', mat:'Denim',    style:'Straight cut', size:'S',  from:'#5A6B7A', to:'#2A3744' },
-  { id:3,  name:'Cable-knit fisherman',           era:'80s',  cat:'knitwear',  sub:'Pullovers',         price:68,  meta:'DUBLIN · 1983',    cond:'PR', mat:'Knit',     style:'Oversized',    size:'L',  from:'#E7D7B4', to:'#A88E5A' },
-  { id:4,  name:'Suede western, fringed',         era:'70s',  cat:'outerwear', sub:'Leather jackets',   price:218, meta:'AUSTIN · 1976',    cond:'EX', mat:'Leather',  style:'Western',      size:'S',  from:'#D9A479', to:'#7A4C28' },
-  { id:5,  name:'Army field jacket, M-65',        era:'60s',  cat:'workwear',  sub:'Field jackets',     price:82,  meta:'BERLIN · 1968',    cond:'LV', mat:'Cotton',   style:'Military',     size:'M',  from:'#7C7F4E', to:'#2F3318' },
-  { id:6,  name:'Wool peacoat, double-breasted',  era:'80s',  cat:'outerwear', sub:'Coats & overcoats', price:134, meta:'BOSTON · 1985',    cond:'EX', mat:'Wool',     style:'Straight cut', size:'M',  from:'#A8513A', to:'#4A1D17' },
-  { id:7,  name:'Silk slip dress, bias-cut',      era:'90s',  cat:'dresses',   sub:'Slip dresses',      price:76,  meta:'TOKYO · 1998',     cond:'PR', mat:'Silk',     style:'Shift',        size:'XS', from:'#3A3A36', to:'#15140F' },
-  { id:8,  name:'Mohair cardigan, oversized',     era:'90s',  cat:'knitwear',  sub:'Cardigans',         price:58,  meta:'LA · 1994',        cond:'LV', mat:'Knit',     style:'Oversized',    size:'L',  from:'#9BAB8D', to:'#4E6044' },
-  { id:9,  name:'Denim chore coat, indigo',       era:'90s',  cat:'workwear',  sub:'Chore coats',       price:110, meta:'PARIS · 1993',     cond:'EX', mat:'Denim',    style:'Straight cut', size:'L',  from:'#3D5A8A', to:'#1A2A4A' },
-  { id:10, name:'Tartan wool blazer',             era:'80s',  cat:'blazers',   sub:'Structured',        price:96,  meta:'EDINBURGH · 1988', cond:'PR', mat:'Wool',     style:'Straight cut', size:'M',  from:'#6B4E3D', to:'#2E1E18' },
-  { id:11, name:'Corduroy shirt jacket',          era:'70s',  cat:'outerwear', sub:'Overshirts',        price:74,  meta:'NASHVILLE · 1972', cond:'LV', mat:'Corduroy', style:'Straight cut', size:'M',  from:'#8B6914', to:'#3D2E08' },
-  { id:12, name:'Raw silk blouse, patterned',     era:'60s',  cat:'tops',      sub:'Blouses',           price:62,  meta:'MILAN · 1965',     cond:'EX', mat:'Silk',     style:'Mod',          size:'XS', from:'#A87840', to:'#5C3820' },
-  { id:13, name:'Waxed cotton anorak',            era:'90s',  cat:'outerwear', sub:'Parkas & anoraks',  price:128, meta:'OSLO · 1996',      cond:'AM', mat:'Cotton',   style:'Military',     size:'L',  from:'#4A5E4A', to:'#1E2E1E' },
-  { id:14, name:'Linen blazer, unstructured',     era:'y2k',  cat:'blazers',   sub:'Structured',        price:88,  meta:'BARCELONA · 2002', cond:'EX', mat:'Linen',    style:'Oversized',    size:'S',  from:'#B8A882', to:'#6E6050' },
-  { id:15, name:'Velvet smoking jacket',          era:'80s',  cat:'blazers',   sub:'Velvet',            price:158, meta:'LONDON · 1982',    cond:'PR', mat:'Velvet',   style:'Straight cut', size:'S',  from:'#5E3058', to:'#28102A' },
-  { id:16, name:'Cotton workwear trousers',       era:'60s',  cat:'trousers',  sub:'Wide-leg',          price:54,  meta:'CHICAGO · 1963',   cond:'LV', mat:'Cotton',   style:'Straight cut', size:'M',  from:'#7A6E5A', to:'#3A3028' },
-  { id:17, name:'Pleated midi skirt, wool',       era:'80s',  cat:'skirts',    sub:'Midi skirts',       price:72,  meta:'MILAN · 1986',     cond:'EX', mat:'Wool',     style:'A-line',       size:'XS', from:'#8A7060', to:'#3A2820' },
-  { id:18, name:'Matching trouser set, linen',    era:'y2k',  cat:'coords',    sub:'Trouser sets',      price:144, meta:'STOCKHOLM · 2001', cond:'PR', mat:'Linen',    style:'Straight cut', size:'M',  from:'#C8B89A', to:'#786848' },
-  { id:19, name:'Button-down, western print',     era:'70s',  cat:'tops',      sub:'Printed shirts',    price:48,  meta:'PHOENIX · 1973',   cond:'LV', mat:'Cotton',   style:'Western',      size:'S',  from:'#B87840', to:'#684020' },
-  { id:20, name:'Mini dress, broderie anglaise',  era:'60s',  cat:'dresses',   sub:'Mini dresses',      price:86,  meta:'LONDON · 1967',    cond:'EX', mat:'Embroidered', style:'A-line',    size:'XS', from:'#D8CEB8', to:'#887858' },
+  { id:1,  name:'Leather bomber, cropped',       era:'70s',  cat:'outerwear', sub:'Leather jackets',   price:148, meta:'DETROIT · 1974',   cond:'EX', mat:'Leather',     style:'Oversized',    size:'M',  from:'#C66E3F', to:'#7A2E20' },
+  { id:2,  name:'Selvedge denim jacket',          era:'90s',  cat:'blazers',   sub:'Denim jackets',     price:92,  meta:'PORTLAND · 1991',  cond:'LV', mat:'Denim',       style:'Straight cut', size:'S',  from:'#5A6B7A', to:'#2A3744' },
+  { id:3,  name:'Cable-knit fisherman',           era:'80s',  cat:'tops',      sub:'Pullovers',         price:68,  meta:'DUBLIN · 1983',    cond:'PR', mat:'Knit',        style:'Oversized',    size:'L',  from:'#E7D7B4', to:'#A88E5A' },
+  { id:4,  name:'Suede western, fringed',         era:'70s',  cat:'outerwear', sub:'Leather jackets',   price:218, meta:'AUSTIN · 1976',    cond:'EX', mat:'Leather',     style:'Western',      size:'S',  from:'#D9A479', to:'#7A4C28' },
+  { id:5,  name:'Army field jacket, M-65',        era:'60s',  cat:'outerwear', sub:'Field jackets',     price:82,  meta:'BERLIN · 1968',    cond:'LV', mat:'Cotton',      style:'Military',     size:'M',  from:'#7C7F4E', to:'#2F3318' },
+  { id:6,  name:'Wool peacoat, double-breasted',  era:'80s',  cat:'outerwear', sub:'Coats & overcoats', price:134, meta:'BOSTON · 1985',    cond:'EX', mat:'Wool',        style:'Straight cut', size:'M',  from:'#A8513A', to:'#4A1D17' },
+  { id:7,  name:'Silk slip dress, bias-cut',      era:'90s',  cat:'dresses',   sub:'Slip dresses',      price:76,  meta:'TOKYO · 1998',     cond:'PR', mat:'Silk',        style:'Shift',        size:'XS', from:'#3A3A36', to:'#15140F' },
+  { id:8,  name:'Mohair cardigan, oversized',     era:'90s',  cat:'tops',      sub:'Mohair',            price:58,  meta:'LA · 1994',        cond:'LV', mat:'Knit',        style:'Oversized',    size:'L',  from:'#9BAB8D', to:'#4E6044' },
+  { id:9,  name:'Denim chore coat, indigo',       era:'90s',  cat:'outerwear', sub:'Chore coats',       price:110, meta:'PARIS · 1993',     cond:'EX', mat:'Denim',       style:'Straight cut', size:'L',  from:'#3D5A8A', to:'#1A2A4A' },
+  { id:10, name:'Tartan wool blazer',             era:'80s',  cat:'blazers',   sub:'Structured',        price:96,  meta:'EDINBURGH · 1988', cond:'PR', mat:'Wool',        style:'Straight cut', size:'M',  from:'#6B4E3D', to:'#2E1E18' },
+  { id:11, name:'Corduroy shirt jacket',          era:'70s',  cat:'outerwear', sub:'Overshirts',        price:74,  meta:'NASHVILLE · 1972', cond:'LV', mat:'Corduroy',    style:'Straight cut', size:'M',  from:'#8B6914', to:'#3D2E08' },
+  { id:12, name:'Raw silk blouse, patterned',     era:'60s',  cat:'tops',      sub:'Blouses',           price:62,  meta:'MILAN · 1965',     cond:'EX', mat:'Silk',        style:'Mod',          size:'XS', from:'#A87840', to:'#5C3820' },
+  { id:13, name:'Waxed cotton anorak',            era:'90s',  cat:'outerwear', sub:'Parkas & anoraks',  price:128, meta:'OSLO · 1996',      cond:'AM', mat:'Cotton',      style:'Military',     size:'L',  from:'#4A5E4A', to:'#1E2E1E' },
+  { id:14, name:'Linen blazer, unstructured',     era:'y2k',  cat:'blazers',   sub:'Structured',        price:88,  meta:'BARCELONA · 2002', cond:'EX', mat:'Linen',       style:'Oversized',    size:'S',  from:'#B8A882', to:'#6E6050' },
+  { id:15, name:'Velvet smoking jacket',          era:'80s',  cat:'blazers',   sub:'Velvet',            price:158, meta:'LONDON · 1982',    cond:'PR', mat:'Velvet',      style:'Straight cut', size:'S',  from:'#5E3058', to:'#28102A' },
+  { id:16, name:'Cotton workwear trousers',       era:'60s',  cat:'bottoms',   sub:'Wide-leg',          price:54,  meta:'CHICAGO · 1963',   cond:'LV', mat:'Cotton',      style:'Straight cut', size:'M',  from:'#7A6E5A', to:'#3A3028' },
+  { id:17, name:'Pleated midi skirt, wool',       era:'80s',  cat:'bottoms',   sub:'Midi skirts',       price:72,  meta:'MILAN · 1986',     cond:'EX', mat:'Wool',        style:'A-line',       size:'XS', from:'#8A7060', to:'#3A2820' },
+  { id:18, name:'Matching trouser set, linen',    era:'y2k',  cat:'dresses',   sub:'Trouser sets',      price:144, meta:'STOCKHOLM · 2001', cond:'PR', mat:'Linen',       style:'Straight cut', size:'M',  from:'#C8B89A', to:'#786848' },
+  { id:19, name:'Button-down, western print',     era:'70s',  cat:'tops',      sub:'Printed shirts',    price:48,  meta:'PHOENIX · 1973',   cond:'LV', mat:'Cotton',      style:'Western',      size:'S',  from:'#B87840', to:'#684020' },
+  { id:20, name:'Mini dress, broderie anglaise',  era:'60s',  cat:'dresses',   sub:'Mini dresses',      price:86,  meta:'LONDON · 1967',    cond:'EX', mat:'Embroidered', style:'A-line',       size:'XS', from:'#D8CEB8', to:'#887858' },
 ];
 
 function Icon({ name, size=18, stroke=1.75, fill='none' }) {
@@ -866,93 +867,92 @@ function Nav() {
   );
 }
 
-function FilterSection({ label, children, defaultOpen = true }) {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div className="filter-section">
-      <button className={`filter-section-head${open ? ' open' : ''}`} onClick={() => setOpen(o => !o)}>
-        {label}
-        <Icon name="chevronD" size={10} stroke={2.5}/>
-      </button>
-      {open && <div className="filter-section-body">{children}</div>}
-    </div>
-  );
-}
-
 function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, matFilters, styleFilters, sizeFilters,
-  selectCat, toggleSubcat, toggleEra, toggleCond, toggleMat, toggleStyle, toggleSize, hasFilters, clearAll, sidebarOpen }) {
+  selectCat, selectSubcat, toggleEra, toggleCond, toggleMat, toggleStyle, toggleSize, hasFilters, clearAll, sidebarOpen }) {
   return (
     <div className={`cat-sidebar${sidebarOpen ? ' open' : ''}`}>
       <div className="cat-sidebar-head">
         <span>Filters</span>
-        {hasFilters && <button className="cat-sidebar-clear" onClick={clearAll} style={{padding:'0',borderBottom:'none'}}>Clear all ×</button>}
+        {hasFilters && <button className="cat-sidebar-clear" onClick={clearAll}>Clear all ×</button>}
       </div>
 
-      <FilterSection label="Categories">
-        {CATEGORIES.map(c => {
-          const isOpen = catFilter === c.id;
-          return (
-            <div key={c.id} className="cat-accordion-item">
-              <button className={`cat-accordion-btn${isOpen ? ' open' : ''}`} onClick={() => selectCat(c.id)}>
-                <span>{c.label}</span>
-                <Icon name="chevronD" size={12} stroke={2}/>
+      {/* Categories */}
+      <div className="sidebar-section" style={{ borderTop: 'none', paddingTop: 0 }}>
+        <span className="sidebar-section-label">Categories</span>
+        {CATEGORIES.map(c => (
+          <div key={c.id} className="sidebar-cat-group">
+            <button
+              className={`sidebar-cat-label${catFilter === c.id && !subcatFilters.length ? ' active' : ''}`}
+              onClick={() => selectCat(c.id)}
+            >
+              {c.label}
+            </button>
+            {c.sub.map(s => (
+              <button
+                key={s}
+                className={`sidebar-sub-item${subcatFilters.includes(s) ? ' active' : ''}`}
+                onClick={() => selectSubcat(c.id, s)}
+              >
+                {s}
               </button>
-              {isOpen && (
-                <div className="cat-sub-list">
-                  {c.sub.map(s => (
-                    <button key={s} className={`cat-sub-item${subcatFilters.includes(s) ? ' active' : ''}`} onClick={() => toggleSubcat(s)}>
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </FilterSection>
+            ))}
+          </div>
+        ))}
+      </div>
 
-      <FilterSection label="By era" defaultOpen={false}>
+      {/* By era */}
+      <div className="sidebar-section">
+        <span className="sidebar-section-label">By era</span>
         {ERAS.map(e => (
-          <button key={e.id} className={`filter-item${eraFilters.includes(e.id) ? ' active' : ''}`} onClick={() => toggleEra(e.id)}>
-            <span className="filter-item-swatch" style={{ background:`linear-gradient(135deg,${e.from},${e.to})` }}/>
+          <button key={e.id} className={`sidebar-era-item${eraFilters.includes(e.id) ? ' active' : ''}`} onClick={() => toggleEra(e.id)}>
+            <span className="sidebar-era-swatch" style={{ background:`linear-gradient(135deg,${e.from},${e.to})` }}/>
             {e.label}
           </button>
         ))}
-      </FilterSection>
+      </div>
 
-      <FilterSection label="By grade" defaultOpen={false}>
+      {/* By grade */}
+      <div className="sidebar-section">
+        <span className="sidebar-section-label">By grade</span>
         {CONDITIONS.map(c => (
-          <button key={c.grade} className={`filter-item${condFilters.includes(c.grade) ? ' active' : ''}`} onClick={() => toggleCond(c.grade)}>
-            <span className="filter-item-code">{c.grade}</span>
+          <button key={c.grade} className={`sidebar-grade-item${condFilters.includes(c.grade) ? ' active' : ''}`} onClick={() => toggleCond(c.grade)}>
+            <span className="sidebar-grade-code">{c.grade}</span>
             {c.name}
           </button>
         ))}
-      </FilterSection>
+      </div>
 
-      <FilterSection label="Material" defaultOpen={false}>
+      {/* Material */}
+      <div className="sidebar-section">
+        <span className="sidebar-section-label">Material</span>
         {MATERIALS.map(m => (
-          <button key={m} className={`filter-item${matFilters.includes(m) ? ' active' : ''}`} onClick={() => toggleMat(m)}>
+          <button key={m} className={`sidebar-sub-item${matFilters.includes(m) ? ' active' : ''}`} onClick={() => toggleMat(m)} style={{ paddingLeft: 'var(--s-2)' }}>
             {m}
           </button>
         ))}
-      </FilterSection>
+      </div>
 
-      <FilterSection label="Style" defaultOpen={false}>
+      {/* Style */}
+      <div className="sidebar-section">
+        <span className="sidebar-section-label">Style</span>
         {STYLES.map(s => (
-          <button key={s} className={`filter-item${styleFilters.includes(s) ? ' active' : ''}`} onClick={() => toggleStyle(s)}>
+          <button key={s} className={`sidebar-sub-item${styleFilters.includes(s) ? ' active' : ''}`} onClick={() => toggleStyle(s)} style={{ paddingLeft: 'var(--s-2)' }}>
             {s}
           </button>
         ))}
-      </FilterSection>
+      </div>
 
-      <FilterSection label="Size" defaultOpen={false}>
-        {SIZES.map(sz => (
-          <button key={sz.label} className={`filter-item${sizeFilters.includes(sz.label) ? ' active' : ''}`} onClick={() => toggleSize(sz.label)}>
-            <span className="filter-item-code">{sz.label}</span>
-            {sz.note && <span className="filter-item-note">{sz.note}</span>}
-          </button>
-        ))}
-      </FilterSection>
+      {/* Size */}
+      <div className="sidebar-section">
+        <span className="sidebar-section-label">Size</span>
+        <div className="sidebar-size-row">
+          {SIZES.map(sz => (
+            <button key={sz.label} className={`sidebar-size-btn${sizeFilters.includes(sz.label) ? ' active' : ''}`} onClick={() => toggleSize(sz.label)} title={sz.note}>
+              {sz.label}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -976,9 +976,13 @@ function App() {
   const toggleSize  = (sz) => setSizeFilters(f  => f.includes(sz) ? f.filter(x => x !== sz) : [...f, sz]);
   const toggleLike  = (id, e) => { e.stopPropagation(); setLiked(l => ({ ...l, [id]: !l[id] })); };
 
-  const selectCat   = (id) => {
-    if (catFilter === id) { setCatFilter(null); setSubcatFilters([]); }
+  const selectCat    = (id) => {
+    if (catFilter === id && !subcatFilters.length) { setCatFilter(null); }
     else { setCatFilter(id); setSubcatFilters([]); }
+  };
+  const selectSubcat = (catId, s) => {
+    setCatFilter(catId);
+    setSubcatFilters(f => f.includes(s) ? f.filter(x => x !== s) : [...f, s]);
   };
   const toggleSubcat = (s) => setSubcatFilters(f => f.includes(s) ? f.filter(x => x !== s) : [...f, s]);
 
@@ -1065,7 +1069,7 @@ function App() {
             catFilter={catFilter} subcatFilters={subcatFilters}
             eraFilters={eraFilters} condFilters={condFilters}
             matFilters={matFilters} styleFilters={styleFilters} sizeFilters={sizeFilters}
-            selectCat={selectCat} toggleSubcat={toggleSubcat}
+            selectCat={selectCat} selectSubcat={selectSubcat}
             toggleEra={toggleEra} toggleCond={toggleCond}
             toggleMat={toggleMat} toggleStyle={toggleStyle} toggleSize={toggleSize}
             hasFilters={hasFilters} clearAll={clearAll}
