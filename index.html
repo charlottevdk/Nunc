@@ -127,7 +127,7 @@
 
     /* RESET */
     *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
+    html, body { margin: 0; padding: 0; overflow-x: hidden; max-width: 100%; }
     body {
       font-family: var(--font-body);
       font-size: var(--fs-body-m);
@@ -1296,16 +1296,25 @@
       .container, .container-wide { padding: 0 36px; }
 
       /* Nav */
-      .nav-inner { height: 58px; gap: var(--s-3); }
+      .nav-inner { height: 58px; gap: var(--s-2); }
       .nav-mark { font-size: 24px; padding-bottom: 4px; }
       .nav-mark::after { height: 3px; }
-      .search { max-width: none; padding: 7px 10px; }
-      .search input { font-size: 13px; }
-      .nav-right { gap: var(--s-2); }
-      .nav-right .btn-sell { display: none; }
-      .nav-right .nav-link { display: none; }
-      .btn-sell { padding: 9px 14px 9px 16px; font-size: 10px; letter-spacing: 0.2em; gap: 6px; }
-      .btn-sell::after { font-size: 12px; }
+      /* Search collapses to icon-only circle */
+      .search {
+        width: 36px; height: 36px; max-width: 36px;
+        padding: 0; border: none; background: none;
+        justify-content: center; justify-self: center;
+      }
+      .search input { display: none; }
+      .search-kbd { display: none; }
+      /* Nav right: show sell + login, hide browse + signup */
+      .nav-right { gap: var(--s-1); }
+      .mega-trigger { display: none; }
+      .nav-right .nav-link.signup { display: none; }
+      .nav-right .nav-link:not(.signup) { display: flex; font-size: 13px; padding: 6px 2px; }
+      .nav-right .btn-sell { display: inline-flex; }
+      .btn-sell { padding: 8px 10px 8px 12px; font-size: 9px; letter-spacing: 0.16em; gap: 4px; }
+      .btn-sell::after { font-size: 11px; }
 
       /* Hero */
       .hero { padding-top: var(--s-6); padding-bottom: var(--s-10); }
@@ -1344,12 +1353,17 @@
       .era-label { font-size: 9px; letter-spacing: 0.18em; }
       .era-count { font-size: 9px; }
 
-      /* Conditions — stack to single column */
-      .conditions { grid-template-columns: 1fr; gap: var(--s-3); }
-      .cond { min-height: 0; padding: var(--s-6); gap: var(--s-4); }
-      .cond::before { top: var(--s-5); right: var(--s-5); }
-      .cond-name { font-size: 22px; }
-      .cond-desc { font-size: 13px; }
+      /* Conditions — 2-column compact grid */
+      .conditions { grid-template-columns: repeat(2, 1fr); gap: var(--s-2); }
+      .cond { min-height: 0; padding: var(--s-4) var(--s-4) var(--s-4); gap: var(--s-2); }
+      .cond-icon { width: 36px; height: 36px; }
+      .cond-body {
+        margin: 0 calc(var(--s-4) * -1) calc(var(--s-4) * -1);
+        padding: var(--s-2) var(--s-4) var(--s-4);
+      }
+      .cond-name { font-size: 15px; margin-bottom: 2px; }
+      .cond-desc { font-size: 11px; line-height: 1.4; max-width: none; }
+      .cond-count { font-size: 9px; }
 
       /* Products — smaller, more breathing room */
       .products { grid-template-columns: repeat(2, 1fr); gap: var(--s-10) var(--s-6); }
@@ -1743,6 +1757,23 @@
                       <span className={`subitem-icon${c.muted ? ' muted' : ''}`}><Icon name={c.icon} size={14} stroke={1.6}/></span>
                       <span>{c.name}</span>
                       <span className="subitem-count">{c.count} pcs</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="mobile-nav-accordion">
+              <button className="mobile-nav-link accordion-trigger" onClick={() => toggle('categories')} aria-expanded={openSection === 'categories'}>
+                Browse categories
+                <span className={`chevron-icon${openSection === 'categories' ? ' open' : ''}`}><Icon name="chevron" size={16} stroke={2}/></span>
+              </button>
+              {openSection === 'categories' && (
+                <div className="mobile-nav-accordion-body">
+                  {CATEGORIES.map(cat => (
+                    <a key={cat.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>
+                      <span>{cat.label}</span>
+                      <span className="subitem-count">→</span>
                     </a>
                   ))}
                 </div>
