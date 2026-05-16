@@ -459,6 +459,67 @@
     }
     .empty-clear:hover { border-color: var(--fg); color: var(--fg); }
 
+    /* ─── CATEGORY FILTERS ─── */
+    .cat-filters { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+    .cat-filter-btn {
+      background: none;
+      border: 1.5px solid var(--border-line);
+      border-radius: var(--r-pill);
+      padding: 5px 14px;
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--fg-muted);
+      cursor: pointer;
+      transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+      white-space: nowrap;
+    }
+    .cat-filter-btn:hover { border-color: var(--pine-40); color: var(--fg); }
+    .cat-filter-btn.active {
+      border-color: var(--pine);
+      background: var(--pine);
+      color: var(--butter);
+    }
+
+    /* Subcategory row — slides in below category row */
+    .subcat-row {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      flex-wrap: wrap;
+      padding: var(--s-3) 0 var(--s-1);
+      animation: fadeSlide 180ms var(--ease-out);
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .subcat-label {
+      font-family: var(--font-mono);
+      font-size: 9px; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--tomato);
+      font-weight: 600; white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .subcat-filters { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+    .subcat-btn {
+      background: none;
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--r-pill);
+      padding: 4px 12px;
+      font-family: var(--font-body);
+      font-size: 12px; font-weight: 500;
+      color: var(--fg-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+    }
+    .subcat-btn:hover { border-color: var(--pine-20); color: var(--fg); }
+    .subcat-btn.active {
+      border-color: var(--tomato);
+      background: rgba(196,69,54,0.06);
+      color: var(--tomato);
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(3, 1fr); }
@@ -470,10 +531,13 @@
       .archive-title { font-size: clamp(30px,10vw,48px); }
       .filter-label { min-width: 50px; font-size: 8px; }
       .era-filter-btn { font-size: 9px; padding: 4px 10px 4px 5px; }
+      .cat-filter-btn { font-size: 9px; padding: 4px 10px; }
       .cond-filter-btn { font-size: 9px; padding: 4px 10px; }
       .nav-link { display: none; }
       .sort-wrap { margin-left: 0; }
       .filter-row { gap: var(--s-2); }
+      .filter-row { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+      .filter-row::-webkit-scrollbar { display: none; }
     }
   </style>
 
@@ -488,41 +552,59 @@
 const { useState, useMemo } = React;
 
 const ERAS = [
-  { id: 'pre-50', label: 'Pre-1950s', short: "'49", from: '#D9C7A6', to: '#9C7E4A' },
-  { id: '50s',    label: '1950s',     short: "'50", from: '#E8A87C', to: '#A35E3F' },
-  { id: '60s',    label: '1960s',     short: "'60", from: '#A89D5A', to: '#5C5828' },
-  { id: '70s',    label: '1970s',     short: "'70", from: '#C66E3F', to: '#7A2E20' },
-  { id: '80s',    label: '1980s',     short: "'80", from: '#7E5BA0', to: '#3A2255' },
-  { id: '90s',    label: '1990s',     short: "'90", from: '#5A6B7A', to: '#2A3744' },
-  { id: 'y2k',    label: 'Y2K',       short: 'y2k', from: '#C6CBD3', to: '#6E6F78' },
+  { id: 'pre-50', label: 'Pre-1950s', from: '#D9C7A6', to: '#9C7E4A' },
+  { id: '50s',    label: '1950s',     from: '#E8A87C', to: '#A35E3F' },
+  { id: '60s',    label: '1960s',     from: '#A89D5A', to: '#5C5828' },
+  { id: '70s',    label: '1970s',     from: '#C66E3F', to: '#7A2E20' },
+  { id: '80s',    label: '1980s',     from: '#7E5BA0', to: '#3A2255' },
+  { id: '90s',    label: '1990s',     from: '#5A6B7A', to: '#2A3744' },
+  { id: 'y2k',    label: 'Y2K',       from: '#C6CBD3', to: '#6E6F78' },
+];
+
+const CATEGORIES = [
+  { id: 'outerwear', label: 'Outerwear',       sub: ['Leather jackets', 'Coats & overcoats', 'Bombers', 'Parkas & anoraks', 'Windbreakers', 'Gilets & vests', 'Overshirts'] },
+  { id: 'tops',      label: 'Tops & shirts',   sub: ['Blouses', 'Button-downs', 'T-shirts', 'Tank tops', 'Crop tops', 'Printed shirts'] },
+  { id: 'knitwear',  label: 'Knitwear',        sub: ['Cardigans', 'Pullovers', 'Turtlenecks', 'Knit vests', 'Mohair', 'Fair Isle'] },
+  { id: 'denim',     label: 'Denim',            sub: ['Jeans', 'Denim jackets', 'Denim shirts', 'Denim skirts', 'Overalls'] },
+  { id: 'dresses',   label: 'Dresses',          sub: ['Mini dresses', 'Midi dresses', 'Maxi dresses', 'Slip dresses', 'Wrap dresses', 'Shirt dresses'] },
+  { id: 'skirts',    label: 'Skirts',           sub: ['Mini skirts', 'Midi skirts', 'Maxi skirts', 'Pleated', 'A-line', 'Wrap skirts'] },
+  { id: 'coords',    label: 'Co-ords',          sub: ['Trouser sets', 'Skirt sets', 'Shorts sets', 'Matching suits'] },
+  { id: 'blazers',   label: 'Blazers',          sub: ['Structured', 'Oversized', 'Double-breasted', 'Pinstripe', 'Velvet'] },
+  { id: 'trousers',  label: 'Trousers',         sub: ['Wide-leg', 'Straight cut', 'Flares', 'Cargo', 'Tailored', 'Cropped'] },
+  { id: 'workwear',  label: 'Workwear',         sub: ['Chore coats', 'Field jackets', 'Coveralls', 'Work shirts', 'Utility vests'] },
+  { id: 'accessories', label: 'Accessories',   sub: ['Bags', 'Belts', 'Scarves & bandanas', 'Hats & caps', 'Jewellery', 'Sunglasses'] },
 ];
 
 const CONDITIONS = [
-  { grade: 'NWT', name: 'New with tags' },
-  { grade: 'PR',  name: 'Pristine'      },
-  { grade: 'EX',  name: 'Excellent'     },
-  { grade: 'LV',  name: 'Loved'         },
+  { grade: 'NWT', name: 'New with tags'  },
+  { grade: 'PR',  name: 'Pristine'       },
+  { grade: 'EX',  name: 'Excellent'      },
+  { grade: 'LV',  name: 'Loved'          },
   { grade: 'SL',  name: 'Needs some love'},
-  { grade: 'AM',  name: 'Already mended'},
+  { grade: 'AM',  name: 'Already mended' },
 ];
 
 const PRODUCTS = [
-  { id:1,  name:'Leather bomber, cropped',       era:'70s', price:148, meta:'DETROIT · 1974', cond:'EX', from:'#C66E3F', to:'#7A2E20' },
-  { id:2,  name:'Selvedge denim jacket',          era:'90s', price:92,  meta:'PORTLAND · 1991',cond:'LV', from:'#5A6B7A', to:'#2A3744' },
-  { id:3,  name:'Cable-knit fisherman',           era:'80s', price:68,  meta:'DUBLIN · 1983',  cond:'PR', from:'#E7D7B4', to:'#A88E5A' },
-  { id:4,  name:'Suede western, fringed',         era:'70s', price:218, meta:'AUSTIN · 1976',  cond:'EX', from:'#D9A479', to:'#7A4C28' },
-  { id:5,  name:'Army field jacket, M-65',        era:'60s', price:82,  meta:'BERLIN · 1968',  cond:'LV', from:'#7C7F4E', to:'#2F3318' },
-  { id:6,  name:'Wool peacoat, double-breasted',  era:'80s', price:134, meta:'BOSTON · 1985',  cond:'EX', from:'#A8513A', to:'#4A1D17' },
-  { id:7,  name:'Silk slip dress, bias-cut',      era:'90s', price:76,  meta:'TOKYO · 1998',   cond:'PR', from:'#3A3A36', to:'#15140F' },
-  { id:8,  name:'Mohair cardigan, oversized',     era:'90s', price:58,  meta:'LA · 1994',      cond:'LV', from:'#9BAB8D', to:'#4E6044' },
-  { id:9,  name:'Denim chore coat, indigo',       era:'90s', price:110, meta:'PARIS · 1993',   cond:'EX', from:'#3D5A8A', to:'#1A2A4A' },
-  { id:10, name:'Tartan wool blazer',             era:'80s', price:96,  meta:'EDINBURGH · 1988',cond:'PR',from:'#6B4E3D', to:'#2E1E18' },
-  { id:11, name:'Corduroy shirt jacket',          era:'70s', price:74,  meta:'NASHVILLE · 1972',cond:'LV',from:'#8B6914', to:'#3D2E08' },
-  { id:12, name:'Raw silk blouse, patterned',     era:'60s', price:62,  meta:'MILAN · 1965',   cond:'EX', from:'#A87840', to:'#5C3820' },
-  { id:13, name:'Waxed cotton anorak',            era:'90s', price:128, meta:'OSLO · 1996',    cond:'AM', from:'#4A5E4A', to:'#1E2E1E' },
-  { id:14, name:'Linen blazer, unstructured',     era:'y2k', price:88,  meta:'BARCELONA · 2002',cond:'EX',from:'#B8A882', to:'#6E6050' },
-  { id:15, name:'Velvet smoking jacket',          era:'80s', price:158, meta:'LONDON · 1982',  cond:'PR', from:'#5E3058', to:'#28102A' },
-  { id:16, name:'Cotton workwear trousers',       era:'60s', price:54,  meta:'CHICAGO · 1963', cond:'LV', from:'#7A6E5A', to:'#3A3028' },
+  { id:1,  name:'Leather bomber, cropped',       era:'70s',    cat:'outerwear', sub:'Leather jackets',   price:148, meta:'DETROIT · 1974',    cond:'EX', from:'#C66E3F', to:'#7A2E20' },
+  { id:2,  name:'Selvedge denim jacket',          era:'90s',    cat:'denim',     sub:'Denim jackets',     price:92,  meta:'PORTLAND · 1991',   cond:'LV', from:'#5A6B7A', to:'#2A3744' },
+  { id:3,  name:'Cable-knit fisherman',           era:'80s',    cat:'knitwear',  sub:'Pullovers',         price:68,  meta:'DUBLIN · 1983',     cond:'PR', from:'#E7D7B4', to:'#A88E5A' },
+  { id:4,  name:'Suede western, fringed',         era:'70s',    cat:'outerwear', sub:'Leather jackets',   price:218, meta:'AUSTIN · 1976',     cond:'EX', from:'#D9A479', to:'#7A4C28' },
+  { id:5,  name:'Army field jacket, M-65',        era:'60s',    cat:'workwear',  sub:'Field jackets',     price:82,  meta:'BERLIN · 1968',     cond:'LV', from:'#7C7F4E', to:'#2F3318' },
+  { id:6,  name:'Wool peacoat, double-breasted',  era:'80s',    cat:'outerwear', sub:'Coats & overcoats', price:134, meta:'BOSTON · 1985',     cond:'EX', from:'#A8513A', to:'#4A1D17' },
+  { id:7,  name:'Silk slip dress, bias-cut',      era:'90s',    cat:'dresses',   sub:'Slip dresses',      price:76,  meta:'TOKYO · 1998',      cond:'PR', from:'#3A3A36', to:'#15140F' },
+  { id:8,  name:'Mohair cardigan, oversized',     era:'90s',    cat:'knitwear',  sub:'Cardigans',         price:58,  meta:'LA · 1994',         cond:'LV', from:'#9BAB8D', to:'#4E6044' },
+  { id:9,  name:'Denim chore coat, indigo',       era:'90s',    cat:'workwear',  sub:'Chore coats',       price:110, meta:'PARIS · 1993',      cond:'EX', from:'#3D5A8A', to:'#1A2A4A' },
+  { id:10, name:'Tartan wool blazer',             era:'80s',    cat:'blazers',   sub:'Structured',        price:96,  meta:'EDINBURGH · 1988',  cond:'PR', from:'#6B4E3D', to:'#2E1E18' },
+  { id:11, name:'Corduroy shirt jacket',          era:'70s',    cat:'outerwear', sub:'Overshirts',        price:74,  meta:'NASHVILLE · 1972',  cond:'LV', from:'#8B6914', to:'#3D2E08' },
+  { id:12, name:'Raw silk blouse, patterned',     era:'60s',    cat:'tops',      sub:'Blouses',           price:62,  meta:'MILAN · 1965',      cond:'EX', from:'#A87840', to:'#5C3820' },
+  { id:13, name:'Waxed cotton anorak',            era:'90s',    cat:'outerwear', sub:'Parkas & anoraks',  price:128, meta:'OSLO · 1996',       cond:'AM', from:'#4A5E4A', to:'#1E2E1E' },
+  { id:14, name:'Linen blazer, unstructured',     era:'y2k',    cat:'blazers',   sub:'Structured',        price:88,  meta:'BARCELONA · 2002',  cond:'EX', from:'#B8A882', to:'#6E6050' },
+  { id:15, name:'Velvet smoking jacket',          era:'80s',    cat:'blazers',   sub:'Velvet',            price:158, meta:'LONDON · 1982',     cond:'PR', from:'#5E3058', to:'#28102A' },
+  { id:16, name:'Cotton workwear trousers',       era:'60s',    cat:'trousers',  sub:'Wide-leg',          price:54,  meta:'CHICAGO · 1963',    cond:'LV', from:'#7A6E5A', to:'#3A3028' },
+  { id:17, name:'Pleated midi skirt, wool',       era:'80s',    cat:'skirts',    sub:'Midi skirts',       price:72,  meta:'MILAN · 1986',      cond:'EX', from:'#8A7060', to:'#3A2820' },
+  { id:18, name:'Matching trouser set, linen',    era:'y2k',    cat:'coords',    sub:'Trouser sets',      price:144, meta:'STOCKHOLM · 2001',  cond:'PR', from:'#C8B89A', to:'#786848' },
+  { id:19, name:'Button-down, western print',     era:'70s',    cat:'tops',      sub:'Printed shirts',    price:48,  meta:'PHOENIX · 1973',    cond:'LV', from:'#B87840', to:'#684020' },
+  { id:20, name:'Mini dress, broderie anglaise',  era:'60s',    cat:'dresses',   sub:'Mini dresses',      price:86,  meta:'LONDON · 1967',     cond:'EX', from:'#D8CEB8', to:'#887858' },
 ];
 
 function Icon({ name, size=18, stroke=1.75, fill='none' }) {
@@ -553,7 +635,7 @@ function Nav() {
         </div>
         <div className="nav-right">
           <a href="sell.html" className="btn-sell">Sell now</a>
-          <button className="nav-link">Log in</button>
+          <a href="auth.html" className="nav-link">Log in</a>
         </div>
       </div>
     </header>
@@ -561,26 +643,39 @@ function Nav() {
 }
 
 function App() {
-  const [eraFilters, setEraFilters]   = useState([]);
+  const [eraFilters,  setEraFilters]  = useState([]);
+  const [catFilter,   setCatFilter]   = useState(null);   // only one category at a time
+  const [subcatFilters, setSubcatFilters] = useState([]); // multiple subcats ok
   const [condFilters, setCondFilters] = useState([]);
   const [sort, setSort]               = useState('newest');
   const [liked, setLiked]             = useState({});
 
-  const toggleEra = (id) => setEraFilters(f => f.includes(id) ? f.filter(x => x !== id) : [...f, id]);
-  const toggleCond= (g)  => setCondFilters(f => f.includes(g)  ? f.filter(x => x !== g)  : [...f, g]);
-  const toggleLike= (id, e) => { e.stopPropagation(); setLiked(l => ({ ...l, [id]: !l[id] })); };
-  const clearAll  = () => { setEraFilters([]); setCondFilters([]); };
+  const toggleEra  = (id) => setEraFilters(f => f.includes(id) ? f.filter(x => x !== id) : [...f, id]);
+  const toggleCond = (g)  => setCondFilters(f => f.includes(g)  ? f.filter(x => x !== g)  : [...f, g]);
+  const toggleLike = (id, e) => { e.stopPropagation(); setLiked(l => ({ ...l, [id]: !l[id] })); };
+
+  const selectCat = (id) => {
+    if (catFilter === id) { setCatFilter(null); setSubcatFilters([]); }
+    else { setCatFilter(id); setSubcatFilters([]); }
+  };
+  const toggleSubcat = (s) => setSubcatFilters(f => f.includes(s) ? f.filter(x => x !== s) : [...f, s]);
+
+  const clearAll = () => { setEraFilters([]); setCatFilter(null); setSubcatFilters([]); setCondFilters([]); };
+
+  const activeCat = catFilter ? CATEGORIES.find(c => c.id === catFilter) : null;
 
   const filtered = useMemo(() => {
     let list = [...PRODUCTS];
-    if (eraFilters.length)  list = list.filter(p => eraFilters.includes(p.era));
-    if (condFilters.length) list = list.filter(p => condFilters.includes(p.cond));
+    if (eraFilters.length)    list = list.filter(p => eraFilters.includes(p.era));
+    if (catFilter)            list = list.filter(p => p.cat === catFilter);
+    if (subcatFilters.length) list = list.filter(p => subcatFilters.includes(p.sub));
+    if (condFilters.length)   list = list.filter(p => condFilters.includes(p.cond));
     if (sort === 'price-asc')  list.sort((a,b) => a.price - b.price);
     if (sort === 'price-desc') list.sort((a,b) => b.price - a.price);
     return list;
-  }, [eraFilters, condFilters, sort]);
+  }, [eraFilters, catFilter, subcatFilters, condFilters, sort]);
 
-  const hasFilters = eraFilters.length > 0 || condFilters.length > 0;
+  const hasFilters = eraFilters.length > 0 || catFilter || condFilters.length > 0;
 
   return (
     <>
@@ -588,22 +683,20 @@ function App() {
       <div className="page-wrap">
 
         <div className="archive-header">
-          <div>
-            <h1 className="archive-title">the archive<span className="dot">.</span></h1>
-          </div>
+          <h1 className="archive-title">the archive<span className="dot">.</span></h1>
           <div className="archive-count">{filtered.length} pieces · {PRODUCTS.length} total</div>
         </div>
 
         <div className="filter-bar">
+
+          {/* Era */}
           <div className="filter-row">
             <span className="filter-label">Era</span>
             <div className="era-filters">
               {ERAS.map(e => (
-                <button
-                  key={e.id}
+                <button key={e.id}
                   className={`era-filter-btn${eraFilters.includes(e.id) ? ' active' : ''}`}
-                  onClick={() => toggleEra(e.id)}
-                >
+                  onClick={() => toggleEra(e.id)}>
                   <span className="era-filter-swatch" style={{ background: `linear-gradient(135deg, ${e.from}, ${e.to})` }}/>
                   {e.label}
                 </button>
@@ -611,15 +704,44 @@ function App() {
             </div>
           </div>
 
+          {/* Category */}
+          <div className="filter-row">
+            <span className="filter-label">Category</span>
+            <div className="cat-filters">
+              {CATEGORIES.map(c => (
+                <button key={c.id}
+                  className={`cat-filter-btn${catFilter === c.id ? ' active' : ''}`}
+                  onClick={() => selectCat(c.id)}>
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Subcategories — appear when a category is selected */}
+          {activeCat && (
+            <div className="subcat-row">
+              <span className="subcat-label">↳ {activeCat.label}</span>
+              <div className="subcat-filters">
+                {activeCat.sub.map(s => (
+                  <button key={s}
+                    className={`subcat-btn${subcatFilters.includes(s) ? ' active' : ''}`}
+                    onClick={() => toggleSubcat(s)}>
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Condition + sort */}
           <div className="filter-row">
             <span className="filter-label">Grade</span>
             <div className="cond-filters">
               {CONDITIONS.map(c => (
-                <button
-                  key={c.grade}
+                <button key={c.grade}
                   className={`cond-filter-btn${condFilters.includes(c.grade) ? ' active' : ''}`}
-                  onClick={() => toggleCond(c.grade)}
-                >
+                  onClick={() => toggleCond(c.grade)}>
                   {c.grade} · {c.name}
                 </button>
               ))}
@@ -634,23 +756,24 @@ function App() {
             </div>
           </div>
 
+          {/* Active filter chips */}
           {hasFilters && (
             <div className="active-filters">
               {eraFilters.map(id => {
                 const e = ERAS.find(x => x.id === id);
-                return (
-                  <button key={id} className="active-chip" onClick={() => toggleEra(id)}>
-                    {e.label} <Icon name="x" size={9} stroke={2}/>
-                  </button>
-                );
+                return <button key={id} className="active-chip" onClick={() => toggleEra(id)}>{e.label} <Icon name="x" size={9} stroke={2}/></button>;
               })}
+              {catFilter && (
+                <button className="active-chip" onClick={() => { setCatFilter(null); setSubcatFilters([]); }}>
+                  {activeCat.label} <Icon name="x" size={9} stroke={2}/>
+                </button>
+              )}
+              {subcatFilters.map(s => (
+                <button key={s} className="active-chip" onClick={() => toggleSubcat(s)}>{s} <Icon name="x" size={9} stroke={2}/></button>
+              ))}
               {condFilters.map(g => {
                 const c = CONDITIONS.find(x => x.grade === g);
-                return (
-                  <button key={g} className="active-chip" onClick={() => toggleCond(g)}>
-                    {c.name} <Icon name="x" size={9} stroke={2}/>
-                  </button>
-                );
+                return <button key={g} className="active-chip" onClick={() => toggleCond(g)}>{c.name} <Icon name="x" size={9} stroke={2}/></button>;
               })}
               <button className="clear-all" onClick={clearAll}>Clear all</button>
             </div>
@@ -663,17 +786,13 @@ function App() {
           {filtered.length === 0 ? (
             <div className="empty-state">
               <div className="empty-title">Nothing matches that filter.</div>
-              <div className="empty-sub">Try a different era or condition — there's always something good.</div>
-              <button className="empty-clear" onClick={clearAll}>Clear filters</button>
+              <div className="empty-sub">Try loosening the filters — there's always something good in the archive.</div>
+              <button className="empty-clear" onClick={clearAll}>Clear all filters</button>
             </div>
           ) : filtered.map(p => (
             <a href="product.html" key={p.id} className="product-card">
               <div className="product-card-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
-                <button
-                  className="product-card-heart"
-                  onClick={(e) => toggleLike(p.id, e)}
-                  aria-label="Save"
-                >
+                <button className="product-card-heart" onClick={(e) => toggleLike(p.id, e)} aria-label="Save">
                   <span style={{ color: liked[p.id] ? 'var(--tomato)' : 'var(--pine)', display:'flex' }}>
                     <Icon name="heart" size={13} stroke={1.8} fill={liked[p.id] ? 'currentColor' : 'none'}/>
                   </span>

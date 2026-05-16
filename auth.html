@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>nunc — sign up · log in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --butter:  #F7F1E0;
+      --pine:    #1A3A2E;
+      --peach:   #E8A87C;
+      --tomato:  #C44536;
+      --sage:    #A8B89C;
+
+      --pine-04: rgba(26,58,46,0.04);
+      --pine-08: rgba(26,58,46,0.08);
+      --pine-12: rgba(26,58,46,0.12);
+      --pine-20: rgba(26,58,46,0.20);
+      --pine-40: rgba(26,58,46,0.40);
+      --pine-60: rgba(26,58,46,0.60);
+
+      --bg:          var(--butter);
+      --bg-elevated: #FFFFFF;
+      --fg:          var(--pine);
+      --fg-muted:    var(--pine-60);
+      --fg-subtle:   var(--pine-40);
+      --border-hairline: var(--pine-08);
+      --border-line:     var(--pine-12);
+
+      --font-display: 'Bricolage Grotesque', serif;
+      --font-body:    'Inter', sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+
+      --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px;
+      --s-6:24px; --s-8:32px; --s-10:40px; --s-12:48px; --s-16:64px;
+
+      --r-sm:8px; --r-md:14px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+      --shadow-sm: 0 6px 24px rgba(26,58,46,0.06);
+      --shadow-lg: 0 20px 60px rgba(26,58,46,0.14);
+
+      --ease-out: cubic-bezier(0.22,0.61,0.36,1);
+      --dur-base: 220ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--fg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    input { font: inherit; color: inherit; }
+
+    /* ─── LAYOUT ─── */
+    .auth-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* ─── LEFT PANEL ─── */
+    .left-panel {
+      background: var(--pine);
+      padding: var(--s-12) clamp(var(--s-8), 6vw, 80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    /* subtle grain texture */
+    .left-panel::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/><feColorMatrix type='saturate' values='0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.04'/></svg>");
+      pointer-events: none;
+    }
+    .left-top { position: relative; z-index: 1; }
+    .left-mark {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: -0.045em;
+      color: var(--butter);
+      position: relative;
+      padding-bottom: 5px;
+      display: inline-block;
+    }
+    .left-mark::after {
+      content: '';
+      position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat; background-size: 100% 100%;
+    }
+    .left-body { position: relative; z-index: 1; }
+    .left-headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(36px, 4vw, 56px);
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      color: var(--butter);
+      font-variation-settings: 'opsz' 72;
+      margin-bottom: var(--s-6);
+    }
+    .left-headline .dot { color: var(--tomato); }
+    .left-tagline {
+      font-size: 16px;
+      line-height: 1.65;
+      color: rgba(247,241,224,0.65);
+      max-width: 38ch;
+      margin-bottom: var(--s-8);
+    }
+    .left-checks {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+    .left-check {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(247,241,224,0.7);
+      font-weight: 500;
+    }
+    .left-check-tick {
+      width: 20px; height: 20px;
+      border-radius: 999px;
+      background: rgba(168,184,156,0.25);
+      border: 1px solid rgba(168,184,156,0.4);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--sage);
+    }
+    .left-bottom { position: relative; z-index: 1; }
+    .left-quote {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: rgba(247,241,224,0.45);
+      letter-spacing: -0.01em;
+      border-left: 2px solid rgba(247,241,224,0.15);
+      padding-left: var(--s-5);
+    }
+    /* decorative era discs in background */
+    .left-deco {
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 320px; height: 320px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #C66E3F22, #7A2E2022);
+      border: 1px solid rgba(198,110,63,0.12);
+      pointer-events: none;
+    }
+    .left-deco-2 {
+      position: absolute;
+      top: 40px; right: 80px;
+      width: 120px; height: 120px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #5A6B7A18, #2A374418);
+      border: 1px solid rgba(90,107,122,0.12);
+      pointer-events: none;
+    }
+
+    /* ─── RIGHT PANEL ─── */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: var(--s-12) clamp(var(--s-8), 5vw, 72px);
+    }
+    .right-inner {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* ─── TABS ─── */
+    .auth-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border-hairline);
+      margin-bottom: var(--s-8);
+    }
+    .auth-tab {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: none; border: none;
+      padding: var(--s-3) var(--s-6) var(--s-3) 0;
+      color: var(--fg-subtle);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+    }
+    .auth-tab.active { color: var(--pine); border-bottom-color: var(--pine); }
+
+    /* ─── HEADING ─── */
+    .auth-heading {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(26px, 3vw, 34px);
+      letter-spacing: -0.035em;
+      color: var(--pine);
+      margin-bottom: var(--s-2);
+      font-variation-settings: 'opsz' 72;
+    }
+    .auth-sub {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: var(--s-6);
+      line-height: 1.5;
+    }
+
+    /* ─── SOCIAL BUTTONS ─── */
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+      margin-bottom: var(--s-5);
+    }
+    .btn-social {
+      width: 100%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-line);
+      border-radius: var(--r-md);
+      padding: 13px var(--s-5);
+      display: flex;
+      align-items: center;
+      gap: var(--s-4);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--fg);
+      cursor: pointer;
+      transition: background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+      position: relative;
+    }
+    .btn-social:hover {
+      background: var(--pine-04);
+      border-color: var(--pine-20);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-social-icon {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .btn-social-label { flex: 1; text-align: left; }
+    .btn-social-arrow {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--fg-subtle);
+      margin-left: auto;
+      transition: transform var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+    }
+    .btn-social:hover .btn-social-arrow { transform: translateX(3px); color: var(--fg-muted); }
+
+    /* Apple button */
+    .btn-social.apple {
+      background: #000;
+      border-color: #000;
+      color: #fff;
+    }
+    .btn-social.apple:hover { background: #111; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+    .btn-social.apple .btn-social-arrow { color: rgba(255,255,255,0.4); }
+    .btn-social.apple:hover .btn-social-arrow { color: rgba(255,255,255,0.7); }
+
+    /* ─── DIVIDER ─── */
+    .auth-divider {
+      display: flex; align-items: center; gap: var(--s-4);
+      margin: var(--s-5) 0;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border-hairline);
+    }
+    .auth-divider-text {
+      font-family: var(--font-mono);
+      font-size: 9px; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--fg-subtle);
+      white-space: nowrap;
+    }
+
+    /* ─── FORM ─── */
+    .auth-form { display: flex; flex-direction: column; gap: var(--s-4); }
+    .form-field { display: flex; flex-direction: column; gap: 6px; }
+    .form-label {
+      font-family: var(--font-mono);
+      font-size: 9px; letter-spacing: 0.28em;
+      text-transform: uppercase; font-weight: 600;
+      color: var(--fg-muted);
+    }
+    .form-input {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-line);
+      border-radius: var(--r-md);
+      padding: 13px var(--s-4);
+      font-size: 15px;
+      color: var(--fg);
+      transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+      width: 100%;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--pine-40);
+      box-shadow: 0 0 0 3px var(--pine-04);
+    }
+    .form-input::placeholder { color: var(--fg-subtle); }
+
+    .form-input-wrap { position: relative; }
+    .form-input-wrap .form-input { padding-right: 44px; }
+    .form-input-toggle {
+      position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: var(--fg-subtle); cursor: pointer;
+      display: flex; padding: 0;
+      transition: color var(--dur-base) var(--ease-out);
+    }
+    .form-input-toggle:hover { color: var(--fg-muted); }
+
+    .forgot-link {
+      font-size: 12px; color: var(--fg-subtle);
+      text-decoration: underline; text-underline-offset: 2px;
+      margin-top: -var(--s-2);
+      align-self: flex-end;
+      background: none; border: none;
+      cursor: pointer;
+      transition: color var(--dur-base) var(--ease-out);
+    }
+    .forgot-link:hover { color: var(--fg-muted); }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--tomato);
+      color: var(--butter);
+      border: none;
+      border-radius: var(--r-pill);
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 600;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      cursor: pointer;
+      margin-top: var(--s-2);
+      transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+    }
+    .btn-submit::after { content: '→'; font-family: var(--font-body); font-size: 15px; letter-spacing: 0; transition: transform var(--dur-base) var(--ease-out); }
+    .btn-submit:hover { opacity: 0.92; box-shadow: 0 6px 20px rgba(196,69,54,0.3); }
+    .btn-submit:hover::after { transform: translateX(4px); }
+    .btn-submit:active { transform: translateY(1px); box-shadow: none; }
+
+    /* ─── FOOTER NOTE ─── */
+    .auth-footer {
+      margin-top: var(--s-6);
+      font-size: 12px;
+      color: var(--fg-subtle);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .auth-footer button {
+      background: none; border: none;
+      color: var(--pine); font-size: inherit;
+      font-weight: 600; cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .auth-footer a { color: var(--fg-subtle); text-decoration: underline; text-underline-offset: 2px; }
+
+    .auth-legal {
+      margin-top: var(--s-8);
+      padding-top: var(--s-5);
+      border-top: 1px solid var(--border-hairline);
+      font-size: 11px;
+      color: var(--fg-subtle);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .auth-legal a { color: var(--fg-subtle); text-decoration: underline; text-underline-offset: 2px; }
+
+    /* ─── BACK LINK ─── */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.22em;
+      text-transform: uppercase; font-weight: 500;
+      color: rgba(247,241,224,0.5);
+      background: none; border: none;
+      padding: 0; cursor: pointer;
+      transition: color var(--dur-base) var(--ease-out);
+    }
+    .back-link:hover { color: rgba(247,241,224,0.8); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 780px) {
+      .auth-wrap { grid-template-columns: 1fr; }
+      .left-panel {
+        padding: var(--s-8) clamp(var(--s-6), 6vw, 48px);
+        min-height: 0;
+      }
+      .left-headline { font-size: clamp(28px, 8vw, 44px); }
+      .left-body { margin: var(--s-6) 0; }
+      .left-quote { display: none; }
+      .left-checks { flex-direction: row; flex-wrap: wrap; gap: var(--s-3) var(--s-5); }
+      .left-deco, .left-deco-2 { display: none; }
+      .right-panel { padding: var(--s-8) clamp(var(--s-6), 6vw, 48px); }
+    }
+  </style>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+<div id="app"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+function Icon({ name, size = 18, stroke = 1.75 }) {
+  const paths = {
+    arrowL:  <><path d="M19 12H5"/><path d="m11 19-7-7 7-7"/></>,
+    check:   <path d="M20 6 9 17l-5-5"/>,
+    eye:     <><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></>,
+    eyeOff:  <><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></>,
+  };
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth={stroke}
+         strokeLinecap="round" strokeLinejoin="round">
+      {paths[name]}
+    </svg>
+  );
+}
+
+function GoogleIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24">
+      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+    </svg>
+  );
+}
+
+function AppleIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+    </svg>
+  );
+}
+
+function PasswordField({ value, onChange, placeholder }) {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="form-input-wrap">
+      <input
+        className="form-input"
+        type={show ? 'text' : 'password'}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        autoComplete="current-password"
+      />
+      <button className="form-input-toggle" type="button" onClick={() => setShow(s => !s)} aria-label={show ? 'Hide password' : 'Show password'}>
+        <Icon name={show ? 'eyeOff' : 'eye'} size={16} stroke={1.6}/>
+      </button>
+    </div>
+  );
+}
+
+function AuthForm() {
+  const [tab, setTab] = useState('signup');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const isSignup = tab === 'signup';
+
+  return (
+    <div className="right-panel">
+      <div className="right-inner">
+        <div className="auth-tabs">
+          <button className={`auth-tab${tab === 'signup' ? ' active' : ''}`} onClick={() => setTab('signup')}>
+            Sign up
+          </button>
+          <button className={`auth-tab${tab === 'login' ? ' active' : ''}`} onClick={() => setTab('login')}>
+            Log in
+          </button>
+        </div>
+
+        <h1 className="auth-heading">
+          {isSignup ? 'Join the archive.' : 'Welcome back.'}
+        </h1>
+        <p className="auth-sub">
+          {isSignup
+            ? 'Save pieces, track orders, and sell your own finds.'
+            : 'Good to see you again.'}
+        </p>
+
+        {/* Social sign-in */}
+        <div className="social-buttons">
+          <button className="btn-social">
+            <span className="btn-social-icon"><GoogleIcon/></span>
+            <span className="btn-social-label">{isSignup ? 'Sign up' : 'Continue'} with Google</span>
+            <span className="btn-social-arrow">→</span>
+          </button>
+          <button className="btn-social apple">
+            <span className="btn-social-icon"><AppleIcon/></span>
+            <span className="btn-social-label">{isSignup ? 'Sign up' : 'Continue'} with Apple</span>
+            <span className="btn-social-arrow">→</span>
+          </button>
+        </div>
+
+        <div className="auth-divider">
+          <span className="auth-divider-text">or with email</span>
+        </div>
+
+        {/* Email form */}
+        <div className="auth-form">
+          {isSignup && (
+            <div className="form-field">
+              <label className="form-label">Your name</label>
+              <input
+                className="form-input"
+                type="text"
+                placeholder="First name"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                autoComplete="given-name"
+              />
+            </div>
+          )}
+          <div className="form-field">
+            <label className="form-label">Email</label>
+            <input
+              className="form-input"
+              type="email"
+              placeholder="you@email.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              autoComplete="email"
+            />
+          </div>
+          <div className="form-field">
+            <label className="form-label">Password</label>
+            <PasswordField
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder={isSignup ? 'min. 8 characters' : 'your password'}
+            />
+          </div>
+          {!isSignup && (
+            <button type="button" className="forgot-link">Forgot your password?</button>
+          )}
+          <button className="btn-submit" type="button">
+            {isSignup ? 'Create account' : 'Log in'}
+          </button>
+        </div>
+
+        <div className="auth-footer">
+          {isSignup
+            ? <>Already have an account? <button onClick={() => setTab('login')}>Log in</button></>
+            : <>No account? <button onClick={() => setTab('signup')}>Sign up free</button></>
+          }
+        </div>
+
+        <div className="auth-legal">
+          By continuing you agree to Nunc's <a href="#">Terms of service</a> and <a href="#">Privacy policy</a>.
+          {isSignup && <><br/>We don't sell your data. Ever.</>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LeftPanel() {
+  return (
+    <div className="left-panel">
+      <div className="left-deco"/>
+      <div className="left-deco-2"/>
+
+      <div className="left-top">
+        <a href="index.html" className="back-link">
+          <Icon name="arrowL" size={13} stroke={2}/> Back to archive
+        </a>
+      </div>
+
+      <div className="left-body">
+        <a href="index.html" className="left-mark">nunc</a>
+        <div style={{ height: 32 }}/>
+        <h2 className="left-headline">
+          Sourced<span className="dot">.</span><br/>
+          Verified<span className="dot">.</span><br/>
+          Yours<span className="dot">.</span>
+        </h2>
+        <p className="left-tagline">
+          One account. Access to 2,107 verified vintage pieces across seven decades. Save favourites, track orders, and list your own finds.
+        </p>
+        <div className="left-checks">
+          <div className="left-check">
+            <span className="left-check-tick"><Icon name="check" size={10} stroke={2.5}/></span>
+            Save any piece
+          </div>
+          <div className="left-check">
+            <span className="left-check-tick"><Icon name="check" size={10} stroke={2.5}/></span>
+            Sell your finds
+          </div>
+          <div className="left-check">
+            <span className="left-check-tick"><Icon name="check" size={10} stroke={2.5}/></span>
+            Friday drops early access
+          </div>
+        </div>
+      </div>
+
+      <div className="left-bottom">
+        <p className="left-quote">
+          "Every piece has a past — a city, a decade, an owner before you."
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div className="auth-wrap">
+      <LeftPanel/>
+      <AuthForm/>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('app'));
+root.render(<App/>);
+</script>
+</body>
+</html>
