@@ -626,6 +626,18 @@
       text-transform: uppercase; font-weight: 600; color: var(--fg-subtle);
       padding-bottom: var(--s-2); display: block;
     }
+    .sidebar-accordion-header {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; background: none; border: none; text-align: left;
+      cursor: pointer; padding: 0; gap: var(--s-2);
+    }
+    .sidebar-accordion-header .sidebar-section-label { padding-bottom: 0; flex: 1; }
+    .sidebar-filter-count {
+      background: var(--tomato); color: var(--butter); border-radius: 999px;
+      font-family: var(--font-mono); font-size: 8px; font-weight: 700;
+      min-width: 15px; height: 15px; display: inline-flex; align-items: center;
+      justify-content: center; padding: 0 3px; flex-shrink: 0;
+    }
     .sidebar-cat-group { margin-bottom: var(--s-1); }
     .sidebar-cat-label {
       display: flex; align-items: center; justify-content: space-between;
@@ -878,7 +890,8 @@ function Nav() {
 function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, matFilters, styleFilters, sizeFilters,
   selectCat, selectSubcat, toggleEra, toggleCond, toggleMat, toggleStyle, toggleSize, hasFilters, clearAll, sidebarOpen }) {
   const [openCat, setOpenCat] = useState(null);
-  const toggleCat = (id) => setOpenCat(cur => cur === id ? null : id);
+  const [matOpen, setMatOpen] = useState(false);
+  const [styleOpen, setStyleOpen] = useState(false);
 
   return (
     <div className={`cat-sidebar${sidebarOpen ? ' open' : ''}`}>
@@ -894,7 +907,7 @@ function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, ma
           <div key={c.id} className="sidebar-cat-group">
             <button
               className={`sidebar-cat-label${catFilter === c.id ? ' active' : ''}`}
-              onClick={() => toggleCat(c.id)}
+              onClick={() => { selectCat(c.id); setOpenCat(cur => cur === c.id ? null : c.id); }}
             >
               <span>{c.label}</span>
               <span className={`sidebar-cat-chevron${openCat === c.id ? ' open' : ''}`}>
@@ -918,6 +931,44 @@ function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, ma
         ))}
       </div>
 
+      {/* Material */}
+      <div className="sidebar-section">
+        <button className="sidebar-accordion-header" onClick={() => setMatOpen(o => !o)}>
+          <span className="sidebar-section-label">Material</span>
+          {matFilters.length > 0 && <span className="sidebar-filter-count">{matFilters.length}</span>}
+          <span className={`sidebar-cat-chevron${matOpen ? ' open' : ''}`}>
+            <Icon name="chevronD" size={11} stroke={2.5}/>
+          </span>
+        </button>
+        {matOpen && (
+          <div className="sidebar-sub-list" style={{ marginTop: 'var(--s-1)' }}>
+            {MATERIALS.map(m => (
+              <button key={m} className={`sidebar-sub-item${matFilters.includes(m) ? ' active' : ''}`}
+                onClick={() => toggleMat(m)} style={{ paddingLeft: 'var(--s-2)' }}>{m}</button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Style */}
+      <div className="sidebar-section">
+        <button className="sidebar-accordion-header" onClick={() => setStyleOpen(o => !o)}>
+          <span className="sidebar-section-label">Style</span>
+          {styleFilters.length > 0 && <span className="sidebar-filter-count">{styleFilters.length}</span>}
+          <span className={`sidebar-cat-chevron${styleOpen ? ' open' : ''}`}>
+            <Icon name="chevronD" size={11} stroke={2.5}/>
+          </span>
+        </button>
+        {styleOpen && (
+          <div className="sidebar-sub-list" style={{ marginTop: 'var(--s-1)' }}>
+            {STYLES.map(s => (
+              <button key={s} className={`sidebar-sub-item${styleFilters.includes(s) ? ' active' : ''}`}
+                onClick={() => toggleStyle(s)} style={{ paddingLeft: 'var(--s-2)' }}>{s}</button>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* By era */}
       <div className="sidebar-section">
         <span className="sidebar-section-label">By era</span>
@@ -936,26 +987,6 @@ function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, ma
           <button key={c.grade} className={`sidebar-grade-item${condFilters.includes(c.grade) ? ' active' : ''}`} onClick={() => toggleCond(c.grade)}>
             <span className="sidebar-grade-code">{c.grade}</span>
             {c.name}
-          </button>
-        ))}
-      </div>
-
-      {/* Material */}
-      <div className="sidebar-section">
-        <span className="sidebar-section-label">Material</span>
-        {MATERIALS.map(m => (
-          <button key={m} className={`sidebar-sub-item${matFilters.includes(m) ? ' active' : ''}`} onClick={() => toggleMat(m)} style={{ paddingLeft: 'var(--s-2)' }}>
-            {m}
-          </button>
-        ))}
-      </div>
-
-      {/* Style */}
-      <div className="sidebar-section">
-        <span className="sidebar-section-label">Style</span>
-        {STYLES.map(s => (
-          <button key={s} className={`sidebar-sub-item${styleFilters.includes(s) ? ' active' : ''}`} onClick={() => toggleStyle(s)} style={{ paddingLeft: 'var(--s-2)' }}>
-            {s}
           </button>
         ))}
       </div>
