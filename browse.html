@@ -520,6 +520,108 @@
       color: var(--tomato);
     }
 
+    /* ─── MEGA MENU ─── */
+    .mega-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 29;
+      background: rgba(26,58,46,0.06);
+    }
+    .mega-panel {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-hairline);
+      box-shadow: 0 8px 32px rgba(26,58,46,0.10);
+      display: flex;
+      overflow: hidden;
+      animation: megaSlide 160ms var(--ease-out);
+    }
+    @keyframes megaSlide {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .mega-cats {
+      width: 200px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border-hairline);
+      padding: var(--s-3) 0;
+      overflow-y: auto;
+      background: var(--pine-04);
+    }
+    .mega-cat-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      border-left: 2px solid transparent;
+      padding: 11px var(--s-6);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--fg-muted);
+      cursor: pointer;
+      transition: background var(--dur-base), color var(--dur-base), border-color var(--dur-base);
+      white-space: nowrap;
+    }
+    .mega-cat-btn:hover { background: var(--pine-08); color: var(--fg); }
+    .mega-cat-btn.active {
+      background: var(--pine-08);
+      color: var(--pine);
+      font-weight: 600;
+      border-left-color: var(--tomato);
+    }
+    .mega-right {
+      flex: 1;
+      padding: var(--s-6) var(--s-8);
+      overflow-y: auto;
+      max-height: 420px;
+    }
+    .mega-right-head {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.025em;
+      color: var(--pine);
+      margin-bottom: var(--s-4);
+    }
+    .mega-sub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0 var(--s-5);
+    }
+    .mega-sub-btn {
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--border-hairline);
+      text-align: left;
+      padding: 10px 0;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--fg-muted);
+      cursor: pointer;
+      transition: color var(--dur-base);
+      white-space: nowrap;
+    }
+    .mega-sub-btn:hover { color: var(--pine); }
+    .mega-trigger {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+      background: none;
+      border: none;
+      padding: 8px 4px;
+      color: var(--fg-muted);
+      cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
+      transition: color var(--dur-base);
+      white-space: nowrap;
+    }
+    .mega-trigger:hover { color: var(--fg); }
+    .mega-trigger.open { color: var(--pine); font-weight: 600; }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(3, 1fr); }
@@ -613,7 +715,8 @@ function Icon({ name, size=18, stroke=1.75, fill='none' }) {
     heart:   <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>,
     check:   <path d="M20 6 9 17l-5-5"/>,
     x:       <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
-    sliders: <><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></>,
+    sliders:  <><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></>,
+    chevronD: <path d="m6 9 6 6 6-6"/>,
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill={fill}
@@ -624,7 +727,48 @@ function Icon({ name, size=18, stroke=1.75, fill='none' }) {
   );
 }
 
-function Nav() {
+function MegaMenu({ onClose, onSelectCat, onSelectSubcat }) {
+  const [hovered, setHovered] = React.useState(CATEGORIES[0].id);
+  const activeCat = CATEGORIES.find(c => c.id === hovered);
+
+  React.useEffect(() => {
+    const fn = e => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', fn);
+    return () => document.removeEventListener('keydown', fn);
+  }, [onClose]);
+
+  return (
+    <div className="mega-backdrop" onClick={onClose}>
+      <div className="mega-panel" onClick={e => e.stopPropagation()}>
+        <div className="mega-cats">
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat.id}
+              className={`mega-cat-btn${hovered === cat.id ? ' active' : ''}`}
+              onMouseEnter={() => setHovered(cat.id)}
+              onClick={() => { onSelectCat(cat.id); onClose(); }}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+        <div className="mega-right">
+          <div className="mega-right-head">{activeCat.label}</div>
+          <div className="mega-sub-grid">
+            {activeCat.sub.map(s => (
+              <button key={s} className="mega-sub-btn"
+                onClick={() => { onSelectSubcat(activeCat.id, s); onClose(); }}>
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Nav({ onOpenMega, megaOpen }) {
   return (
     <header className="nav">
       <div className="nav-inner">
@@ -634,6 +778,9 @@ function Nav() {
           <input type="text" placeholder="search — '70s leather, mohair, M-65…"/>
         </div>
         <div className="nav-right">
+          <button className={`mega-trigger${megaOpen ? ' open' : ''}`} onClick={onOpenMega}>
+            Browse <Icon name="chevronD" size={12} stroke={2}/>
+          </button>
           <a href="sell.html" className="btn-sell">Sell now</a>
           <a href="auth.html" className="nav-link">Log in</a>
         </div>
@@ -643,12 +790,13 @@ function Nav() {
 }
 
 function App() {
-  const [eraFilters,  setEraFilters]  = useState([]);
-  const [catFilter,   setCatFilter]   = useState(null);   // only one category at a time
-  const [subcatFilters, setSubcatFilters] = useState([]); // multiple subcats ok
-  const [condFilters, setCondFilters] = useState([]);
-  const [sort, setSort]               = useState('newest');
-  const [liked, setLiked]             = useState({});
+  const [megaOpen,      setMegaOpen]      = useState(false);
+  const [eraFilters,    setEraFilters]    = useState([]);
+  const [catFilter,     setCatFilter]     = useState(null);
+  const [subcatFilters, setSubcatFilters] = useState([]);
+  const [condFilters,   setCondFilters]   = useState([]);
+  const [sort,          setSort]          = useState('newest');
+  const [liked,         setLiked]         = useState({});
 
   const toggleEra  = (id) => setEraFilters(f => f.includes(id) ? f.filter(x => x !== id) : [...f, id]);
   const toggleCond = (g)  => setCondFilters(f => f.includes(g)  ? f.filter(x => x !== g)  : [...f, g]);
@@ -661,6 +809,9 @@ function App() {
   const toggleSubcat = (s) => setSubcatFilters(f => f.includes(s) ? f.filter(x => x !== s) : [...f, s]);
 
   const clearAll = () => { setEraFilters([]); setCatFilter(null); setSubcatFilters([]); setCondFilters([]); };
+
+  const handleMegaCat    = (catId) => { selectCat(catId); };
+  const handleMegaSubcat = (catId, sub) => { setCatFilter(catId); setSubcatFilters([sub]); };
 
   const activeCat = catFilter ? CATEGORIES.find(c => c.id === catFilter) : null;
 
@@ -679,7 +830,14 @@ function App() {
 
   return (
     <>
-      <Nav/>
+      <Nav onOpenMega={() => setMegaOpen(true)} megaOpen={megaOpen}/>
+      {megaOpen && (
+        <MegaMenu
+          onClose={() => setMegaOpen(false)}
+          onSelectCat={handleMegaCat}
+          onSelectSubcat={handleMegaSubcat}
+        />
+      )}
       <div className="page-wrap">
 
         <div className="archive-header">
