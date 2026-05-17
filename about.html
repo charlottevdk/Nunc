@@ -129,37 +129,36 @@
     .mobile-menu {
       position: fixed; top: 64px; left: 0; right: 0; bottom: 0;
       background: var(--butter); z-index: 28;
-      display: flex; flex-direction: column; overflow-y: auto;
-      padding: var(--s-6); border-top: 1px solid var(--border-hairline);
+      border-top: 1px solid var(--border-hairline); overflow: hidden;
     }
-    .mobile-nav-links { display: flex; flex-direction: column; border-top: 1px solid var(--border-hairline); flex: 1; }
-    .mobile-nav-link {
-      font-family: var(--font-display); font-size: 28px; font-weight: 700;
-      letter-spacing: -0.03em; color: var(--pine); padding: var(--s-4) 0;
-      border-bottom: 1px solid var(--border-hairline); text-decoration: none;
+    .menu-panels { display: flex; width: 200%; height: 100%; transition: transform 300ms cubic-bezier(0.22,0.61,0.36,1); }
+    .menu-panel { width: 50%; height: 100%; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-6); }
+    .menu-item {
       display: flex; align-items: center; justify-content: space-between;
-      background: none; border-top: none; border-left: none; border-right: none;
-      width: 100%; cursor: pointer;
+      padding: var(--s-4) 0; border-bottom: 1px solid var(--border-hairline);
+      text-decoration: none; background: none;
+      border-top: none; border-left: none; border-right: none;
+      width: 100%; text-align: left; cursor: pointer;
+      transition: color var(--dur-base) var(--ease-out);
     }
-    .mobile-nav-actions { display: flex; flex-direction: column; gap: var(--s-3); padding-top: var(--s-6); }
-    .mobile-nav-actions .btn-sell { justify-content: center; width: 100%; }
-    .mobile-nav-accordion-body { padding: var(--s-2) 0 var(--s-4); display: flex; flex-direction: column; gap: 2px; }
-    .mobile-nav-sub-label {
-      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.32em;
-      text-transform: uppercase; font-weight: 600; color: var(--fg-subtle);
-      padding: var(--s-4) var(--s-3) var(--s-2); margin-top: var(--s-1);
-    }
-    .mobile-nav-subitem {
-      display: flex; align-items: center; gap: var(--s-3);
-      padding: 10px var(--s-3); border-radius: var(--r-md);
-      font-family: var(--font-body); font-size: 15px; font-weight: 500;
-      color: var(--fg); text-decoration: none;
-      transition: background var(--dur-base) var(--ease-out);
-    }
-    .mobile-nav-subitem:hover { background: var(--pine-04); }
-    .mobile-subitem-swatch { width: 20px; height: 20px; border-radius: 999px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(26,58,46,0.12); }
-    .mobile-chevron { display: flex; flex-shrink: 0; transition: transform var(--dur-base) var(--ease-out); }
-    .mobile-chevron.open { transform: rotate(180deg); }
+    .menu-item-primary { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--pine); }
+    .menu-item-secondary { font-size: 15px; font-weight: 500; color: var(--pine-60); }
+    .menu-item:hover { color: var(--tomato); }
+    .menu-actions { margin-top: auto; padding-top: var(--s-6); display: flex; flex-direction: column; gap: var(--s-3); }
+    .menu-actions .btn-sell { justify-content: center; text-decoration: none; }
+    .menu-auth-link { text-align: center; font-size: 14px; font-weight: 500; color: var(--pine-60); text-decoration: none; padding: var(--s-2) 0; transition: color var(--dur-base); }
+    .menu-auth-link.muted { opacity: 0.6; }
+    .menu-auth-link:hover { color: var(--pine); }
+    .menu-panel-head { display: flex; align-items: center; padding-bottom: var(--s-4); margin-bottom: var(--s-2); border-bottom: 2px solid var(--border-line); }
+    .menu-back { display: flex; align-items: center; gap: var(--s-2); background: none; border: none; cursor: pointer; font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--pine); padding: 0; }
+    .menu-section-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; font-weight: 600; color: var(--fg-subtle); padding: var(--s-4) 0 var(--s-2); display: block; }
+    .menu-era-chip { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) 0; text-decoration: none; color: var(--fg); font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border-hairline); transition: color var(--dur-base); }
+    .menu-era-chip:hover { color: var(--tomato); }
+    .menu-era-swatch { width: 18px; height: 18px; border-radius: 999px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(26,58,46,0.12); }
+    .menu-grade-chip { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) 0; text-decoration: none; border-bottom: 1px solid var(--border-hairline); transition: color var(--dur-base); }
+    .menu-grade-chip:hover { color: var(--pine); }
+    .menu-grade-code { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; font-weight: 700; min-width: 28px; color: var(--fg); flex-shrink: 0; }
+    .menu-grade-name { font-size: 13px; font-weight: 500; color: var(--fg-muted); }
     @media (max-width: 900px) { .nav-right .nav-link.signup { display: none; } }
     @media (max-width: 640px) {
       .nav-right .nav-link.signup { display: none; }
@@ -777,7 +776,7 @@ const CATEGORIES = [
   { id: 'accessories', label: 'Accessories',       sub: ['Bags','Belts','Scarves & bandanas','Hats & caps','Jewellery','Sunglasses'] },
 ];
 
-function Icon({ name, size=18, stroke=1.75, fill='none' }) {
+function Icon({ name, size=18, stroke=1.75, fill='none', style }) {
   const paths = {
     search:   <><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>,
     x:        <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
@@ -786,55 +785,63 @@ function Icon({ name, size=18, stroke=1.75, fill='none' }) {
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill={fill}
-         stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
+         stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round"
+         style={style}>
       {paths[name]}
     </svg>
   );
 }
 
 function MobileMenu({ close }) {
-  const [browseOpen, setBrowseOpen] = useState(false);
+  const [panel, setPanel] = useState('main');
   return (
     <div className="mobile-menu" role="dialog" aria-label="Navigation">
-      <div className="mobile-nav-links">
-        <div style={{ borderBottom: '1px solid var(--border-hairline)' }}>
-          <button className="mobile-nav-link" onClick={() => setBrowseOpen(o => !o)}>
+      <div className="menu-panels" style={{ transform: panel === 'browse' ? 'translateX(-50%)' : 'translateX(0)' }}>
+        <div className="menu-panel">
+          <button className="menu-item menu-item-primary" onClick={() => setPanel('browse')}>
             Browse
-            <span className={`mobile-chevron${browseOpen ? ' open' : ''}`}><Icon name="chevronD" size={16} stroke={2}/></span>
+            <Icon name="chevronD" size={16} stroke={2} style={{ transform:'rotate(-90deg)', flexShrink:0 }}/>
           </button>
-          {browseOpen && (
-            <div className="mobile-nav-accordion-body">
-              <div className="mobile-nav-sub-label">Categories</div>
-              {CATEGORIES.map(cat => (
-                <a key={cat.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>{cat.label}</a>
-              ))}
-              <div className="mobile-nav-sub-label">By era</div>
-              {ERAS.map(e => (
-                <a key={e.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>
-                  <span className="mobile-subitem-swatch" style={{ background: `linear-gradient(135deg,${e.from},${e.to})` }}/>
-                  {e.label}
-                </a>
-              ))}
-              <div className="mobile-nav-sub-label">By grade</div>
-              {CONDITIONS.map(c => (
-                <a key={c.grade} href="browse.html" className="mobile-nav-subitem" onClick={close}>
-                  <span style={{ fontFamily:'var(--font-mono)', fontSize:'10px', letterSpacing:'0.14em', fontWeight:700, minWidth:28 }}>{c.grade}</span>
-                  {c.name}
-                </a>
-              ))}
-            </div>
-          )}
+          <a href="browse.html" className="menu-item menu-item-primary" onClick={close}>Friday drops</a>
+          <a href="browse.html" className="menu-item menu-item-primary" onClick={close}>Just verified</a>
+          <a href="about.html" className="menu-item menu-item-secondary" onClick={close}>About</a>
+          <a href="about.html" className="menu-item menu-item-secondary" onClick={close}>How it works</a>
+          <a href="#" className="menu-item menu-item-secondary" onClick={close}>Instagram</a>
+          <div className="menu-actions">
+            <a href="sell.html" className="btn-sell" style={{ justifyContent:'center', textDecoration:'none' }}>Sell now</a>
+            <a href="auth.html" className="menu-auth-link">Sign up</a>
+            <a href="auth.html" className="menu-auth-link muted">Log in</a>
+          </div>
         </div>
-        <a href="browse.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none' }}>Friday drops</a>
-        <a href="browse.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none' }}>Just verified</a>
-        <a href="about.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none', fontSize:18, fontWeight:600, color:'var(--pine-60)' }}>About</a>
-        <a href="about.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none', fontSize:18, fontWeight:600, color:'var(--pine-60)' }}>How it works</a>
-        <a href="#" className="mobile-nav-link" onClick={close} style={{ textDecoration:'none', fontSize:18, fontWeight:600, color:'var(--pine-60)' }}>Instagram</a>
-      </div>
-      <div className="mobile-nav-actions">
-        <a href="sell.html" className="btn-sell" style={{ justifyContent:'center', textDecoration:'none' }}>Sell now</a>
-        <a href="auth.html" className="nav-link" style={{ textAlign:'center' }}>Sign up</a>
-        <a href="auth.html" className="nav-link" style={{ textAlign:'center', opacity:0.7 }}>Log in</a>
+        <div className="menu-panel">
+          <div className="menu-panel-head">
+            <button className="menu-back" onClick={() => setPanel('main')}>
+              <Icon name="chevronD" size={16} stroke={2} style={{ transform:'rotate(90deg)' }}/>
+              Browse
+            </button>
+          </div>
+          <span className="menu-section-label">Categories</span>
+          {CATEGORIES.map(cat => (
+            <a key={cat.id} href="browse.html" className="menu-item menu-item-primary" onClick={close} style={{ fontSize:18 }}>
+              {cat.label}
+              <Icon name="chevronD" size={14} stroke={2} style={{ transform:'rotate(-90deg)', flexShrink:0 }}/>
+            </a>
+          ))}
+          <span className="menu-section-label">By era</span>
+          {ERAS.map(e => (
+            <a key={e.id} href="browse.html" className="menu-era-chip" onClick={close}>
+              <span className="menu-era-swatch" style={{ background:`linear-gradient(135deg,${e.from},${e.to})` }}/>
+              {e.label}
+            </a>
+          ))}
+          <span className="menu-section-label">By grade</span>
+          {CONDITIONS.map(c => (
+            <a key={c.grade} href="browse.html" className="menu-grade-chip" onClick={close}>
+              <span className="menu-grade-code">{c.grade}</span>
+              <span className="menu-grade-name">{c.name}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
