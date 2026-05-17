@@ -1707,7 +1707,7 @@
               <a href="product.html" key={p.id} className="product">
                 <div className="product-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
                   <span
-                    onClick={(e) => { e.stopPropagation(); toggle(p.id); }}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(p.id); }}
                     className="product-heart"
                     role="button"
                     aria-label="Save"
