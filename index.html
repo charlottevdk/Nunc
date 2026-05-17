@@ -752,6 +752,14 @@
       .step:not(:last-child)::after { display: none; }
     }
 
+    /* ─── HOW IT WORKS (dark) ─── */
+    .works-section { background: var(--pine); }
+    .works-inner { padding-top: var(--s-20); padding-bottom: var(--s-20); }
+    .works-section .section-title { color: var(--butter); }
+    .works-section .step-title { color: var(--butter); }
+    .works-section .step-desc { color: rgba(247,241,224,0.65); }
+    .works-section .step:not(:last-child)::after { background: rgba(247,241,224,0.12); }
+
     /* ─── SOCIAL PROOF ─────────────────────────── */
     .proof-strip { padding-top: var(--s-10); padding-bottom: var(--s-10); border-bottom: 1px solid var(--border-hairline); }
     .proof-items { display: flex; align-items: center; justify-content: space-between; gap: var(--s-6); }
@@ -1213,7 +1221,7 @@
 
       .eras { grid-template-columns: repeat(4, 1fr); }
       .conditions { grid-template-columns: repeat(2, 1fr); }
-      .products { grid-template-columns: repeat(2, 1fr); gap: var(--s-8) var(--s-5); }
+      .products { grid-template-columns: repeat(3, 1fr); gap: var(--s-8) var(--s-4); }
 
       .steps { grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
       .step:not(:last-child)::after { display: none; }
@@ -1298,7 +1306,7 @@
       .cond-count { font-size: 9px; }
 
       /* Products — smaller, more breathing room */
-      .products { grid-template-columns: repeat(2, 1fr); gap: var(--s-10) var(--s-6); }
+      .products { grid-template-columns: repeat(3, 1fr); gap: var(--s-6) var(--s-2); }
       .product-img { aspect-ratio: 5/6; border-radius: var(--r-md); }
       .product-name { font-size: 14px; }
       .product-price { font-size: 14px; }
@@ -1741,18 +1749,20 @@
         { num: '03', title: 'Yours',    desc: 'Ships from the seller. Backed by the Nunc guarantee. Sourced. Verified. Yours.' },
       ];
       return (
-        <section className="section container-wide">
-          <div className="section-head">
-            <h2 className="section-title">how it <span className="underscored">works</span>.</h2>
-          </div>
-          <div className="steps">
-            {steps.map(s => (
-              <div className="step" key={s.num}>
-                <span className="step-num">{s.num}</span>
-                <div className="step-title">{s.title}</div>
-                <p className="step-desc">{s.desc}</p>
-              </div>
-            ))}
+        <section className="works-section">
+          <div className="container-wide works-inner">
+            <div className="section-head">
+              <h2 className="section-title">how it <span className="underscored">works</span>.</h2>
+            </div>
+            <div className="steps">
+              {steps.map(s => (
+                <div className="step" key={s.num}>
+                  <span className="step-num">{s.num}</span>
+                  <div className="step-title">{s.title}</div>
+                  <p className="step-desc">{s.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       );

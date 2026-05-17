@@ -663,26 +663,19 @@
     }
     .sidebar-sub-item:hover { background: var(--pine-04); color: var(--fg); }
     .sidebar-sub-item.active { color: var(--tomato); background: rgba(196,69,54,0.06); font-weight: 500; }
-    .sidebar-era-item {
-      display: flex; align-items: center; gap: var(--s-3);
-      width: 100%; background: none; border: none; text-align: left;
-      font-size: 13px; font-weight: 500; color: var(--fg-muted);
-      padding: 5px var(--s-2); border-radius: var(--r-sm); cursor: pointer;
-      transition: background var(--dur-base), color var(--dur-base);
+    .sidebar-era-swatch { width: 10px; height: 10px; border-radius: 999px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(26,58,46,0.10); }
+    .sidebar-grade-code { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; font-weight: 700; flex-shrink: 0; opacity: 0.5; }
+    /* ── filter chips ── */
+    .filter-chip-row { display: flex; flex-wrap: wrap; gap: 4px; padding: var(--s-1) 0 var(--s-2); }
+    .filter-chip {
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 4px 9px; border: 1px solid var(--border-line); border-radius: var(--r-sm);
+      font-size: 11px; font-weight: 500; color: var(--fg-muted);
+      background: var(--bg-elevated); cursor: pointer; white-space: nowrap;
+      transition: border-color var(--dur-base), background var(--dur-base), color var(--dur-base);
     }
-    .sidebar-era-item:hover { background: var(--pine-04); color: var(--fg); }
-    .sidebar-era-item.active { color: var(--pine); background: var(--pine-08); font-weight: 600; }
-    .sidebar-era-swatch { width: 13px; height: 13px; border-radius: 999px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(26,58,46,0.10); }
-    .sidebar-grade-item {
-      display: flex; align-items: center; gap: var(--s-3);
-      width: 100%; background: none; border: none; text-align: left;
-      font-size: 13px; font-weight: 500; color: var(--fg-muted);
-      padding: 5px var(--s-2); border-radius: var(--r-sm); cursor: pointer;
-      transition: background var(--dur-base), color var(--dur-base);
-    }
-    .sidebar-grade-item:hover { background: var(--pine-04); color: var(--fg); }
-    .sidebar-grade-item.active { color: var(--pine); background: var(--pine-08); font-weight: 600; }
-    .sidebar-grade-code { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; font-weight: 700; flex-shrink: 0; min-width: 24px; }
+    .filter-chip:hover { border-color: var(--pine-40); color: var(--fg); }
+    .filter-chip.active { border-color: var(--pine); background: var(--pine); color: var(--butter); }
     .sidebar-size-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-1); }
     .sidebar-size-btn {
       background: none; border: 1px solid var(--border-line); border-radius: var(--r-sm);
@@ -708,7 +701,7 @@
       .nav-right .nav-link.signup { display: none; }
     }
     @media (max-width: 640px) {
-      .product-grid { grid-template-columns: repeat(2, 1fr); gap: var(--s-8) var(--s-3); }
+      .product-grid { grid-template-columns: repeat(3, 1fr); gap: var(--s-6) var(--s-2); }
       .archive-header { padding: var(--s-6) 0; }
       .archive-title { font-size: clamp(30px,10vw,48px); }
       .cat-sidebar.open { grid-template-columns: 1fr; }
@@ -994,15 +987,17 @@ function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, ma
                     >
                       All {c.label.toLowerCase()}
                     </button>
-                    {c.sub.map(s => (
-                      <button key={s}
-                        className={`sidebar-sub-item${subcatFilters.includes(s) ? ' active' : ''}`}
-                        style={{ paddingLeft: 24 }}
-                        onClick={() => selectSubcat(c.id, s)}
-                      >
-                        {s}
-                      </button>
-                    ))}
+                    <div className="filter-chip-row" style={{ paddingLeft: 'var(--s-2)' }}>
+                      {c.sub.map(s => (
+                        <button key={s}
+                          className={`filter-chip${subcatFilters.includes(s) ? ' active' : ''}`}
+                          onClick={() => selectSubcat(c.id, s)}
+                        >
+                          {subcatFilters.includes(s) && <Icon name="check" size={9} stroke={3}/>}
+                          {s}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -1013,38 +1008,52 @@ function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, ma
 
       {/* Material */}
       <SidebarSection label="Material" count={matFilters.length} open={matOpen} onToggle={() => setMatOpen(o => !o)}>
-        {MATERIALS.map(m => (
-          <button key={m} className={`sidebar-sub-item${matFilters.includes(m) ? ' active' : ''}`}
-            onClick={() => toggleMat(m)} style={{ paddingLeft: 'var(--s-2)' }}>{m}</button>
-        ))}
+        <div className="filter-chip-row">
+          {MATERIALS.map(m => (
+            <button key={m} className={`filter-chip${matFilters.includes(m) ? ' active' : ''}`} onClick={() => toggleMat(m)}>
+              {matFilters.includes(m) && <Icon name="check" size={9} stroke={3}/>}
+              {m}
+            </button>
+          ))}
+        </div>
       </SidebarSection>
 
       {/* Style */}
       <SidebarSection label="Style" count={styleFilters.length} open={styleOpen} onToggle={() => setStyleOpen(o => !o)}>
-        {STYLES.map(s => (
-          <button key={s} className={`sidebar-sub-item${styleFilters.includes(s) ? ' active' : ''}`}
-            onClick={() => toggleStyle(s)} style={{ paddingLeft: 'var(--s-2)' }}>{s}</button>
-        ))}
+        <div className="filter-chip-row">
+          {STYLES.map(s => (
+            <button key={s} className={`filter-chip${styleFilters.includes(s) ? ' active' : ''}`} onClick={() => toggleStyle(s)}>
+              {styleFilters.includes(s) && <Icon name="check" size={9} stroke={3}/>}
+              {s}
+            </button>
+          ))}
+        </div>
       </SidebarSection>
 
       {/* By era */}
       <SidebarSection label="By era" count={eraFilters.length} open={eraOpen} onToggle={() => setEraOpen(o => !o)}>
-        {ERAS.map(e => (
-          <button key={e.id} className={`sidebar-era-item${eraFilters.includes(e.id) ? ' active' : ''}`} onClick={() => toggleEra(e.id)}>
-            <span className="sidebar-era-swatch" style={{ background:`linear-gradient(135deg,${e.from},${e.to})` }}/>
-            {e.label}
-          </button>
-        ))}
+        <div className="filter-chip-row">
+          {ERAS.map(e => (
+            <button key={e.id} className={`filter-chip${eraFilters.includes(e.id) ? ' active' : ''}`} onClick={() => toggleEra(e.id)}>
+              <span className="sidebar-era-swatch" style={{ background:`linear-gradient(135deg,${e.from},${e.to})` }}/>
+              {eraFilters.includes(e.id) && <Icon name="check" size={9} stroke={3}/>}
+              {e.label}
+            </button>
+          ))}
+        </div>
       </SidebarSection>
 
       {/* By grade */}
       <SidebarSection label="By grade" count={condFilters.length} open={gradeOpen} onToggle={() => setGradeOpen(o => !o)}>
-        {CONDITIONS.map(c => (
-          <button key={c.grade} className={`sidebar-grade-item${condFilters.includes(c.grade) ? ' active' : ''}`} onClick={() => toggleCond(c.grade)}>
-            <span className="sidebar-grade-code">{c.grade}</span>
-            {c.name}
-          </button>
-        ))}
+        <div className="filter-chip-row">
+          {CONDITIONS.map(c => (
+            <button key={c.grade} className={`filter-chip${condFilters.includes(c.grade) ? ' active' : ''}`} onClick={() => toggleCond(c.grade)}>
+              {condFilters.includes(c.grade) && <Icon name="check" size={9} stroke={3}/>}
+              <span className="sidebar-grade-code">{c.grade}</span>
+              {c.name}
+            </button>
+          ))}
+        </div>
       </SidebarSection>
 
       {/* Size */}
