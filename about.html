@@ -172,6 +172,20 @@
       .nav-right .nav-link { display: none !important; }
     }
 
+    /* ─── FOOTER ─── */
+    .footer { background: var(--butter); padding: var(--s-16) 0 var(--s-8); border-top: 1px solid var(--border-hairline); }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--s-10); padding-bottom: var(--s-12); }
+    .footer-mark { font-family: var(--font-display); font-weight: 800; font-size: 80px; letter-spacing: -0.06em; color: var(--pine); line-height: 0.85; position: relative; display: inline-block; padding-bottom: 12px; font-variation-settings: 'opsz' 72; }
+    .footer-mark::after { content: ''; position: absolute; left: 2%; right: 2%; bottom: 0; height: 10px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'><path d='M 8 10 Q 200 18 392 8' stroke='%23C44536' stroke-width='5' fill='none' stroke-linecap='round'/></svg>"); background-repeat: no-repeat; background-size: 100% 100%; }
+    .footer-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--fg-muted); margin-top: var(--s-4); }
+    .footer h4 { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--fg-muted); font-weight: 500; margin-bottom: var(--s-4); }
+    .footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--s-3); }
+    .footer ul a { font-family: var(--font-body); font-size: 14px; color: var(--fg); }
+    .footer ul a:hover { opacity: 0.7; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: var(--s-6); border-top: 1px solid var(--border-hairline); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg-muted); }
+    @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--s-8) var(--s-6); } }
+    @media (max-width: 640px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--s-6) var(--s-5); padding-bottom: var(--s-8); } .footer-grid > div:first-child { grid-column: 1 / -1; } .footer-mark { font-size: 52px; } .footer-bottom { flex-direction: column; gap: var(--s-2); align-items: flex-start; } }
+
     /* ─── CONTENT WRAP ─── */
     .page-wrap {
       max-width: 1200px; margin: 0 auto;
@@ -743,12 +757,47 @@
 
 </div>
 
-<div class="page-wrap">
-  <div class="footer">
-    <span class="footer-copy">© 2026 Nunc — sourced. verified. yours.</span>
-    <span class="footer-copy">The archive, alive.</span>
+<footer class="footer">
+  <div class="page-wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-mark">nunc</div>
+        <div class="footer-tag">Sourced · verified · yours</div>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="browse.html">By era</a></li>
+          <li><a href="browse.html">By condition</a></li>
+          <li><a href="browse.html">Nunc drops</a></li>
+          <li><a href="browse.html">Just verified</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Sell</h4>
+        <ul>
+          <li><a href="about.html">How it works</a></li>
+          <li><a href="sell.html">List a piece</a></li>
+          <li><a href="about.html">Seller fees</a></li>
+          <li><a href="about.html">Thrift partners</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>The archive</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="about.html">Verification</a></li>
+          <li><a href="about.html">Journal</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nunc</span>
+      <span>Privacy · Terms · Cookies</span>
+    </div>
   </div>
-</div>
+</footer>
 
 
 <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
