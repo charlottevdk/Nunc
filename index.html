@@ -1156,13 +1156,18 @@
     .menu-panel-head { display: flex; align-items: center; padding-bottom: var(--s-4); margin-bottom: var(--s-2); border-bottom: 2px solid var(--border-line); }
     .menu-back { display: flex; align-items: center; gap: var(--s-2); background: none; border: none; cursor: pointer; font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--pine); padding: 0; }
     .menu-section-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; font-weight: 600; color: var(--fg-subtle); padding: var(--s-4) 0 var(--s-2); display: block; }
-    .menu-era-chip { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) 0; text-decoration: none; color: var(--fg); font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border-hairline); transition: color var(--dur-base); }
-    .menu-era-chip:hover { color: var(--tomato); }
-    .menu-era-swatch { width: 18px; height: 18px; border-radius: 999px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(26,58,46,0.12); }
-    .menu-grade-chip { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) 0; text-decoration: none; border-bottom: 1px solid var(--border-hairline); transition: color var(--dur-base); }
-    .menu-grade-chip:hover { color: var(--pine); }
-    .menu-grade-code { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; font-weight: 700; min-width: 28px; color: var(--fg); flex-shrink: 0; }
-    .menu-grade-name { font-size: 13px; font-weight: 500; color: var(--fg-muted); }
+    .menu-cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: var(--s-2); }
+    .menu-cat-item { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); padding: var(--s-3); min-height: 52px; border: 1px solid var(--border-line); border-radius: var(--r-md); font-size: 13px; font-weight: 600; color: var(--pine); text-decoration: none; background: var(--bg-elevated); line-height: 1.25; transition: background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out); }
+    .menu-cat-item:hover { background: var(--pine-04); border-color: var(--pine-20); color: var(--tomato); }
+    .menu-era-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: var(--s-2); }
+    .menu-era-chip { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2) var(--s-3); border: 1px solid var(--border-hairline); border-radius: var(--r-md); text-decoration: none; color: var(--fg); font-size: 13px; font-weight: 500; transition: color var(--dur-base), border-color var(--dur-base); }
+    .menu-era-chip:hover { color: var(--tomato); border-color: var(--pine-20); }
+    .menu-era-swatch { width: 16px; height: 16px; border-radius: 999px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(26,58,46,0.12); }
+    .menu-grade-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .menu-grade-chip { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2) var(--s-3); border: 1px solid var(--border-hairline); border-radius: var(--r-md); text-decoration: none; transition: border-color var(--dur-base); }
+    .menu-grade-chip:hover { border-color: var(--pine-20); }
+    .menu-grade-code { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; font-weight: 700; color: var(--fg); flex-shrink: 0; }
+    .menu-grade-name { font-size: 12px; font-weight: 500; color: var(--fg-muted); }
 
     /* ─── RESPONSIVE ─────────────────────────── */
 
@@ -1513,26 +1518,32 @@
                 </button>
               </div>
               <span className="menu-section-label">Categories</span>
-              {CATEGORIES.map(cat => (
-                <a key={cat.id} href="browse.html" className="menu-item menu-item-primary" onClick={close} style={{ fontSize:18 }}>
-                  {cat.label}
-                  <Icon name="chevronD" size={14} stroke={2} style={{ transform:'rotate(-90deg)', flexShrink:0 }}/>
-                </a>
-              ))}
+              <div className="menu-cat-grid">
+                {CATEGORIES.map(cat => (
+                  <a key={cat.id} href="browse.html" className="menu-cat-item" onClick={close}>
+                    {cat.label}
+                    <Icon name="chevronD" size={11} stroke={2.5} style={{ transform:'rotate(-90deg)', flexShrink:0, opacity:0.35 }}/>
+                  </a>
+                ))}
+              </div>
               <span className="menu-section-label">By era</span>
-              {ERAS.map(e => (
-                <a key={e.id} href="browse.html" className="menu-era-chip" onClick={close}>
-                  <span className="menu-era-swatch" style={{ background:`linear-gradient(135deg,${e.from},${e.to})` }}/>
-                  {e.label}
-                </a>
-              ))}
+              <div className="menu-era-row">
+                {ERAS.map(e => (
+                  <a key={e.id} href="browse.html" className="menu-era-chip" onClick={close}>
+                    <span className="menu-era-swatch" style={{ background:`linear-gradient(135deg,${e.from},${e.to})` }}/>
+                    {e.label}
+                  </a>
+                ))}
+              </div>
               <span className="menu-section-label">By grade</span>
-              {CONDITIONS.map(c => (
-                <a key={c.grade} href="browse.html" className="menu-grade-chip" onClick={close}>
-                  <span className="menu-grade-code">{c.grade}</span>
-                  <span className="menu-grade-name">{c.name}</span>
-                </a>
-              ))}
+              <div className="menu-grade-row">
+                {CONDITIONS.map(c => (
+                  <a key={c.grade} href="browse.html" className="menu-grade-chip" onClick={close}>
+                    <span className="menu-grade-code">{c.grade}</span>
+                    <span className="menu-grade-name">{c.name}</span>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
