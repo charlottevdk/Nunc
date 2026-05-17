@@ -887,11 +887,33 @@ function Nav() {
   );
 }
 
+function SidebarSection({ label, count, open, onToggle, children }) {
+  return (
+    <div className="sidebar-section">
+      <button className="sidebar-cat-label" style={{ marginTop: 0 }} onClick={onToggle}>
+        <span>{label}</span>
+        <span style={{ display:'flex', alignItems:'center', gap:6, flexShrink:0 }}>
+          {count > 0 && <span className="sidebar-filter-count">{count}</span>}
+          <span className={`sidebar-cat-chevron${open ? ' open' : ''}`}>
+            <Icon name="chevronD" size={11} stroke={2.5}/>
+          </span>
+        </span>
+      </button>
+      {open && <div className="sidebar-sub-list" style={{ marginTop: 'var(--s-1)' }}>{children}</div>}
+    </div>
+  );
+}
+
 function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, matFilters, styleFilters, sizeFilters,
   selectCat, selectSubcat, toggleEra, toggleCond, toggleMat, toggleStyle, toggleSize, hasFilters, clearAll, sidebarOpen }) {
-  const [openCat, setOpenCat] = useState(null);
+  const [openCat, setOpenCat] = useState('categories');
   const [matOpen, setMatOpen] = useState(false);
   const [styleOpen, setStyleOpen] = useState(false);
+  const [eraOpen, setEraOpen] = useState(false);
+  const [gradeOpen, setGradeOpen] = useState(false);
+  const [expandedCat, setExpandedCat] = useState(null);
+
+  const toggleSection = (id, setter) => setter(cur => !cur);
 
   return (
     <div className={`cat-sidebar${sidebarOpen ? ' open' : ''}`}>
@@ -902,94 +924,91 @@ function CategorySidebar({ catFilter, subcatFilters, eraFilters, condFilters, ma
 
       {/* Categories */}
       <div className="sidebar-section" style={{ borderTop: 'none', paddingTop: 0 }}>
-        <span className="sidebar-section-label">Categories</span>
-        {CATEGORIES.map(c => (
-          <div key={c.id} className="sidebar-cat-group">
-            <button
-              className={`sidebar-cat-label${catFilter === c.id ? ' active' : ''}`}
-              onClick={() => { selectCat(c.id); setOpenCat(cur => cur === c.id ? null : c.id); }}
-            >
-              <span>{c.label}</span>
-              <span className={`sidebar-cat-chevron${openCat === c.id ? ' open' : ''}`}>
-                <Icon name="chevronD" size={11} stroke={2.5}/>
-              </span>
-            </button>
-            {openCat === c.id && (
-              <div className="sidebar-sub-list">
-                {c.sub.map(s => (
-                  <button
-                    key={s}
-                    className={`sidebar-sub-item${subcatFilters.includes(s) ? ' active' : ''}`}
-                    onClick={() => selectSubcat(c.id, s)}
-                  >
-                    {s}
-                  </button>
-                ))}
+        <button className="sidebar-cat-label" style={{ marginTop: 0 }}
+          onClick={() => setOpenCat(cur => cur === 'categories' ? null : 'categories')}>
+          <span>Categories</span>
+          <span style={{ display:'flex', alignItems:'center', gap:6, flexShrink:0 }}>
+            {(catFilter || subcatFilters.length > 0) && <span className="sidebar-filter-count">{subcatFilters.length || (catFilter ? 1 : 0)}</span>}
+            <span className={`sidebar-cat-chevron${openCat === 'categories' ? ' open' : ''}`}>
+              <Icon name="chevronD" size={11} stroke={2.5}/>
+            </span>
+          </span>
+        </button>
+        {openCat === 'categories' && (
+          <div className="sidebar-sub-list" style={{ marginTop: 'var(--s-1)' }}>
+            {CATEGORIES.map(c => (
+              <div key={c.id} className="sidebar-cat-group">
+                <button
+                  className={`sidebar-sub-item${catFilter === c.id && !subcatFilters.length ? ' active' : ''}`}
+                  style={{ fontWeight: 600, fontSize: 13, paddingLeft: 'var(--s-2)', justifyContent:'space-between' }}
+                  onClick={() => setExpandedCat(cur => cur === c.id ? null : c.id)}
+                >
+                  <span>{c.label}</span>
+                  <span className={`sidebar-cat-chevron${expandedCat === c.id ? ' open' : ''}`} style={{ marginLeft:'auto' }}>
+                    <Icon name="chevronD" size={10} stroke={2.5}/>
+                  </span>
+                </button>
+                {expandedCat === c.id && (
+                  <div>
+                    <button
+                      className={`sidebar-sub-item${catFilter === c.id && !subcatFilters.length ? ' active' : ''}`}
+                      style={{ paddingLeft: 24, fontStyle:'italic' }}
+                      onClick={() => selectCat(c.id)}
+                    >
+                      All {c.label.toLowerCase()}
+                    </button>
+                    {c.sub.map(s => (
+                      <button key={s}
+                        className={`sidebar-sub-item${subcatFilters.includes(s) ? ' active' : ''}`}
+                        style={{ paddingLeft: 24 }}
+                        onClick={() => selectSubcat(c.id, s)}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+            ))}
           </div>
-        ))}
+        )}
       </div>
 
       {/* Material */}
-      <div className="sidebar-section">
-        <button className="sidebar-accordion-header" onClick={() => setMatOpen(o => !o)}>
-          <span className="sidebar-section-label">Material</span>
-          {matFilters.length > 0 && <span className="sidebar-filter-count">{matFilters.length}</span>}
-          <span className={`sidebar-cat-chevron${matOpen ? ' open' : ''}`}>
-            <Icon name="chevronD" size={11} stroke={2.5}/>
-          </span>
-        </button>
-        {matOpen && (
-          <div className="sidebar-sub-list" style={{ marginTop: 'var(--s-1)' }}>
-            {MATERIALS.map(m => (
-              <button key={m} className={`sidebar-sub-item${matFilters.includes(m) ? ' active' : ''}`}
-                onClick={() => toggleMat(m)} style={{ paddingLeft: 'var(--s-2)' }}>{m}</button>
-            ))}
-          </div>
-        )}
-      </div>
+      <SidebarSection label="Material" count={matFilters.length} open={matOpen} onToggle={() => setMatOpen(o => !o)}>
+        {MATERIALS.map(m => (
+          <button key={m} className={`sidebar-sub-item${matFilters.includes(m) ? ' active' : ''}`}
+            onClick={() => toggleMat(m)} style={{ paddingLeft: 'var(--s-2)' }}>{m}</button>
+        ))}
+      </SidebarSection>
 
       {/* Style */}
-      <div className="sidebar-section">
-        <button className="sidebar-accordion-header" onClick={() => setStyleOpen(o => !o)}>
-          <span className="sidebar-section-label">Style</span>
-          {styleFilters.length > 0 && <span className="sidebar-filter-count">{styleFilters.length}</span>}
-          <span className={`sidebar-cat-chevron${styleOpen ? ' open' : ''}`}>
-            <Icon name="chevronD" size={11} stroke={2.5}/>
-          </span>
-        </button>
-        {styleOpen && (
-          <div className="sidebar-sub-list" style={{ marginTop: 'var(--s-1)' }}>
-            {STYLES.map(s => (
-              <button key={s} className={`sidebar-sub-item${styleFilters.includes(s) ? ' active' : ''}`}
-                onClick={() => toggleStyle(s)} style={{ paddingLeft: 'var(--s-2)' }}>{s}</button>
-            ))}
-          </div>
-        )}
-      </div>
+      <SidebarSection label="Style" count={styleFilters.length} open={styleOpen} onToggle={() => setStyleOpen(o => !o)}>
+        {STYLES.map(s => (
+          <button key={s} className={`sidebar-sub-item${styleFilters.includes(s) ? ' active' : ''}`}
+            onClick={() => toggleStyle(s)} style={{ paddingLeft: 'var(--s-2)' }}>{s}</button>
+        ))}
+      </SidebarSection>
 
       {/* By era */}
-      <div className="sidebar-section">
-        <span className="sidebar-section-label">By era</span>
+      <SidebarSection label="By era" count={eraFilters.length} open={eraOpen} onToggle={() => setEraOpen(o => !o)}>
         {ERAS.map(e => (
           <button key={e.id} className={`sidebar-era-item${eraFilters.includes(e.id) ? ' active' : ''}`} onClick={() => toggleEra(e.id)}>
             <span className="sidebar-era-swatch" style={{ background:`linear-gradient(135deg,${e.from},${e.to})` }}/>
             {e.label}
           </button>
         ))}
-      </div>
+      </SidebarSection>
 
       {/* By grade */}
-      <div className="sidebar-section">
-        <span className="sidebar-section-label">By grade</span>
+      <SidebarSection label="By grade" count={condFilters.length} open={gradeOpen} onToggle={() => setGradeOpen(o => !o)}>
         {CONDITIONS.map(c => (
           <button key={c.grade} className={`sidebar-grade-item${condFilters.includes(c.grade) ? ' active' : ''}`} onClick={() => toggleCond(c.grade)}>
             <span className="sidebar-grade-code">{c.grade}</span>
             {c.name}
           </button>
         ))}
-      </div>
+      </SidebarSection>
 
       {/* Size */}
       <div className="sidebar-section">
