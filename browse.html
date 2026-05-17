@@ -826,31 +826,35 @@ function MobileMenu({ close }) {
             <div className="mobile-nav-accordion-body">
               <div className="mobile-nav-sub-label">Categories</div>
               {CATEGORIES.map(cat => (
-                <a key={cat.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>
-                  <span>{cat.label}</span>
-                  <span className="mobile-subitem-count">→</span>
-                </a>
+                <a key={cat.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>{cat.label}</a>
               ))}
               <div className="mobile-nav-sub-label">By era</div>
               {ERAS.map(e => (
                 <a key={e.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>
                   <span className="mobile-subitem-swatch" style={{ background: `linear-gradient(135deg,${e.from},${e.to})` }}/>
-                  <span>{e.label}</span>
+                  {e.label}
                 </a>
               ))}
               <div className="mobile-nav-sub-label">By grade</div>
               {CONDITIONS.map(c => (
                 <a key={c.grade} href="browse.html" className="mobile-nav-subitem" onClick={close}>
                   <span style={{ fontFamily:'var(--font-mono)', fontSize:'10px', letterSpacing:'0.14em', fontWeight:700, minWidth:28 }}>{c.grade}</span>
-                  <span>{c.name}</span>
+                  {c.name}
                 </a>
               ))}
             </div>
           )}
         </div>
-        <a href="index.html" className="mobile-nav-link" style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none' }}>Home</a>
-        <a href="sell.html" className="mobile-nav-link" style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none', fontSize:20, fontWeight:600, color:'var(--pine-60)' }}>Sell a piece</a>
-        <a href="auth.html" className="mobile-nav-link" style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none', fontSize:20, fontWeight:600, color:'var(--pine-60)' }}>Log in</a>
+        <a href="browse.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none' }}>Friday drops</a>
+        <a href="browse.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none' }}>Just verified</a>
+        <a href="about.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none', fontSize:18, fontWeight:600, color:'var(--pine-60)' }}>About</a>
+        <a href="about.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none', fontSize:18, fontWeight:600, color:'var(--pine-60)' }}>How it works</a>
+        <a href="#" className="mobile-nav-link" onClick={close} style={{ textDecoration:'none', fontSize:18, fontWeight:600, color:'var(--pine-60)' }}>Instagram</a>
+      </div>
+      <div className="mobile-nav-actions">
+        <a href="sell.html" className="btn-sell" style={{ justifyContent:'center', textDecoration:'none' }}>Sell now</a>
+        <a href="auth.html" className="nav-link" style={{ textAlign:'center' }}>Sign up</a>
+        <a href="auth.html" className="nav-link" style={{ textAlign:'center', opacity:0.7 }}>Log in</a>
       </div>
     </div>
   );

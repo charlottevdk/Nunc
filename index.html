@@ -1572,64 +1572,49 @@
     }
 
     /* ─────────── Mobile Menu ─────────── */
-    function MobileMenu({ close, onSignup, onLogin }) {
+    function MobileMenu({ close }) {
       const [browseOpen, setBrowseOpen] = useState(false);
       return (
         <div className="mobile-menu" role="dialog" aria-label="Navigation">
           <div className="mobile-nav-links">
-
-            <div className="mobile-nav-accordion">
-              <button className="mobile-nav-link accordion-trigger" onClick={() => setBrowseOpen(o => !o)} aria-expanded={browseOpen}>
+            <div style={{ borderBottom: '1px solid var(--border-hairline)' }}>
+              <button className="mobile-nav-link" onClick={() => setBrowseOpen(o => !o)}>
                 Browse
-                <span className={`chevron-icon${browseOpen ? ' open' : ''}`}><Icon name="chevron" size={16} stroke={2}/></span>
+                <span className={`mobile-chevron${browseOpen ? ' open' : ''}`}><Icon name="chevronD" size={16} stroke={2}/></span>
               </button>
               {browseOpen && (
                 <div className="mobile-nav-accordion-body">
                   <div className="mobile-nav-sub-label">Categories</div>
                   {CATEGORIES.map(cat => (
-                    <div key={cat.id} style={{ marginBottom: 'var(--s-3)' }}>
-                      <a href="browse.html" className="mobile-nav-subitem" onClick={close}
-                         style={{ fontWeight: 700, color: 'var(--pine)', fontSize: 15 }}>
-                        {cat.label}
-                      </a>
-                      {cat.sub.map(s => (
-                        <a key={s} href="browse.html" className="mobile-nav-subitem" onClick={close}
-                           style={{ paddingLeft: 24, fontSize: 13, color: 'var(--pine-60)', fontWeight: 400 }}>
-                          {s}
-                        </a>
-                      ))}
-                    </div>
+                    <a key={cat.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>{cat.label}</a>
                   ))}
                   <div className="mobile-nav-sub-label">By era</div>
                   {ERAS.map(e => (
                     <a key={e.id} href="browse.html" className="mobile-nav-subitem" onClick={close}>
-                      <span className="subitem-swatch" style={{ background: `linear-gradient(135deg, ${e.from}, ${e.to})` }}/>
-                      <span>{e.label}</span>
-                      <span className="subitem-count">{e.count} pcs</span>
+                      <span className="mobile-subitem-swatch" style={{ background: `linear-gradient(135deg,${e.from},${e.to})` }}/>
+                      {e.label}
                     </a>
                   ))}
                   <div className="mobile-nav-sub-label">By grade</div>
                   {CONDITIONS.map(c => (
                     <a key={c.grade} href="browse.html" className="mobile-nav-subitem" onClick={close}>
-                      <span className={`subitem-icon${c.muted ? ' muted' : ''}`}><Icon name={c.icon} size={14} stroke={1.6}/></span>
-                      <span>{c.name}</span>
-                      <span className="subitem-count">{c.count} pcs</span>
+                      <span style={{ fontFamily:'var(--font-mono)', fontSize:'10px', letterSpacing:'0.14em', fontWeight:700, minWidth:28 }}>{c.grade}</span>
+                      {c.name}
                     </a>
                   ))}
                 </div>
               )}
             </div>
-
-            <a href="browse.html" className="mobile-nav-link" onClick={close}>Friday drops</a>
-            <a href="browse.html" className="mobile-nav-link" onClick={close}>Just verified</a>
-            <a href="about.html" className="mobile-nav-link small" onClick={close}>How it works</a>
-            <a href="about.html" className="mobile-nav-link small" onClick={close}>About</a>
-            <a href="#" className="mobile-nav-link small" onClick={close}>Instagram</a>
+            <a href="browse.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none' }}>Friday drops</a>
+            <a href="browse.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none' }}>Just verified</a>
+            <a href="about.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none', fontSize:18, fontWeight:600, color:'var(--pine-60)' }}>About</a>
+            <a href="about.html" className="mobile-nav-link" onClick={close} style={{ borderBottom:'1px solid var(--border-hairline)', textDecoration:'none', fontSize:18, fontWeight:600, color:'var(--pine-60)' }}>How it works</a>
+            <a href="#" className="mobile-nav-link" onClick={close} style={{ textDecoration:'none', fontSize:18, fontWeight:600, color:'var(--pine-60)' }}>Instagram</a>
           </div>
           <div className="mobile-nav-actions">
-            <a href="sell.html" className="btn-sell">Sell now</a>
-            <button className="nav-link" onClick={() => { close(); onSignup(); }}>Sign up</button>
-            <button className="nav-link" onClick={() => { close(); onLogin(); }} style={{ opacity: 0.7 }}>Log in</button>
+            <a href="sell.html" className="btn-sell" style={{ justifyContent:'center', textDecoration:'none' }}>Sell now</a>
+            <a href="auth.html" className="nav-link" style={{ textAlign:'center' }}>Sign up</a>
+            <a href="auth.html" className="nav-link" style={{ textAlign:'center', opacity:0.7 }}>Log in</a>
           </div>
         </div>
       );
@@ -1668,7 +1653,7 @@
               </nav>
             </div>
           </header>
-          {open && <MobileMenu close={close} onSignup={onSignup} onLogin={onLogin}/>}
+          {open && <MobileMenu close={close}/>}
         </>
       );
     }
