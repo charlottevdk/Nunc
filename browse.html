@@ -715,8 +715,10 @@
       .sort-wrap { margin-left: 0; }
       .filter-row { gap: var(--s-2); overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
       .filter-row::-webkit-scrollbar { display: none; }
-      .nav-right .nav-link.signup { display: none; }
-      .nav-right .nav-link:not(.signup) { display: flex; font-size: 13px; padding: 6px 2px; }
+      .nav-inner { grid-template-columns: auto auto; gap: 0; justify-content: space-between; }
+      .nav-search { display: none; }
+      .btn-sell { display: none; }
+      .nav-right .nav-link { display: none !important; }
     }
   </style>
 

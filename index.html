@@ -1233,13 +1233,10 @@
       }
       .search input { display: none; }
       .search-kbd { display: none; }
-      /* Nav right: show sell + login, hide signup */
+      /* Nav right: hamburger only at mobile */
       .nav-right { gap: var(--s-1); }
-      .nav-right .nav-link.signup { display: none; }
-      .nav-right .nav-link:not(.signup) { display: flex; font-size: 13px; padding: 6px 2px; }
-      .nav-right .btn-sell { display: inline-flex; }
-      .btn-sell { padding: 8px 10px 8px 12px; font-size: 9px; letter-spacing: 0.16em; gap: 4px; }
-      .btn-sell::after { font-size: 11px; }
+      .nav-right .nav-link { display: none !important; }
+      .nav-right .btn-sell { display: none; }
 
       /* Hero */
       .hero { padding-top: var(--s-6); padding-bottom: var(--s-10); }
