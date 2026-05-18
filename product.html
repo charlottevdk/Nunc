@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>nunc — leather bomber, cropped</title>
+  <title>nunc — Prince of Wales tweed blazer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Caveat:wght@400;600&family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
@@ -367,7 +367,7 @@
     /* Measurements table */
     .measure-table {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: var(--s-3);
     }
     .measure-cell {
@@ -667,7 +667,7 @@
       .product-layout { grid-template-columns: 1fr; gap: var(--s-8); }
       .image-col { position: static; }
       .related-grid { grid-template-columns: repeat(2, 1fr); }
-      .measure-table { grid-template-columns: repeat(2, 1fr); }
+      .measure-table { grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 560px) {
       .price-main { font-size: 36px; }
@@ -689,42 +689,40 @@
 const { useState } = React;
 
 const PRODUCT = {
-  id: 1,
-  name: 'Leather bomber, cropped',
-  era: '1970s',
-  eraId: '70s',
-  eraFrom: '#C66E3F',
-  eraTo: '#7A2E20',
-  price: 148,
-  meta: 'DETROIT · 1974',
-  city: 'Detroit',
-  year: 1974,
+  id: 21,
+  name: 'Prince of Wales tweed blazer',
+  era: '1980s',
+  eraId: '80s',
+  eraFrom: '#7E5BA0',
+  eraTo: '#3A2255',
+  price: 165,
+  meta: 'AMSTERDAM · 1982',
+  city: 'Amsterdam',
+  year: 1982,
   condition: 'EX',
   condName: 'Excellent',
-  condDesc: 'Lightly worn. No visible imperfections. Hardware intact, lining clean, leather supple.',
-  fabric: '100% genuine leather · polyester lining',
-  origin: 'USA',
+  condDesc: 'Expertly tailored to a fitted silhouette after purchase. Wool fabric holds strong with its characteristic nubby Prince of Wales check. Viscose lining clean and intact. No damage — minor character marks consistent with age.',
+  fabric: '100% pure wool (shaving wool) · viscose lining',
+  origin: 'UK',
   measurements: [
-    { key: 'Chest', val: '96', unit: 'cm' },
-    { key: 'Length', val: '58', unit: 'cm' },
-    { key: 'Shoulder', val: '42', unit: 'cm' },
-    { key: 'Sleeve', val: '60', unit: 'cm' },
+    { key: 'Shoulder', val: '13.5', unit: 'cm' },
+    { key: 'Sleeve',   val: '54',   unit: 'cm' },
+    { key: 'Back',     val: '76',   unit: 'cm' },
   ],
-  provenance: 'Found at an estate sale in Detroit, 1974 on the label. Previous owner worked at a Motown record pressing plant — or so the seller said. The leather still smells faintly of engine oil and something sweeter. Could be a musician, could be a machinist.',
+  provenance: 'Pulled from a Salvation Army store in Amsterdam — one of those finds you almost walk past. The Prince of Wales check in pure shaving wool is the kind of cloth that outlives trends by decades. Taken straight to an expert tailor, who brought it in to a sharp fitted cut. It arrived vintage; it leaves tailored.',
 };
 
 const RELATED = [
-  { id: 4, name: 'Suede western, fringed',        meta: 'AUSTIN · 1976',   price: 218, cond: 'EXCELLENT', from: '#D9A479', to: '#7A4C28' },
-  { id: 5, name: 'Army field jacket, M-65',       meta: 'BERLIN · 1968',   price:  82, cond: 'LOVED',    from: '#7C7F4E', to: '#2F3318' },
-  { id: 6, name: 'Wool peacoat, double-breasted', meta: 'BOSTON · 1985',   price: 134, cond: 'EXCELLENT', from: '#A8513A', to: '#4A1D17' },
-  { id: 2, name: 'Selvedge denim jacket',         meta: 'PORTLAND · 1991', price:  92, cond: 'LOVED',    from: '#5A6B7A', to: '#2A3744' },
+  { id: 10, name: 'Tartan wool blazer',            meta: 'EDINBURGH · 1988', price:  96, cond: 'PRISTINE',  from: '#6B4E3D', to: '#2E1E18' },
+  { id: 15, name: 'Velvet smoking jacket',         meta: 'LONDON · 1982',    price: 158, cond: 'PRISTINE',  from: '#5E3058', to: '#28102A' },
+  { id:  6, name: 'Wool peacoat, double-breasted', meta: 'BOSTON · 1985',    price: 134, cond: 'EXCELLENT', from: '#A8513A', to: '#4A1D17' },
+  { id:  3, name: 'Cable-knit fisherman',          meta: 'DUBLIN · 1983',    price:  68, cond: 'PRISTINE',  from: '#E7D7B4', to: '#A88E5A' },
 ];
 
 const ANGLES = [
-  { label: 'Front', from: '#C66E3F', to: '#7A2E20' },
-  { label: 'Back',  from: '#9A5030', to: '#5A2015' },
-  { label: 'Label', from: '#B06038', to: '#6A2818' },
-  { label: 'Detail',from: '#D07848', to: '#8A3828' },
+  { label: 'Front',  img: 'images/blazer-tweed-01front.jpg' },
+  { label: 'Back',   img: 'images/blazer-tweed-02back.jpg' },
+  { label: 'Lining', img: 'images/blazer-tweed-03inside.jpg' },
 ];
 
 function Icon({ name, size = 18, stroke = 1.75, fill = 'none' }) {
@@ -764,18 +762,23 @@ function Nav({ saved, onSave }) {
 
 function ImageGallery() {
   const [active, setActive] = useState(0);
+  const a = ANGLES[active];
   return (
     <div className="image-col">
       <div className="main-image">
-        <div className="main-image-inner" style={{ background: `linear-gradient(155deg, ${ANGLES[active].from}, ${ANGLES[active].to})` }}/>
+        <div className="main-image-inner" style={a.img ? {} : { background: `linear-gradient(155deg, ${a.from}, ${a.to})` }}>
+          {a.img && <img src={a.img} alt={a.label} style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', display:'block' }}/>}
+        </div>
         <div className="image-badge">
           <Icon name="check" size={9} stroke={3}/> Verified by Nunc
         </div>
       </div>
       <div className="thumb-strip">
-        {ANGLES.map((a, i) => (
+        {ANGLES.map((ang, i) => (
           <button key={i} className={`thumb${active === i ? ' active' : ''}`} onClick={() => setActive(i)}>
-            <div className="thumb-inner" style={{ background: `linear-gradient(155deg, ${a.from}, ${a.to})` }}/>
+            <div className="thumb-inner" style={ang.img ? {} : { background: `linear-gradient(155deg, ${ang.from}, ${ang.to})` }}>
+              {ang.img && <img src={ang.img} alt={ang.label} style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', display:'block' }}/>}
+            </div>
           </button>
         ))}
       </div>
@@ -900,7 +903,7 @@ function App() {
 
         <div className="related">
           <div className="related-head">
-            <h2 className="related-title">More from the <span className="underscored">'70s</span>.</h2>
+            <h2 className="related-title">More from the <span className="underscored">'80s</span>.</h2>
             <a href="browse.html" className="stamp tomato">
               See all <Icon name="arrow" size={11} stroke={2}/>
             </a>

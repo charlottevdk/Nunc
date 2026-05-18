@@ -365,6 +365,12 @@
       background: radial-gradient(120% 80% at 25% 20%, rgba(247,241,224,0.18), transparent 55%);
       pointer-events: none;
     }
+    .product-card-img img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+    }
     .product-card-heart {
       position: absolute;
       top: 10px; right: 10px;
@@ -802,6 +808,7 @@ const PRODUCTS = [
   { id:18, name:'Matching trouser set, linen',    era:'y2k',  cat:'dresses',   sub:'Trouser sets',      price:144, meta:'STOCKHOLM · 2001', cond:'PR', mat:'Linen',       style:'Straight cut', size:'M',  from:'#C8B89A', to:'#786848' },
   { id:19, name:'Button-down, western print',     era:'70s',  cat:'tops',      sub:'Printed shirts',    price:48,  meta:'PHOENIX · 1973',   cond:'LV', mat:'Cotton',      style:'Western',      size:'S',  from:'#B87840', to:'#684020' },
   { id:20, name:'Mini dress, broderie anglaise',  era:'60s',  cat:'dresses',   sub:'Mini dresses',      price:86,  meta:'LONDON · 1967',    cond:'EX', mat:'Embroidered', style:'A-line',       size:'XS', from:'#D8CEB8', to:'#887858' },
+  { id:21, name:'Prince of Wales tweed blazer',  era:'80s',  cat:'blazers',   sub:'Structured',        price:165, meta:'LONDON · 1982',    cond:'EX', mat:'Wool',        style:'Straight cut', size:'S',  img:'images/blazer-tweed-01.jpg', from:'#8B8B70', to:'#5C5840' },
 ];
 
 function Icon({ name, size=18, stroke=1.75, fill='none', style }) {
@@ -1246,7 +1253,8 @@ function App() {
                 </div>
               ) : filtered.map(p => (
                 <a href="product.html" key={p.id} className="product-card">
-                  <div className="product-card-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
+                  <div className="product-card-img" style={p.img ? {} : { background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
+                    {p.img && <img src={p.img} alt={p.name}/>}
                     <button className="product-card-heart" onClick={(e) => toggleLike(p.id, e)} aria-label="Save">
                       <span style={{ color: liked[p.id] ? 'var(--tomato)' : 'var(--pine)', display:'flex' }}>
                         <Icon name="heart" size={13} stroke={1.8} fill={liked[p.id] ? 'currentColor' : 'none'}/>

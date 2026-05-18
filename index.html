@@ -637,6 +637,12 @@
       background: radial-gradient(120% 80% at 25% 20%, rgba(247,241,224,0.20), transparent 55%);
       pointer-events: none;
     }
+    .product-img img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+    }
     .product-heart {
       position: absolute;
       top: 12px; right: 12px;
@@ -1397,6 +1403,7 @@
       { id: 6, name: 'Wool peacoat, double-breasted', era: '80s', price: 134, meta: 'BOSTON · 1985',   cond: 'EXCELLENT', from: '#A8513A', to: '#4A1D17' },
       { id: 7, name: 'Silk slip dress, bias-cut',     era: '90s', price:  76, meta: 'TOKYO · 1998',    cond: 'PRISTINE', from: '#3A3A36', to: '#15140F' },
       { id: 8, name: 'Mohair cardigan, oversized',    era: '90s', price:  58, meta: 'LA · 1994',       cond: 'LOVED',    from: '#9BAB8D', to: '#4E6044' },
+      { id: 9, name: 'Prince of Wales tweed blazer', era: '80s', price: 165, meta: 'LONDON · 1982',    cond: 'EXCELLENT', img: 'images/blazer-tweed-01.jpg', from: '#8B8B70', to: '#5C5840' },
     ];
 
     /* ─────────── Icons ─────────── */
@@ -1713,7 +1720,8 @@
           <div className="products">
             {PRODUCTS.map(p => (
               <a href="product.html" key={p.id} className="product">
-                <div className="product-img" style={{ background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
+                <div className="product-img" style={p.img ? {} : { background: `linear-gradient(150deg, ${p.from}, ${p.to})` }}>
+                  {p.img && <img src={p.img} alt={p.name}/>}
                   <span
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(p.id); }}
                     className="product-heart"
